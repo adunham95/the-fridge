@@ -1,3 +1,4 @@
+import { useLayoutEffect } from "react";
 import { EIcons } from "../Icons";
 import NavItem, { INavMenuItem } from "./NavItem";
 
@@ -15,6 +16,14 @@ const navMenu: Array<INavMenuItem> = [
 ]
 
 function InnerMenu({isCollapsed = false}) {
+
+    useLayoutEffect(()=>{
+        const root = document.documentElement;
+        let sidebarWidth = '76px'
+        if(!isCollapsed){ sidebarWidth = '208px'}
+        root.style.setProperty('--sidebar-width', sidebarWidth)
+    },[isCollapsed])
+
     return (
         <div>
             {

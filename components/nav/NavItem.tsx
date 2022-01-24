@@ -12,14 +12,24 @@ interface IProps extends INavMenuItem{
 }
 
 const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
-    const [showToolTip, setShowToolTip] = useState(false)
+    const [showToolTip, setShowToolTip] = useState(false);
+
+    function getWrapperStyles(){
+        if(isCollapsed){
+            return 'max-w-[calc(var(--sidebar-width)-1rem] h-[calc(var(--sidebar-width)-1rem)] justify-center'
+        }
+        else{
+            return 'max-w-[var(--sidebar-width)] h-[calc(76px-1rem)] justify-start'
+        }
+    }
+
     return (
         <div 
           onMouseEnter={()=>setShowToolTip(true)}
           onMouseLeave={()=>setShowToolTip(false)}
-          className={`flex w-full relative items-center justify-start mt-2 border border-transparent text-black bg-blue-400 h-10 p-1 ${isCollapsed ? 'max-w-[30px]' :'max-w-[var(--sidebar-width)]'}`}
+          className={`flex w-full relative items-center justify-start mb-2 border border-transparent text-black fill-blue-400 hover:bg-blue-400 hover:bg-opacity-70 p-1 rounded hover:text-white hover:fill-white ${getWrapperStyles()}`}
         >
-            <span className='flex items-center justify-center'><Icon name={icon} height={20}/></span>
+            <span className='flex items-center justify-center p-2'><Icon name={icon} width={28}/></span>
             {
                 !isCollapsed &&
                 <span className='uppercase font-semibold text-left block w-full pl-1'>
@@ -28,7 +38,7 @@ const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
             }
             {
                 (isCollapsed && showToolTip) && 
-                <div className='absolute left-[calc(var(--sidebar-width))]'>
+                <div className='absolute left-[calc(var(--sidebar-width))] text-black'>
                     <span>{title}</span>
                 </div>
             }

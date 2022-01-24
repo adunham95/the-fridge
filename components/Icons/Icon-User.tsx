@@ -5,6 +5,7 @@ const IconUser = (props: IIconProps) => {
     return (
         <svg 
           height={props.height}
+          width={props.width}
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
           focusable="false"
