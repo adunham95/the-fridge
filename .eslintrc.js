@@ -3,6 +3,7 @@ module.exports = {
   // Specifies the ESLint parser
   extends: [
     'eslint:recommended',
+    'plugin:@next/next/recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
