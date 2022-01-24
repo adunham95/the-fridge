@@ -12,7 +12,7 @@ const bannerData = {
     link: 'google.com',
     linkText: 'Test',
     copy: 'Banner Data',
-    bannerType: EBannerStyleType.BRAND,
+    bannerType: EBannerStyleType.CUSTOM,
     customStyles: {
       background: 'bg-fuchsia-600',
       iconColor: 'bg-fuchsia-800',
