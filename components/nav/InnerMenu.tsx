@@ -1,4 +1,3 @@
-import { useLayoutEffect } from "react";
 import { useIsomorphicEffect } from "../../hooks/useIsomorphicEffect";
 import { EIcons } from "../Icons";
 import NavItem, { INavMenuItem } from "./NavItem";

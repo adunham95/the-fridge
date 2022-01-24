@@ -1,5 +1,6 @@
 import React from 'react'
 
+// eslint-disable-next-line no-empty-pattern
 const Nav = ({}) => {
     return (
         <nav>
