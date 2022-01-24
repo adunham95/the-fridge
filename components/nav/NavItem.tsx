@@ -26,7 +26,6 @@ const NavItem = ({ title, icon, path, isCollapsed = false }: IProps) => {
   }
 
   function getActiveClassStyles() {
-    console.log(router.pathname === path);
     if (router.pathname === path) {
       return 'bg-brand-400 text-white';
     } else {
