@@ -141,7 +141,7 @@ const Banner = ({
   }
 
   return (
-    <div className={`${getStyles(bannerType).background} sticky top-0`}>
+    <div className={`${getStyles(bannerType).background} z-30 sticky ${isMobile ? "top-0" : "bottom-0"}`}>
       <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">

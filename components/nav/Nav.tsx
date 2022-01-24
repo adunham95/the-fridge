@@ -9,7 +9,7 @@ const Nav = ({}) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     return (
         <>
-        <nav className='h-[60px] sticky top-0 shadow-lg bg-white flex items-center justify-around py-1 px-2'>
+        <nav className='h-[60px] sticky top-0 shadow-lg bg-white flex items-center justify-around py-1 px-2 z-40'>
             <div className='flex flex-1'>
             <button className='flex border border-slate-500 rounded p-2' onClick={()=>setIsMenuOpen(true)}>
                 <IconMenu fill="grey" height={25} width={25}/>
@@ -24,7 +24,7 @@ const Nav = ({}) => {
             </div>
         </nav>
         {
-            isMenuOpen && <div className='fixed inset-0 flex'>
+            isMenuOpen && <div className='fixed inset-0 flex z-50'>
                 <div className='bg-white w-[var(--sidebar-width)] h-full'>
             <button onClick={()=>setIsMenuOpen(false)}>Close</button>
                 <InnerMenu/>

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import Icon, { EIcons } from '../Icons'
 
@@ -11,8 +13,9 @@ interface IProps extends INavMenuItem{
     isCollapsed?: boolean
 }
 
-const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
+const NavItem = ({title, icon, path, isCollapsed = false}: IProps) => {
     const [showToolTip, setShowToolTip] = useState(false);
+    const router = useRouter()
 
     function getWrapperStyles(){
         if(isCollapsed){
@@ -23,11 +26,22 @@ const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
         }
     }
 
+    function getActiveClassStyles(){
+        console.log(router.pathname === path)
+        if(router.pathname === path){
+            return "bg-brand-400 text-white"
+        }
+        else{
+            return "text-brand-400"
+        }
+    }
+
     return (
-        <div 
+        <Link href={path} passHref>
+        <a
           onMouseEnter={()=>setShowToolTip(true)}
           onMouseLeave={()=>setShowToolTip(false)}
-          className={`flex w-full relative items-center justify-start mb-2 border border-transparent hover:bg-brand-400 hover:bg-opacity-70 p-1 rounded text-brand-400 hover:text-white hover:fill-white ${getWrapperStyles()}`}
+          className={`flex w-full relative items-center justify-start mb-2 border border-transparent hover:bg-brand-200 hover:bg-opacity-70 p-1 rounded hover:text-slate-500 ${getWrapperStyles()} ${getActiveClassStyles()}`}
         >
             <span className='flex items-center justify-center p-2'><Icon name={icon} width={28}/></span>
             {
@@ -42,7 +56,8 @@ const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
                     <span>{title}</span>
                 </div>
             }
-        </div>
+        </a>
+        </Link>
     )
 }
 

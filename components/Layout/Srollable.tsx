@@ -24,11 +24,11 @@ const bannerData = {
 
 function Scrollable({children, isMobile, className = ""}: IProps) {
     return (<div className={`w-full ${isMobile ? 'h-[calc(100vh-60px)]' : "h-screen"} overflow-y-auto ${className}`}>
-        <Banner {...bannerData}/>
+        {isMobile && <Banner {...bannerData}/>}
         <div className='p-5'>
         {children}
         </div>
-        
+        {!isMobile && <Banner {...bannerData}/>}
     </div>);
 }
 
