@@ -22,9 +22,9 @@ const Layout = ({children}: IProps) => {
     },[width])
 
     return (
-        <div className='flex'>
+        <div className={`flex ${isMobile && 'flex-col'}`}>
             {isMobile ? <Nav/> : <Sidebar/> }
-            <Scrollable>
+            <Scrollable >
             {children}
             </Scrollable>
         </div>

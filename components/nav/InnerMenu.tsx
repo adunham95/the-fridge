@@ -15,7 +15,12 @@ const navMenu: Array<INavMenuItem> = [
     },
 ]
 
-function InnerMenu({isCollapsed = false}) {
+interface IProps{
+    isCollapsed?: boolean,
+    className?: string
+}
+
+function InnerMenu({isCollapsed = false, className = ''}: IProps) {
     const isomorphicEffect = useIsomorphicEffect()
 
     isomorphicEffect(()=>{
@@ -26,7 +31,7 @@ function InnerMenu({isCollapsed = false}) {
     },[isCollapsed])
 
     return (
-        <div>
+        <div className={`p-2 h-screen min-w-[var(--sidebar-width)] ${className}`}>
             {
                 navMenu.map(n => <NavItem isCollapsed={isCollapsed} key={n.path} {...n}/>)
             }

@@ -10,8 +10,8 @@ const Sidebar = ({}) => {
           onClick={()=> setIsCollapsed(!isCollapsed)}
           className='absolute left-[calc(var(--sidebar-width)+10px)]'
         >{isCollapsed ? "Open" : "Close" }</button>
-        <div className='p-2 shadow-lg h-screen min-w-[var(--sidebar-width)]'>
-            <InnerMenu isCollapsed={isCollapsed}/>
+        <div>
+            <InnerMenu isCollapsed={isCollapsed} className="shadow-lg"/>
         </div>
     </>
 }
