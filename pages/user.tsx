@@ -1,6 +1,6 @@
 import { NextPage } from "next"
 import Layout from "../components/Layout/Layout"
-import Post, { EPostPermission, IPost } from "../components/Post/Post"
+import PostCard, { EPostPermission, IPost } from "../components/Post/PostCard"
 
 const posts: Array<IPost> = [
   {
@@ -34,7 +34,7 @@ const User: NextPage = () => {
             <h1>User</h1>
             <div className=" max-w-md mx-auto">
             {
-              posts.map((p) => <Post key={p.id} {...p}/>)
+              posts.map((p) => <PostCard key={p.id} {...p}/>)
             }
             </div>
           </>

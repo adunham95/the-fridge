@@ -24,7 +24,7 @@ export enum EPostPermission{
     ALLOW_COMMENT = 'allowComment'
 }
 
-function Post({description ='', permissions = [], comments = [], image="https://picsum.photos/200/300"}:IPost) {
+function PostCard({description ='', permissions = [], comments = [], image="https://picsum.photos/200/300"}:IPost) {
     return (
         <div>  
             <div className="bg-white shadow-md rounded">
@@ -63,4 +63,4 @@ function Post({description ='', permissions = [], comments = [], image="https://
         </div>
     );
 }
-export default Post;
+export default PostCard;
