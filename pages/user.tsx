@@ -9,6 +9,10 @@ const posts: Array<IPost> = [
     likedBy: ['adrian', 'emelie'],
     comments: [],
     permissions: [EPostPermission.ALLOW_COMMENT, EPostPermission.ALLOW_SHARE],
+    postedBy: {
+      id: 'Adrian',
+      name: 'Adrian Dunham',
+    },
   },
   {
     id: 'annabelle',
@@ -16,6 +20,10 @@ const posts: Array<IPost> = [
     likedBy: ['adrian'],
     comments: [],
     permissions: [EPostPermission.ALLOW_SHARE],
+    postedBy: {
+      id: 'Emelie',
+      name: 'Emelie Dunham',
+    },
   },
   {
     id: 'emelie',
@@ -23,6 +31,10 @@ const posts: Array<IPost> = [
     likedBy: ['annabelle'],
     comments: [],
     permissions: [],
+    postedBy: {
+      id: 'Annabelle',
+      name: 'Annabelle Dunham',
+    },
   },
 ];
 

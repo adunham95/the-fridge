@@ -1,14 +1,22 @@
 import IconComment from '../Icons/Icon-Comment';
 import IconHeart from '../Icons/Icon-Heart';
+import IconPlane from '../Icons/Icon-Plane';
+import Comments from './Comments';
 
 export interface IPost {
   id: string;
   dateTime: string;
   description?: string;
   image?: string;
+  postedBy: IUser;
   likedBy: Array<string>;
   comments: Array<IComment>;
   permissions: Array<EPostPermission>;
+}
+
+export interface IUser {
+  id: string;
+  name: string;
 }
 
 export interface IComment {
@@ -28,11 +36,23 @@ function PostCard({
   description = '',
   permissions = [],
   comments = [],
+  postedBy = {
+    id: 'adrian',
+    name: 'Adrian Dunham',
+  },
   image = 'https://picsum.photos/200/300',
 }: IPost) {
   return (
-    <div>
-      <div className="bg-white shadow-md rounded">
+    <div className="mb-3 border-b-2 border-gray-200 pb-1">
+      <div className="bg-white">
+        <div className="p-2">
+          <div className="flex items-center">
+            <span className=" h-8 w-8 rounded-full bg-blue-400 inline-flex justify-center items-center mr-1 text-white">
+              {postedBy.name[0]}
+            </span>
+            {postedBy.name}
+          </div>
+        </div>
         {image && (
           <div className="w-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -46,7 +66,15 @@ function PostCard({
         )}
         <div className="p-2 flex w-full justify-between">
           <div className="flex">
-            <IconComment width={28} height={28} />
+            <IconComment
+              width={28}
+              height={28}
+              fill={
+                permissions.includes(EPostPermission.ALLOW_COMMENT)
+                  ? 'blue'
+                  : 'grey'
+              }
+            />
             <span className=" ml-2 text-lg">
               {permissions.includes(EPostPermission.ALLOW_COMMENT)
                 ? comments.length
@@ -58,21 +86,25 @@ function PostCard({
             <span className=" ml-2 text-lg">5</span>
           </button>
           <button
-            className={`flex ${
-              permissions.includes(EPostPermission.ALLOW_SHARE)
-                ? 'text-green-500'
-                : 'text-gray-400'
-            }`}
+            className={`flex`}
             disabled={!permissions.includes(EPostPermission.ALLOW_SHARE)}
           >
-            Share
+            <IconPlane
+              width={28}
+              height={28}
+              fill={
+                permissions.includes(EPostPermission.ALLOW_COMMENT)
+                  ? 'blue'
+                  : 'grey'
+              }
+            />
           </button>
         </div>
       </div>
       <div>
         {permissions.includes(EPostPermission.ALLOW_COMMENT) ? (
           <div>
-            <span>comment</span>
+            <Comments comments={comments} />
           </div>
         ) : (
           <div className="text-center">No Comments Allowed</div>
