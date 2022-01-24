@@ -35,6 +35,7 @@ function PostCard({
       <div className="bg-white shadow-md rounded">
         {image && (
           <div className="w-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="https://picsum.photos/200/300" className="w-full" />
           </div>
         )}
