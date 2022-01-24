@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface IWindowSize{
+    // eslint-disable-next-line prettier/prettier
     readonly height: number,
     readonly width: number,
 }
