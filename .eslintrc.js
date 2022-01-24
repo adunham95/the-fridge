@@ -1,9 +1,13 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
-  extends: ["next/core-web-vitals",  'eslint:recommended',
-  'plugin:react/recommended',
-  'plugin:@typescript-eslint/recommended',
-  'plugin:storybook/recommended'],
+  // Specifies the ESLint parser
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
+    'plugin:storybook/recommended',
+  ],
   settings: {
     react: {
       version: 'detect',
@@ -70,7 +74,16 @@ module.exports = {
     ],
     'react/jsx-indent-props': [2, 2],
     'react/jsx-closing-bracket-location': [2, 'tag-aligned'],
-
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        parser: 'flow',
+        tabWidth: 2,
+        endOfLine: 'auto',
+        proseWrap: 'preserve',
+      },
+    ],
   },
   overrides: [
     // Override some TypeScript rules just for .js files
@@ -81,4 +94,4 @@ module.exports = {
       },
     },
   ],
-}
+};
