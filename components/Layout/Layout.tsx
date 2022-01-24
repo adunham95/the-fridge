@@ -2,6 +2,7 @@ import React, { ReactChild, useEffect, useState } from 'react'
 import { useWindowSize } from '../../hooks/useWidowSize'
 import Nav from '../nav/Nav'
 import Sidebar from '../nav/Sidebar'
+import Scrollable from './Srollable'
 
 interface IProps{
     children: ReactChild
@@ -13,19 +14,19 @@ const Layout = ({children}: IProps) => {
 
     useEffect(()=>{
         if(width <= 768){
-            setIsMobile(false)
+            setIsMobile(true)
         }
         else{
-            setIsMobile(true)
+            setIsMobile(false)
         }
     },[width])
 
     return (
-        <div>
+        <div className='flex'>
             {isMobile ? <Nav/> : <Sidebar/> }
-            <div>
-                {children}
-            </div>
+            <Scrollable>
+            {children}
+            </Scrollable>
         </div>
     )
 }
