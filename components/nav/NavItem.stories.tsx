@@ -12,13 +12,14 @@ export default {
         options: EIcons,
         control: { type: 'select' }, // Automatically inferred when 'options' is defined
       },
-  }
-// eslint-disable-next-line prettier/prettier
+  },
 } as ComponentMeta<typeof NavItem>;
 
 const Template: ComponentStory<typeof NavItem> = (args) => <NavItem {...args}/>
 
 export const Primary = Template.bind({});
 Primary.args = {
-    icon: EIcons.HOME
+    icon: EIcons.HOME,
+    title: "Adrian",
+    isCollapsed: false,
 };
