@@ -26,7 +26,7 @@ const Nav = ({}) => {
             isMenuOpen && <div className='fixed inset-0 flex z-50'>
                 <div className='bg-white w-[var(--sidebar-width)] h-full'>
             <button onClick={()=>setIsMenuOpen(false)}>Close</button>
-                <InnerMenu/>
+                <InnerMenu showLogo={false}/>
                 </div>
                 <button className='w-full h-full bg-black bg-opacity-30' onClick={()=>setIsMenuOpen(false)} />
         </div>

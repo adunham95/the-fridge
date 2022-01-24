@@ -4,7 +4,7 @@ import InnerMenu from './InnerMenu'
 
 // eslint-disable-next-line no-empty-pattern
 const Sidebar = ({}) => {
-    const [isCollapsed, setIsCollapsed] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(true)
     return <>
         <button
           onClick={()=> setIsCollapsed(!isCollapsed)}
