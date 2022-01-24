@@ -77,7 +77,7 @@ const styles: IStyles = {
 
 const Banner = ({
   id,
-  bannerType,
+  bannerType = EBannerStyleType.BRAND,
   link = '',
   linkText = 'Learn More',
   customStyles,
