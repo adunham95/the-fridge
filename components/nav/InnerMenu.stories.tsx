@@ -9,6 +9,7 @@ export default {
   component: InnerMenu,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {},
+// eslint-disable-next-line prettier/prettier
 } as ComponentMeta<typeof InnerMenu>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args

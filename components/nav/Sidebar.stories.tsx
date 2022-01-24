@@ -9,6 +9,7 @@ export default {
   parameters: {
     layout: 'fullscreen',
   },
+// eslint-disable-next-line prettier/prettier
 } as ComponentMeta<typeof Sidebar>;
 
 const Template: ComponentStory<typeof Sidebar> = (args) => <Sidebar {...args}/>

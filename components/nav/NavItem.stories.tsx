@@ -13,6 +13,7 @@ export default {
         control: { type: 'select' }, // Automatically inferred when 'options' is defined
       },
   },
+// eslint-disable-next-line prettier/prettier
 } as ComponentMeta<typeof NavItem>;
 
 const Template: ComponentStory<typeof NavItem> = (args) => <NavItem {...args}/>
