@@ -27,7 +27,7 @@ const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
         <div 
           onMouseEnter={()=>setShowToolTip(true)}
           onMouseLeave={()=>setShowToolTip(false)}
-          className={`flex w-full relative items-center justify-start mb-2 border border-transparent text-black fill-blue-400 hover:bg-blue-400 hover:bg-opacity-70 p-1 rounded hover:text-white hover:fill-white ${getWrapperStyles()}`}
+          className={`flex w-full relative items-center justify-start mb-2 border border-transparent hover:bg-brand-400 hover:bg-opacity-70 p-1 rounded text-brand-400 hover:text-white hover:fill-white ${getWrapperStyles()}`}
         >
             <span className='flex items-center justify-center p-2'><Icon name={icon} width={28}/></span>
             {
@@ -38,7 +38,7 @@ const NavItem = ({title, icon, isCollapsed = false}: IProps) => {
             }
             {
                 (isCollapsed && showToolTip) && 
-                <div className='absolute left-[calc(var(--sidebar-width))] text-black'>
+                <div className='absolute left-[calc(var(--sidebar-width))] text-white text-xs bg-slate-700 rounded p-1'>
                     <span>{title}</span>
                 </div>
             }
