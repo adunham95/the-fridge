@@ -2,9 +2,10 @@ import IconHouse from "./Icon-house";
 import IconUser from "./Icon-User";
 
 export interface IIconProps{
-    name: string,
+    name?: string,
     height?: number,
-    width?: number
+    width?: number,
+    fill?: string
 }
 
 export enum EIcons{
