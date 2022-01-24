@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import IconClose from '../Icons/Icon-Close';
 import IconLogo from '../Icons/Icon-Logo';
 import IconMenu from '../Icons/Icon-Menu';
 import InnerMenu from './InnerMenu';
