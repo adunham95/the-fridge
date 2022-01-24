@@ -8,7 +8,7 @@ interface IProps{
 
 const NavItem = ({title, icon}: IProps) => {
     return (
-        <div>
+        <div className='flex bg-blue-200'>
             <span><Icon name={icon}/></span>
             {title}
         </div>

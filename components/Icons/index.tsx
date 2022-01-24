@@ -2,7 +2,8 @@ import IconHouse from "./Icon-house";
 import IconUser from "./Icon-User";
 
 export interface IIconProps{
-    name: String
+    name: string,
+    height?: number
 }
 
 export enum EIcons{
@@ -14,13 +15,16 @@ export const IconList = Object.values(EIcons);
 
 const Icon = (props: IIconProps) => {
     const {
-        name
+        name,
     } = props
+    const defaults = {
+        height: 50,
+    }
     switch (name) {
         case EIcons.HOME:
-            return <IconHouse {...props}/>;
+            return <IconHouse {...defaults} {...props}/>;
         case EIcons.USER:
-            return <IconUser {...props}/>;
+            return <IconUser {...defaults} {...props}/>;
         default:
             return <></>
     }
