@@ -13,7 +13,6 @@ export function useWindowSize() : IWindowSize{
     })
 
     useEffect(()=>{
-        if(typeof window !== "undefinded"){
             function handleResize(){
                 setWindowSize({
                     width: window.innerWidth,
@@ -26,7 +25,6 @@ export function useWindowSize() : IWindowSize{
             handleResize()
 
             return () => window.removeEventListener('resize', handleResize)
-        }
     },[]);
 
     return windowSize
