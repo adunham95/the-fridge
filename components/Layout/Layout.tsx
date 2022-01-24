@@ -2,6 +2,7 @@ import React, { ReactChild, useEffect, useState } from 'react'
 import { useWindowSize } from '../../hooks/useWidowSize'
 import Nav from '../nav/Nav'
 import Sidebar from '../nav/Sidebar'
+import Banner, { EBannerStyleType } from './Banner'
 import Scrollable from './Srollable'
 
 interface IProps{
@@ -24,7 +25,7 @@ const Layout = ({children}: IProps) => {
     return (
         <div className={`flex ${isMobile && 'flex-col'}`}>
             {isMobile ? <Nav/> : <Sidebar/> }
-            <Scrollable >
+            <Scrollable isMobile={isMobile}>
             {children}
             </Scrollable>
         </div>
