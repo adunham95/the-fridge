@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SpeakerphoneIcon, XIcon } from '@heroicons/react/outline';
 import { useWindowSize } from '../../hooks/useWidowSize';
 import { useIsomorphicEffect } from '../../hooks/useIsomorphicEffect';
@@ -85,20 +85,19 @@ const Banner = ({
 }: IProps) => {
   const [bannerIds, setBannerIds] = useState([]);
   const [showBanner, setShowBanner] = useState(true);
-  const [isMobile, setIsMobile] = useState(false)
-    const {width} = useWindowSize()
-    const isomorphicEffect = useIsomorphicEffect()
+  const [isMobile, setIsMobile] = useState(false);
+  const { width } = useWindowSize();
+  const isomorphicEffect = useIsomorphicEffect();
 
-    useEffect(()=>{
-        if(width <= 768){
-            setIsMobile(true)
-        }
-        else{
-            setIsMobile(false)
-        }
-    },[width])
+  useEffect(() => {
+    if (width <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, [width]);
 
-    isomorphicEffect(() => {
+  isomorphicEffect(() => {
     const banners = localStorage.getItem('bannerIds');
     if (banners) {
       if (id === 'test') {
@@ -141,7 +140,11 @@ const Banner = ({
   }
 
   return (
-    <div className={`${getStyles(bannerType).background} z-30 sticky ${isMobile ? "top-0" : "bottom-0"}`}>
+    <div
+      className={`${getStyles(bannerType).background} z-30 sticky ${
+        isMobile ? 'top-0' : 'bottom-0'
+      }`}
+    >
       <div className="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between flex-wrap">
           <div className="w-0 flex-1 flex items-center">

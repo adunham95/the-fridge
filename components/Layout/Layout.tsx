@@ -1,35 +1,31 @@
-import React, { ReactChild, useEffect, useState } from 'react'
-import { useWindowSize } from '../../hooks/useWidowSize'
-import Nav from '../nav/Nav'
-import Sidebar from '../nav/Sidebar'
-import Banner, { EBannerStyleType } from './Banner'
-import Scrollable from './Srollable'
+import React, { ReactChild, useEffect, useState } from 'react';
+import { useWindowSize } from '../../hooks/useWidowSize';
+import Nav from '../nav/Nav';
+import Sidebar from '../nav/Sidebar';
+import Scrollable from './Srollable';
 
-interface IProps{
-    children: ReactChild
+interface IProps {
+  children: ReactChild;
 }
 
-const Layout = ({children}: IProps) => {
-    const [isMobile, setIsMobile] = useState(false)
-    const {width} = useWindowSize()
+const Layout = ({ children }: IProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const { width } = useWindowSize();
 
-    useEffect(()=>{
-        if(width <= 768){
-            setIsMobile(true)
-        }
-        else{
-            setIsMobile(false)
-        }
-    },[width])
+  useEffect(() => {
+    if (width <= 768) {
+      setIsMobile(true);
+    } else {
+      setIsMobile(false);
+    }
+  }, [width]);
 
-    return (
-        <div className={`flex ${isMobile && 'flex-col'}`}>
-            {isMobile ? <Nav/> : <Sidebar/> }
-            <Scrollable isMobile={isMobile}>
-            {children}
-            </Scrollable>
-        </div>
-    )
-}
+  return (
+    <div className={`flex ${isMobile && 'flex-col'}`}>
+      {isMobile ? <Nav /> : <Sidebar />}
+      <Scrollable isMobile={isMobile}>{children}</Scrollable>
+    </div>
+  );
+};
 
-export default Layout
+export default Layout;
