@@ -9,6 +9,7 @@ export default {
   component: PostCard,
   // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
   argTypes: {},
+// eslint-disable-next-line prettier/prettier
 } as ComponentMeta<typeof PostCard>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
