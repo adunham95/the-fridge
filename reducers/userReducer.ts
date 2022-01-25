@@ -10,7 +10,7 @@ const initialState = {
 };
 
 const userSlice = createSlice({
-  name: 'posts',
+  name: 'user',
   initialState,
   reducers: {},
 });

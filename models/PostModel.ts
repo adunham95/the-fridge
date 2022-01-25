@@ -1,15 +1,19 @@
 import { IComment } from './CommentModel';
-import { IUser } from './UserModel';
 
 export interface IPost {
   id: string;
   dateTime: string;
   description?: string;
   image?: string;
-  postedBy: IUser;
+  postedBy: IPostAuthor;
   likedBy: Array<string>;
   comments: Array<IComment>;
   permissions: Array<EPostPermission>;
+}
+
+interface IPostAuthor {
+  id: string;
+  name: string;
 }
 
 export enum EPostPermission {
