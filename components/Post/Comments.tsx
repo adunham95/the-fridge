@@ -12,12 +12,13 @@ interface IProps {
 const myUser: IUser = {
   id: 'adrian',
   name: 'Adrian Dunham',
+  permissions: [],
 };
 
 const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
   const filteredComments = limit ? comments.slice(0, limit) : comments;
   return (
-    <div>
+    <div className="px-2">
       {filteredComments.map((c) => (
         <div key={c.id} className="text-xs pb-1">
           <span className=" font-bold">{c.commentAuthor.name}: </span>
