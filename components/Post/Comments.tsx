@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { useAppSelector } from '../../hooks/hooks';
 import { IComment } from '../../models/CommentModel';
-import { IUser } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 
 interface IProps {
@@ -8,12 +8,6 @@ interface IProps {
   limit?: number | null;
   allowComment?: boolean;
 }
-
-const myUser: IUser = {
-  id: 'adrian',
-  name: 'Adrian Dunham',
-  permissions: [],
-};
 
 const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
   const filteredComments = limit ? comments.slice(0, limit) : comments;
@@ -30,12 +24,10 @@ const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
   );
 };
 
-interface INewComment {
-  newComment?: () => void;
-}
-
-function NewComment({ newComment }: INewComment) {
+function NewComment() {
   const [comment, setComment] = useState('');
+  const myUser = useAppSelector((state) => state.user);
+
   return (
     <div className="flex">
       <Avatar name={myUser.name} />
