@@ -1,7 +1,15 @@
 import { NextPage } from 'next';
 import Layout from '../components/Layout/Layout';
+import { NewPost } from '../components/Post/NewPost';
 import PostCard from '../components/Post/PostCard';
 import { EPostPermission, IPost } from '../models/PostModel';
+import { EUserPermissions, IUser } from '../models/UserModel';
+
+const myUser: IUser = {
+  id: 'adrian',
+  name: 'Adrian Dunham',
+  permissions: [EUserPermissions.CAN_POST],
+};
 
 const posts: Array<IPost> = [
   {
@@ -44,6 +52,7 @@ const posts: Array<IPost> = [
     postedBy: {
       id: 'Adrian',
       name: 'Adrian Dunham',
+      permissions: [],
     },
   },
   {
@@ -67,6 +76,7 @@ const posts: Array<IPost> = [
     postedBy: {
       id: 'Emelie',
       name: 'Emelie Dunham',
+      permissions: [],
     },
   },
   {
@@ -78,6 +88,7 @@ const posts: Array<IPost> = [
     postedBy: {
       id: 'Annabelle',
       name: 'Annabelle Dunham',
+      permissions: [],
     },
   },
 ];
@@ -86,8 +97,10 @@ const User: NextPage = () => {
   return (
     <Layout>
       <>
-        <h1>User</h1>
         <div className=" max-w-md mx-auto">
+          {myUser.permissions.includes(EUserPermissions.CAN_POST) && (
+            <NewPost />
+          )}
           {posts.map((p) => (
             <PostCard key={p.id} {...p} />
           ))}
