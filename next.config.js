@@ -1,7 +1,7 @@
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
 };
 
 // console.log(process.env.NODE_ENV)
