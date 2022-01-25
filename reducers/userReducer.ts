@@ -1,12 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { EUserPermissions } from '../models/UserModel';
+import { EUserPermissions, IUser } from '../models/UserModel';
 
-const initialState = {
+const initialState: IUser = {
   id: 'adrian',
   name: 'Adrian Dunham',
   permissions: {
     Adrian: [EUserPermissions.CAN_POST],
     Emelie: [EUserPermissions.CAN_POST_W_APPROVAL],
+  },
+  orgs: {
+    Adrian: ['family', 'friends', 'admin'],
+    Emelie: ['family', 'friends'],
   },
 };
 

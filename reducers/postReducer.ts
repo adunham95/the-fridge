@@ -6,6 +6,8 @@ const initialState: Array<IPost> = [
     id: 'adrian',
     dateTime: '1643110854416',
     likedBy: ['adrian', 'emelie'],
+    orgID: 'Adrian',
+    orgName: 'Adrian Family',
     comments: [
       {
         id: 'commentOne',
@@ -48,6 +50,8 @@ const initialState: Array<IPost> = [
     id: 'annabelle',
     dateTime: '1643110854416',
     likedBy: ['adrian'],
+    orgID: 'Emelie',
+    orgName: 'Emelie Family',
     comments: [
       {
         id: 'commentFour',
@@ -71,6 +75,8 @@ const initialState: Array<IPost> = [
     id: 'emelie',
     dateTime: '1643110854316',
     likedBy: ['annabelle'],
+    orgID: 'Adrian',
+    orgName: 'Adrian Family',
     comments: [],
     permissions: [],
     postedBy: {

@@ -5,6 +5,9 @@ export interface IPost {
   dateTime: string;
   description?: string;
   image?: string;
+  orgID: string;
+  orgName?: string;
+  viewByGroups?: Array<string>;
   postedBy: IPostAuthor;
   likedBy: Array<string>;
   comments: Array<IComment>;
