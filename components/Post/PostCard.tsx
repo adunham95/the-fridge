@@ -5,24 +5,14 @@ import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
-import { IUser } from '../../models/UserModel';
-
-const myUser: IUser = {
-  id: 'adrian',
-  name: 'Adrian Dunham',
-  permissions: [],
-};
+import { useAppSelector } from '../../hooks/hooks';
 
 function PostCard({
   description = '',
   permissions = [],
   comments = [],
   likedBy = [],
-  postedBy = {
-    id: 'adrian',
-    name: 'Adrian Dunham',
-    permissions: [],
-  },
+  postedBy,
   image = 'https://picsum.photos/200/300',
 }: IPost) {
   return (
@@ -59,10 +49,6 @@ function PostCard({
             <span className=" ml-2 text-lg">{comments.length}</span>
           </div>
           <PostLikes likes={likedBy} />
-          {/* <button className="flex">
-            <IconHeart width={28} height={28} fill="red" />
-            <span className=" ml-2 text-lg">{likedBy.length}</span>
-          </button> */}
           <button
             className={`flex`}
             disabled={!permissions.includes(EPostPermission.ALLOW_SHARE)}
@@ -97,6 +83,7 @@ interface IPostLikeProps {
 }
 
 function PostLikes({ likes }: IPostLikeProps) {
+  const myUser = useAppSelector((state) => state.user);
   return (
     <button className="flex">
       <IconHeart
