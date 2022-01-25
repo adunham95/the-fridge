@@ -10,6 +10,13 @@ const myUser: IUser = {
   permissions: [EUserPermissions.CAN_POST],
 };
 
+const myOrgs = [
+  {
+    name: 'Adrians Family',
+    id: 'Adrian',
+  },
+];
+
 export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
 
@@ -21,8 +28,15 @@ export const NewPost = () => {
 
   return (
     <div className="p-2">
-      <div>
+      <div className="flex justify-between">
         <Avatar name={myUser.name} />
+        <select className="px-2">
+          {myOrgs.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.name}
+            </option>
+          ))}
+        </select>
       </div>
       <textarea
         value={newPostText}
