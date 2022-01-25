@@ -9,6 +9,7 @@ function PostCard({
   description = '',
   permissions = [],
   comments = [],
+  likedBy = [],
   postedBy = {
     id: 'adrian',
     name: 'Adrian Dunham',
@@ -52,7 +53,7 @@ function PostCard({
           </div>
           <button className="flex">
             <IconHeart width={28} height={28} fill="red" />
-            <span className=" ml-2 text-lg">5</span>
+            <span className=" ml-2 text-lg">{likedBy.length}</span>
           </button>
           <button
             className={`flex`}
