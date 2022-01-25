@@ -1,7 +1,7 @@
 export interface IUser {
   id: string;
   name: string;
-  permissions: Array<EUserPermissions>;
+  permissions: Record<string, Array<EUserPermissions>>;
 }
 
 export enum EUserPermissions {

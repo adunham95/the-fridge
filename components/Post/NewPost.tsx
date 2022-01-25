@@ -1,26 +1,33 @@
 // @flow
 import React, { useState } from 'react';
-import { EUserPermissions, IUser } from '../../models/UserModel';
+import { useAppSelector } from '../../hooks/hooks';
+import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
-
-const myUser: IUser = {
-  id: 'adrian',
-  name: 'Adrian Dunham',
-  permissions: [EUserPermissions.CAN_POST],
-};
 
 const myOrgs = [
   {
     name: 'Adrians Family',
     id: 'Adrian',
   },
+  {
+    name: 'Emelies Family',
+    id: 'Emelie',
+  },
 ];
 
 export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
+  const myUser = useAppSelector((state) => state?.user);
+  const selectedOrg = myOrgs[1];
 
   function canPost() {
+    if (
+      !myUser.permissions[selectedOrg.id] &&
+      !myUser.permissions[selectedOrg.id]?.includes(EUserPermissions.CAN_POST)
+    ) {
+      return false;
+    }
     if (newPostText !== '') {
       return true;
     }
@@ -31,11 +38,15 @@ export const NewPost = () => {
       <div className="flex justify-between">
         <Avatar name={myUser.name} />
         <select className="px-2">
-          {myOrgs.map((o) => (
-            <option key={o.id} value={o.id}>
-              {o.name}
-            </option>
-          ))}
+          {myOrgs
+            .filter((o) =>
+              myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST)
+            )
+            .map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.name}
+              </option>
+            ))}
         </select>
       </div>
       <textarea

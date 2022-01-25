@@ -40,3 +40,5 @@ yarn-error.log*
 # sw
 sw.js*
 workbox*.js*
+
+features
