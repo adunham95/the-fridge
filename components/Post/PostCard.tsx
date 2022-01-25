@@ -5,6 +5,13 @@ import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
+import { IUser } from '../../models/UserModel';
+
+const myUser: IUser = {
+  id: 'adrian',
+  name: 'Adrian Dunham',
+  permissions: [],
+};
 
 function PostCard({
   description = '',
@@ -14,6 +21,7 @@ function PostCard({
   postedBy = {
     id: 'adrian',
     name: 'Adrian Dunham',
+    permissions: [],
   },
   image = 'https://picsum.photos/200/300',
 }: IPost) {
@@ -22,9 +30,6 @@ function PostCard({
       <div className="bg-white">
         <div className="p-2">
           <div className="flex items-center">
-            {/* <span className=" h-8 w-8 rounded-full bg-blue-400 inline-flex justify-center items-center mr-1 text-white">
-              {postedBy.name[0]}
-            </span> */}
             <Avatar name={postedBy.name} />
             {postedBy.name}
           </div>
@@ -53,10 +58,11 @@ function PostCard({
             />
             <span className=" ml-2 text-lg">{comments.length}</span>
           </div>
-          <button className="flex">
+          <PostLikes likes={likedBy} />
+          {/* <button className="flex">
             <IconHeart width={28} height={28} fill="red" />
             <span className=" ml-2 text-lg">{likedBy.length}</span>
-          </button>
+          </button> */}
           <button
             className={`flex`}
             disabled={!permissions.includes(EPostPermission.ALLOW_SHARE)}
@@ -83,6 +89,23 @@ function PostCard({
         </div>
       </div>
     </div>
+  );
+}
+
+interface IPostLikeProps {
+  likes: Array<string>;
+}
+
+function PostLikes({ likes }: IPostLikeProps) {
+  return (
+    <button className="flex">
+      <IconHeart
+        width={28}
+        height={28}
+        fill={likes.includes(myUser.id) ? 'red' : 'pink'}
+      />
+      <span className=" ml-2 text-lg">{likes.length}</span>
+    </button>
   );
 }
 export default PostCard;
