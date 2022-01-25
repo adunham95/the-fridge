@@ -20,14 +20,11 @@ export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const myUser = useAppSelector((state) => state?.user);
   const selectedOrg = myOrgs[1];
-  console.log(myOrgs);
   const approvedOrgs = myOrgs.filter(
     (o) =>
       myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
       myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
   );
-
-  console.log(approvedOrgs);
 
   function canPost() {
     if (newPostText !== '') {
