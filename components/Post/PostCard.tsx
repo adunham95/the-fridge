@@ -4,6 +4,7 @@ import IconPlane from '../Icons/Icon-Plane';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
+import { Avatar } from '../Avatar/Avatar';
 
 function PostCard({
   description = '',
@@ -21,9 +22,10 @@ function PostCard({
       <div className="bg-white">
         <div className="p-2">
           <div className="flex items-center">
-            <span className=" h-8 w-8 rounded-full bg-blue-400 inline-flex justify-center items-center mr-1 text-white">
+            {/* <span className=" h-8 w-8 rounded-full bg-blue-400 inline-flex justify-center items-center mr-1 text-white">
               {postedBy.name[0]}
-            </span>
+            </span> */}
+            <Avatar name={postedBy.name} />
             {postedBy.name}
           </div>
         </div>
