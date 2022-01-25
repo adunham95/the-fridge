@@ -3,7 +3,7 @@ import IconHeart from '../Icons/Icon-Heart';
 import IconPlane from '../Icons/Icon-Plane';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
-import { EPostPermission, IPost } from '../../models/Post';
+import { EPostPermission, IPost } from '../../models/PostModel';
 
 function PostCard({
   description = '',
@@ -15,7 +15,6 @@ function PostCard({
   },
   image = 'https://picsum.photos/200/300',
 }: IPost) {
-  console.log(theme);
   return (
     <div className="mb-3 border-b-2 border-gray-200 pb-1">
       <div className="bg-white">
@@ -49,11 +48,7 @@ function PostCard({
                   : 'grey'
               }
             />
-            <span className=" ml-2 text-lg">
-              {permissions.includes(EPostPermission.ALLOW_COMMENT)
-                ? comments.length
-                : 'N/A'}
-            </span>
+            <span className=" ml-2 text-lg">{comments.length}</span>
           </div>
           <button className="flex">
             <IconHeart width={28} height={28} fill="red" />
@@ -76,13 +71,13 @@ function PostCard({
         </div>
       </div>
       <div>
-        {permissions.includes(EPostPermission.ALLOW_COMMENT) ? (
-          <div>
-            <Comments comments={comments} />
-          </div>
-        ) : (
-          <div className="text-center">Comments Disabled</div>
-        )}
+        <div>
+          <Comments
+            comments={comments}
+            limit={2}
+            allowComment={permissions.includes(EPostPermission.ALLOW_COMMENT)}
+          />
+        </div>
       </div>
     </div>
   );

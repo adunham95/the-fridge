@@ -1,13 +1,45 @@
 import { NextPage } from 'next';
 import Layout from '../components/Layout/Layout';
-import PostCard, { EPostPermission, IPost } from '../components/Post/PostCard';
+import PostCard from '../components/Post/PostCard';
+import { EPostPermission, IPost } from '../models/PostModel';
 
 const posts: Array<IPost> = [
   {
     id: 'adrian',
-    dateTime: '14:58:01 GMT-0500 (Eastern Standard Time)',
+    dateTime: '1643110854416',
     likedBy: ['adrian', 'emelie'],
-    comments: [],
+    comments: [
+      {
+        id: 'commentOne',
+        message: 'Test Message',
+        postID: 'adrian',
+        dateTime: '1643110854416',
+        commentAuthor: {
+          id: 'Adrian',
+          name: 'Adrian Dunham',
+        },
+      },
+      {
+        id: 'commentTwo',
+        message: 'Test Message Two',
+        postID: 'adrian',
+        dateTime: '1643110854416',
+        commentAuthor: {
+          id: 'Adrian',
+          name: 'Adrian Dunham',
+        },
+      },
+      {
+        id: 'commentThree',
+        message: 'Test Message Three',
+        postID: 'adrian',
+        dateTime: '1643110854416',
+        commentAuthor: {
+          id: 'Adrian',
+          name: 'Adrian Dunham',
+        },
+      },
+    ],
     permissions: [EPostPermission.ALLOW_COMMENT, EPostPermission.ALLOW_SHARE],
     postedBy: {
       id: 'Adrian',
@@ -16,9 +48,21 @@ const posts: Array<IPost> = [
   },
   {
     id: 'annabelle',
-    dateTime: '16:58:01 GMT-0500 (Eastern Standard Time)',
+    dateTime: '1643110854416',
     likedBy: ['adrian'],
-    comments: [],
+    comments: [
+      {
+        id: 'commentFour',
+        message:
+          'Test Message Four. This is a super long comment. That I have on this set of text. It has a very long string. I have alot of words. Annabelle is a very good girl. ',
+        postID: 'adrian',
+        dateTime: '1643110854416',
+        commentAuthor: {
+          id: 'Adrian',
+          name: 'Adrian Dunham',
+        },
+      },
+    ],
     permissions: [EPostPermission.ALLOW_SHARE],
     postedBy: {
       id: 'Emelie',
@@ -27,7 +71,7 @@ const posts: Array<IPost> = [
   },
   {
     id: 'emelie',
-    dateTime: '17:48:01 GMT-0500 (Eastern Standard Time)',
+    dateTime: '1643110854316',
     likedBy: ['annabelle'],
     comments: [],
     permissions: [],
