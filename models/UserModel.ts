@@ -6,4 +6,5 @@ export interface IUser {
 
 export enum EUserPermissions {
   CAN_POST = 'canPost',
+  CAN_POST_W_APPROVAL = 'canPostWithApproval',
 }

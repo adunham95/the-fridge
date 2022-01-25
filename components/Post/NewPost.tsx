@@ -20,17 +20,23 @@ export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const myUser = useAppSelector((state) => state?.user);
   const selectedOrg = myOrgs[1];
+  console.log(myOrgs);
+  const approvedOrgs = myOrgs.filter(
+    (o) =>
+      myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
+      myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
+  );
+
+  console.log(approvedOrgs);
 
   function canPost() {
-    if (
-      !myUser.permissions[selectedOrg.id] &&
-      !myUser.permissions[selectedOrg.id]?.includes(EUserPermissions.CAN_POST)
-    ) {
-      return false;
-    }
     if (newPostText !== '') {
       return true;
     }
+  }
+
+  if (approvedOrgs.length === 0) {
+    return null;
   }
 
   return (
@@ -38,15 +44,11 @@ export const NewPost = () => {
       <div className="flex justify-between">
         <Avatar name={myUser.name} />
         <select className="px-2">
-          {myOrgs
-            .filter((o) =>
-              myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST)
-            )
-            .map((o) => (
-              <option key={o.id} value={o.id}>
-                {o.name}
-              </option>
-            ))}
+          {approvedOrgs.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.name}
+            </option>
+          ))}
         </select>
       </div>
       <textarea

@@ -6,6 +6,7 @@ const initialState = {
   name: 'Adrian Dunham',
   permissions: {
     Adrian: [EUserPermissions.CAN_POST],
+    Emelie: [EUserPermissions.CAN_POST_W_APPROVAL],
   },
 };
 
