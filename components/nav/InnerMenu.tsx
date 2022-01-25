@@ -10,8 +10,8 @@ const navMenu: Array<INavMenuItem> = [
     icon: EIcons.HOME,
   },
   {
-    path: '/user',
-    title: 'User',
+    path: '/wall',
+    title: 'Wall',
     icon: EIcons.USER,
   },
 ];
