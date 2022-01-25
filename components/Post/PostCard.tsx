@@ -3,35 +3,7 @@ import IconHeart from '../Icons/Icon-Heart';
 import IconPlane from '../Icons/Icon-Plane';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
-
-export interface IPost {
-  id: string;
-  dateTime: string;
-  description?: string;
-  image?: string;
-  postedBy: IUser;
-  likedBy: Array<string>;
-  comments: Array<IComment>;
-  permissions: Array<EPostPermission>;
-}
-
-export interface IUser {
-  id: string;
-  name: string;
-}
-
-export interface IComment {
-  id: string;
-  message: string;
-  dateTime: string;
-  postID: string;
-  parentComment: string;
-}
-
-export enum EPostPermission {
-  ALLOW_SHARE = 'allowShare',
-  ALLOW_COMMENT = 'allowComment',
-}
+import { EPostPermission, IPost } from '../../models/Post';
 
 function PostCard({
   description = '',
