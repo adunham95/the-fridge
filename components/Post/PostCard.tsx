@@ -2,6 +2,7 @@ import IconComment from '../Icons/Icon-Comment';
 import IconHeart from '../Icons/Icon-Heart';
 import IconPlane from '../Icons/Icon-Plane';
 import Comments from './Comments';
+import theme from '../../theme/theme.json';
 
 export interface IPost {
   id: string;
@@ -42,6 +43,7 @@ function PostCard({
   },
   image = 'https://picsum.photos/200/300',
 }: IPost) {
+  console.log(theme);
   return (
     <div className="mb-3 border-b-2 border-gray-200 pb-1">
       <div className="bg-white">
@@ -71,7 +73,7 @@ function PostCard({
               height={28}
               fill={
                 permissions.includes(EPostPermission.ALLOW_COMMENT)
-                  ? 'blue'
+                  ? theme.COLORS.share[400]
                   : 'grey'
               }
             />
@@ -94,7 +96,7 @@ function PostCard({
               height={28}
               fill={
                 permissions.includes(EPostPermission.ALLOW_COMMENT)
-                  ? 'blue'
+                  ? theme.COLORS.share[400]
                   : 'grey'
               }
             />
@@ -107,7 +109,7 @@ function PostCard({
             <Comments comments={comments} />
           </div>
         ) : (
-          <div className="text-center">No Comments Allowed</div>
+          <div className="text-center">Comments Disabled</div>
         )}
       </div>
     </div>

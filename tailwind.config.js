@@ -1,4 +1,5 @@
-const { default: theme } = require('./styles/theme');
+let theme = require('./theme/theme.js');
+console.log(theme.COLORS);
 
 module.exports = {
   content: [
@@ -8,7 +9,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        ...theme.COLOR,
+        ...theme.COLORS,
       },
     },
   },
