@@ -44,7 +44,7 @@ export const resolvers = {
         throw error;
       }
     },
-    getPost: async (_, args) => {
+    getPost: async (_: any, args: any) => {
       try {
         await dbConnect();
         const post = await PostModel.findById(args.id);
@@ -59,7 +59,7 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createPost: async (_, args) => {
+    createPost: async (_: any, args: any) => {
       try {
         await dbConnect();
         const newPost = new PostModel({
