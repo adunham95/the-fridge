@@ -9,7 +9,6 @@ import { resolvers } from './resolvers';
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  playground: true,
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
 
