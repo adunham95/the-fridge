@@ -77,6 +77,7 @@ export const resolvers = {
           authorID: Authors[0].id,
         });
         const newPostFromDB = await newPost.save();
+        console.log(newPostFromDB);
         return newPostFromDB;
       } catch (error) {
         throw error;

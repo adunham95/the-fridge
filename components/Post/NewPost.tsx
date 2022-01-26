@@ -21,6 +21,7 @@ const myOrgs = [
 export const NewPost = () => {
   const [createPost] = useMutation(CREATE_POST_MUTATION);
   const [newPostText, setNewPostText] = useState('');
+  const [postMessage, setPostMessage] = useState('');
   const myUser = useAppSelector((state) => state?.user);
   const approvedOrgs = myOrgs.filter(
     (o) =>
@@ -35,7 +36,7 @@ export const NewPost = () => {
     }
   }
 
-  function createNewPost() {
+  async function createNewPost() {
     const newPostData = {
       newPost: {
         description: newPostText,
@@ -44,7 +45,9 @@ export const NewPost = () => {
       },
     };
     console.log(newPostData);
-    createPost({ variables: newPostData });
+    await createPost({ variables: newPostData });
+    setNewPostText('');
+    setPostMessage('Post Submitted');
   }
 
   if (approvedOrgs.length === 0) {
@@ -80,6 +83,7 @@ export const NewPost = () => {
               <span className="pl-2 text-sm">Images</span>
             </button>
           </div>
+          <div>{postMessage}</div>
         </div>
         <div>
           <button
