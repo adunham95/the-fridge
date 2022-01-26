@@ -1,24 +1,10 @@
 // /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ApolloServer, gql } from 'apollo-server-micro';
+import { ApolloServer } from 'apollo-server-micro';
+import { makeExecutableSchema } from '@graphql-tools/schema';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-
-const typeDefs = gql`
-  type Query {
-    users: [User!]!
-  }
-  type User {
-    name: String
-  }
-`;
-
-const resolvers = {
-  Query: {
-    users(parent, args, context) {
-      return [{ name: 'Nextjs' }];
-    },
-  },
-};
+import { typeDefs } from './schemas';
+import { resolvers } from './resolvers';
 
 const apolloServer = new ApolloServer({
   typeDefs,
@@ -26,6 +12,8 @@ const apolloServer = new ApolloServer({
   playground: true,
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
 });
+
+export const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const startServer = apolloServer.start();
 
