@@ -3,8 +3,11 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Provider } from 'react-redux';
 import store from '../stores/store';
+import { ClientContext } from 'graphql-hooks';
+import { useGraphQLClient } from '../lib/graphql-client';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const graphQLClient = useGraphQLClient(pageProps.initialGraphQLState);
   return (
     <>
       <Head>
@@ -34,9 +37,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"></link>
         <meta name="theme-color" content="#00abd5" />
       </Head>
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
+      <ClientContext.Provider value={graphQLClient}>
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+      </ClientContext.Provider>
     </>
   );
 }
