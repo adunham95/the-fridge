@@ -29,6 +29,7 @@ module.exports = {
     sourceType: 'module', // Allows for the use of imports
   },
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
     'react/prop-types': 'off',
     // Disable prop-types as we use TypeScript for type checking
     '@typescript-eslint/explicit-function-return-type': 'off',
