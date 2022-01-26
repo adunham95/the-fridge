@@ -1,0 +1,25 @@
+import { Schema, model, models } from 'mongoose';
+
+const PostSchema = new Schema(
+  {
+    dateTime: { type: 'String' },
+    description: { type: 'String' },
+    image: { type: 'String' },
+    orgID: { type: 'String' },
+    authorID: { type: 'String' },
+    viewByGroups: { type: 'Array' },
+    comments: { type: 'Array' },
+    permissions: { type: 'Array' },
+  },
+  {
+    toJSON: {
+      transform: (document, returnedObject) => {
+        returnedObject.id = returnedObject._id.toString();
+        delete returnedObject._id;
+        delete returnedObject.__v;
+      },
+    },
+  },
+);
+
+export const PostModel = models.Post || model('Post', PostSchema);

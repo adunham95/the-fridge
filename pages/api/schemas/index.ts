@@ -15,6 +15,13 @@ export const typeDefs = gql`
     permissions: [String]
   }
 
+  input PostInput {
+    description: String
+    image: String
+    orgID: String
+    postedBy: String
+  }
+
   type PostAuthor {
     id: String
     name: String
@@ -37,5 +44,8 @@ export const typeDefs = gql`
   type Query {
     getPosts: [Post]
     getPost(id: String!): Post!
+  }
+  type Mutation {
+    createPost(input: PostInput): Post!
   }
 `;
