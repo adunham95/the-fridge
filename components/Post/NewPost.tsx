@@ -1,5 +1,7 @@
 // @flow
+import { useMutation } from 'graphql-hooks';
 import React, { useState } from 'react';
+import { CREATE_POST_MUTATION } from '../../api/mutation/createPost';
 import { useAppSelector } from '../../hooks/hooks';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
@@ -17,6 +19,7 @@ const myOrgs = [
 ];
 
 export const NewPost = () => {
+  const [createPost] = useMutation(CREATE_POST_MUTATION);
   const [newPostText, setNewPostText] = useState('');
   const myUser = useAppSelector((state) => state?.user);
   const approvedOrgs = myOrgs.filter(
@@ -36,12 +39,12 @@ export const NewPost = () => {
     const newPostData = {
       newPost: {
         description: newPostText,
-        image: 'https://picsum.photos/200/200',
         orgID: selectedOrg,
         postedBy: myUser.id,
       },
     };
     console.log(newPostData);
+    createPost({ variables: newPostData });
   }
 
   if (approvedOrgs.length === 0) {
