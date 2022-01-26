@@ -4,6 +4,6 @@ import { IUser } from '../models/UserModel';
 
 export interface IGlobalState {
   user: IUser;
-  posts: Array<IPost>;
+  // posts: Array<IPost>;
   orgs: Array<IOrg>;
 }

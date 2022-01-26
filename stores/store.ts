@@ -9,7 +9,7 @@ import { IGlobalState } from './globalState';
 const store = configureStore({
   reducer: {
     user: userReducer,
-    posts: postReducer,
+    // posts: postReducer,
     orgs: orgReducer,
     // comments: commentsReducer,
     // users: usersReducer
