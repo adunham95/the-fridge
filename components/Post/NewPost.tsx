@@ -19,17 +19,29 @@ const myOrgs = [
 export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const myUser = useAppSelector((state) => state?.user);
-  const selectedOrg = myOrgs[1];
   const approvedOrgs = myOrgs.filter(
     (o) =>
       myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
       myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
   );
+  const [selectedOrg, setSelectedOrg] = useState(approvedOrgs[0].id);
 
   function canPost() {
     if (newPostText !== '') {
       return true;
     }
+  }
+
+  function createNewPost() {
+    const newPostData = {
+      newPost: {
+        description: newPostText,
+        image: 'https://picsum.photos/200/200',
+        orgID: selectedOrg,
+        postedBy: myUser.id,
+      },
+    };
+    console.log(newPostData);
   }
 
   if (approvedOrgs.length === 0) {
@@ -40,7 +52,11 @@ export const NewPost = () => {
     <div className="p-2">
       <div className="flex justify-between">
         <Avatar name={myUser.name} />
-        <select className="px-2">
+        <select
+          className="px-2"
+          value={selectedOrg}
+          onChange={(e) => setSelectedOrg(e.target.value)}
+        >
           {approvedOrgs.map((o) => (
             <option key={o.id} value={o.id}>
               {o.name}
@@ -64,6 +80,7 @@ export const NewPost = () => {
         </div>
         <div>
           <button
+            onClick={createNewPost}
             disabled={!canPost()}
             className={`${canPost() ? 'text-green-400' : 'text-gray-500'}`}
           >
