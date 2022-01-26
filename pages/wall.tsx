@@ -9,8 +9,6 @@ interface IProps {
 }
 
 const Wall = ({ posts }: IProps) => {
-  // const posts = props?.posts || [];
-  // console.log(posts);
   return (
     <Layout>
       <div className=" max-w-md mx-auto">
