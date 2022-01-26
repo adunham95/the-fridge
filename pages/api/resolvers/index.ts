@@ -1,4 +1,4 @@
-import dbConnect from '../../../lib/dbConnect';
+import dbConnect from '../../../utils/dbConnect';
 import { PostModel } from '../../../models/PostModel_Server';
 
 const Authors = [
@@ -36,8 +36,9 @@ export const resolvers = {
         return posts.map((post) => {
           return {
             ...post.toJSON(),
+            likedBy: [],
             orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
-            postedBy: Authors.find((a) => a.id === post.authorID),
+            postedBy: Authors.find((a) => a.id === post.authorID) || Authors[0],
           };
         });
       } catch (error) {
@@ -50,8 +51,9 @@ export const resolvers = {
         const post = await PostModel.findById(args.id);
         return {
           ...post.toJSON(),
+          likedBy: [],
           orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
-          postedBy: Authors.find((a) => a.id === post.authorID),
+          postedBy: Authors.find((a) => a.id === post.authorID) || Authors[0],
         };
       } catch (error) {
         throw error;

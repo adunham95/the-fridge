@@ -10,6 +10,7 @@ const PostSchema = new Schema(
     viewByGroups: { type: 'Array' },
     comments: { type: 'Array' },
     permissions: { type: 'Array' },
+    likedBy: { type: 'Array' },
   },
   {
     toJSON: {

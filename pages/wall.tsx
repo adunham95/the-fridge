@@ -5,13 +5,12 @@ import { IPost } from '../models/PostModel';
 import queryGraphql from '../shared/query-graphql';
 
 interface IProps {
-  props: {
-    posts: Array<IPost>,
-  };
+  posts: Array<IPost>;
 }
 
-const Wall = ({ props }: IProps) => {
-  const posts = props?.posts || [];
+const Wall = ({ posts }: IProps) => {
+  // const posts = props?.posts || [];
+  // console.log(posts);
   return (
     <Layout>
       <div className=" max-w-md mx-auto">
@@ -24,7 +23,7 @@ const Wall = ({ props }: IProps) => {
   );
 };
 
-Wall.getInitialProps = async () => {
+export async function getServerSideProps() {
   const data = await queryGraphql(
     `
     {getPosts{
@@ -56,6 +55,6 @@ Wall.getInitialProps = async () => {
       posts: data.getPosts,
     },
   };
-};
+}
 
 export default Wall;
