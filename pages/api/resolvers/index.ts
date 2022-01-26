@@ -1,5 +1,6 @@
 import dbConnect from '../../../utils/dbConnect';
 import { PostModel } from '../../../models/PostModel_Server';
+import { CommentModel } from '../../../models/CommentMode_Server';
 
 const Authors = [
   {
@@ -76,6 +77,20 @@ export const resolvers = {
         });
         const newPostFromDB = await newPost.save();
         return newPostFromDB;
+      } catch (error) {
+        throw error;
+      }
+    },
+    createComment: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newComment = new CommentModel({
+          ...args.input,
+          dateTime: new Date(),
+          authorID: Authors[0].id,
+        });
+        const newCommentFromDB = await newComment.save();
+        return newCommentFromDB;
       } catch (error) {
         throw error;
       }

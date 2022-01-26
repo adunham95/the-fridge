@@ -41,11 +41,18 @@ export const typeDefs = gql`
     name: String
   }
 
+  input CommentInput {
+    message: String
+    postID: String
+    parentComment: String
+  }
+
   type Query {
     getPosts: [Post]
     getPost(id: String!): Post!
   }
   type Mutation {
     createPost(input: PostInput): Post!
+    createComment(input: CommentInput!): Comment!
   }
 `;
