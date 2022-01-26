@@ -1,16 +1,22 @@
-import { NextPage } from 'next';
 import Layout from '../components/Layout/Layout';
 import { NewPost } from '../components/Post/NewPost';
 import PostCard from '../components/Post/PostCard';
+import { IPost } from '../models/PostModel';
 import queryGraphql from '../shared/query-graphql';
 
-const Wall: NextPage = ({ props }) => {
+interface IProps {
+  props: {
+    posts: Array<IPost>,
+  };
+}
+
+const Wall = ({ props }: IProps) => {
   const posts = props?.posts || [];
   return (
     <Layout>
       <div className=" max-w-md mx-auto">
         <NewPost />
-        {posts.map((p) => (
+        {posts.map((p: IPost) => (
           <PostCard key={p.id} {...p} />
         ))}
       </div>
@@ -18,7 +24,7 @@ const Wall: NextPage = ({ props }) => {
   );
 };
 
-Wall.getInitialProps = async (ctx) => {
+Wall.getInitialProps = async () => {
   const data = await queryGraphql(
     `
     {getPosts{
