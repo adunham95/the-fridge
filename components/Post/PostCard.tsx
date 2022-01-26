@@ -14,7 +14,18 @@ function PostCard({
   likedBy = [],
   postedBy,
   image = 'https://picsum.photos/200/300',
+  dateTime,
 }: IPost) {
+  function formatDate(date: string) {
+    const d = new Date(date);
+    const datestring = `${
+      d.getMonth() + 1
+    }/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${(
+      '0' + d.getMinutes()
+    ).slice(-2)}`;
+    return datestring;
+  }
+
   return (
     <div className="mb-3 border-b-2 border-gray-200 pb-1">
       <div className="bg-white">
@@ -23,6 +34,7 @@ function PostCard({
             <Avatar name={postedBy.name} />
             {postedBy.name}
           </div>
+          <div className=" text-slate-600 text-sm">{formatDate(dateTime)}</div>
         </div>
         {image && (
           <div className="w-full">

@@ -33,14 +33,19 @@ export const resolvers = {
       try {
         await dbConnect();
         const posts = await PostModel.find();
-        return posts.map((post) => {
-          return {
-            ...post.toJSON(),
-            likedBy: [],
-            orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
-            postedBy: Authors.find((a) => a.id === post.authorID) || Authors[0],
-          };
-        });
+        return posts
+          .sort((a, b) => {
+            return Date.parse(b.dateTime) - Date.parse(a.dateTime);
+          })
+          .map((post) => {
+            return {
+              ...post.toJSON(),
+              likedBy: [],
+              orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
+              postedBy:
+                Authors.find((a) => a.id === post.authorID) || Authors[0],
+            };
+          });
       } catch (error) {
         throw error;
       }

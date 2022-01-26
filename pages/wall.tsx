@@ -9,6 +9,7 @@ interface IProps {
 }
 
 const Wall = ({ posts }: IProps) => {
+  console.log(posts);
   return (
     <Layout>
       <div className=" max-w-md mx-auto">
@@ -28,6 +29,7 @@ export async function getServerSideProps() {
       id
       description
       image
+      dateTime
       orgID
       orgName
       viewByGroups
