@@ -42,6 +42,7 @@ export const resolvers = {
             return {
               ...post.toJSON(),
               likedBy: [],
+              comments: [],
               orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
               postedBy:
                 Authors.find((a) => a.id === post.authorID) || Authors[0],
