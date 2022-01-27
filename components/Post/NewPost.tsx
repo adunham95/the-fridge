@@ -22,6 +22,7 @@ export const NewPost = () => {
   const [createPost] = useMutation(CREATE_POST_MUTATION);
   const [newPostText, setNewPostText] = useState('');
   const [postMessage, setPostMessage] = useState('');
+  const [postSubmitting, setPostSubmitting] = useState(false);
   const myUser = useAppSelector((state) => state?.user);
   const approvedOrgs = myOrgs.filter(
     (o) =>
@@ -34,9 +35,15 @@ export const NewPost = () => {
     if (newPostText !== '') {
       return true;
     }
+    return !postSubmitting;
   }
 
   async function createNewPost() {
+    if (postSubmitting) {
+      return;
+    }
+    setPostSubmitting(true);
+    setPostMessage('Saving...');
     const newPostData = {
       newPost: {
         description: newPostText,
@@ -48,6 +55,7 @@ export const NewPost = () => {
     await createPost({ variables: newPostData });
     setNewPostText('');
     setPostMessage('Post Submitted');
+    setPostSubmitting(false);
   }
 
   if (approvedOrgs.length === 0) {
