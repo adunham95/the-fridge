@@ -32,21 +32,48 @@ const orgs = [
 
 export const resolvers = {
   Query: {
+    update: async () => {
+      try {
+        PostModel.updateMany(
+          { enabled: { $exists: false } },
+          { enabled: false },
+        );
+        CommentModel.updateMany(
+          { enabled: { $exists: false } },
+          { enabled: false },
+        );
+        UserModel.updateMany(
+          { enabled: { $exists: false } },
+          { enabled: false },
+        );
+        OrgModel.updateMany(
+          { enabled: { $exists: false } },
+          { enabled: false },
+        );
+        return { success: true };
+      } catch (error) {
+        throw error;
+      }
+    },
     getPosts: async () => {
       try {
         await dbConnect();
-        const posts = await PostModel.find().populate('org');
+        const posts = await PostModel.find()
+          .populate(['org', 'postedBy'])
+          .populate({
+            path: 'comments', // 1st level subdoc (get comments)
+            populate: ['author'],
+          });
+        console.log(posts);
         return posts
           .sort((a, b) => {
             return Date.parse(b.dateTime) - Date.parse(a.dateTime);
           })
           .map((post) => {
+            console.log({ ...post.toJSON() });
             return {
               ...post.toJSON(),
               likedBy: [],
-              comments: [],
-              postedBy:
-                Authors.find((a) => a.id === post.authorID) || Authors[0],
             };
           });
       } catch (error) {
@@ -85,7 +112,6 @@ export const resolvers = {
         const newPost = new PostModel({
           ...args.input,
           dateTime: new Date(),
-          authorID: Authors[0].id,
         });
         const newPostFromDB = await newPost.save();
         console.log(newPostFromDB);
@@ -103,6 +129,13 @@ export const resolvers = {
           authorID: Authors[0].id,
         });
         const newCommentFromDB = await newComment.save();
+
+        const res = await PostModel.updateOne(
+          { _id: args.input.postID },
+          { $push: { comments: newCommentFromDB.id } },
+        );
+        console.log(res);
+
         return newCommentFromDB;
       } catch (error) {
         throw error;

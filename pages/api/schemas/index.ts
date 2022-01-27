@@ -34,7 +34,7 @@ export const typeDefs = gql`
     dateTime: String
     postID: String
     parentComment: String
-    commentAuthor: CommentAuthor
+    author: CommentAuthor
   }
 
   type CommentAuthor {
@@ -68,7 +68,12 @@ export const typeDefs = gql`
     orgs: [String!]
   }
 
+  type updateResponse {
+    success: Boolean
+  }
+
   type Query {
+    update: updateResponse
     getPosts: [Post]
     getPost(id: String!): Post!
     getUser(id: String!): User!

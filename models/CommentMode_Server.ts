@@ -6,7 +6,7 @@ const CommentSchema = new Schema(
     message: { type: 'String' },
     postID: { type: 'String' },
     parentComment: { type: 'String' },
-    authorID: { type: 'String' },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   {
     toJSON: {

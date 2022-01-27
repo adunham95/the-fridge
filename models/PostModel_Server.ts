@@ -7,10 +7,11 @@ const PostSchema = new Schema(
     image: { type: 'String' },
     org: { type: Schema.Types.ObjectId, ref: 'Org' },
     authorID: { type: 'String' },
+    postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     viewByGroups: { type: 'Array' },
-    comments: { type: 'Array' },
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     permissions: { type: 'Array' },
-    likedBy: { type: 'Array' },
+    likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   },
   {
     toJSON: {
