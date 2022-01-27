@@ -6,6 +6,7 @@ export const typeDefs = gql`
     dateTime: String
     description: String
     image: String
+    org: Org
     orgID: String
     orgName: String
     viewByGroups: [String]
@@ -18,7 +19,7 @@ export const typeDefs = gql`
   input PostInput {
     description: String
     image: String
-    orgID: String
+    org: String
     postedBy: String
   }
 
@@ -41,18 +42,42 @@ export const typeDefs = gql`
     name: String
   }
 
+  type Org {
+    id: String!
+    name: String!
+  }
+
+  type User {
+    id: String!
+    name: String!
+    orgs: [Org]
+  }
+
   input CommentInput {
     message: String
     postID: String
     parentComment: String
   }
 
+  input OrgInput {
+    name: String!
+  }
+
+  input UserInput {
+    name: String!
+    orgs: [String!]
+  }
+
   type Query {
     getPosts: [Post]
     getPost(id: String!): Post!
+    getUser(id: String!): User!
   }
+
   type Mutation {
     createPost(input: PostInput): Post!
     createComment(input: CommentInput!): Comment!
+    createOrg(input: OrgInput!): Org!
+    createUser(input: UserInput!): User!
   }
 `;

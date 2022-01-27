@@ -1,6 +1,8 @@
+import { UserModel } from './../../../models/UserModel_Server';
 import dbConnect from '../../../utils/dbConnect';
 import { PostModel } from '../../../models/PostModel_Server';
 import { CommentModel } from '../../../models/CommentMode_Server';
+import { OrgModel } from '../../../models/OrgModel_Server';
 
 const Authors = [
   {
@@ -33,7 +35,7 @@ export const resolvers = {
     getPosts: async () => {
       try {
         await dbConnect();
-        const posts = await PostModel.find();
+        const posts = await PostModel.find().populate('org');
         return posts
           .sort((a, b) => {
             return Date.parse(b.dateTime) - Date.parse(a.dateTime);
@@ -43,7 +45,6 @@ export const resolvers = {
               ...post.toJSON(),
               likedBy: [],
               comments: [],
-              orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
               postedBy:
                 Authors.find((a) => a.id === post.authorID) || Authors[0],
             };
@@ -62,6 +63,16 @@ export const resolvers = {
           orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
           postedBy: Authors.find((a) => a.id === post.authorID) || Authors[0],
         };
+      } catch (error) {
+        throw error;
+      }
+    },
+    getUser: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const post = await UserModel.findById(args.id).populate('orgs');
+        const user = { ...post.toJSON() };
+        return user;
       } catch (error) {
         throw error;
       }
@@ -93,6 +104,31 @@ export const resolvers = {
         });
         const newCommentFromDB = await newComment.save();
         return newCommentFromDB;
+      } catch (error) {
+        throw error;
+      }
+    },
+    createOrg: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newOrg = new OrgModel({
+          ...args.input,
+        });
+        const newOrgFromDB = await newOrg.save();
+        console.log(newOrg.toJSON());
+        return newOrgFromDB;
+      } catch (error) {
+        throw error;
+      }
+    },
+    createUser: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newUser = new UserModel({
+          ...args.input,
+        });
+        const newUserFromDB = await newUser.save();
+        return newUserFromDB;
       } catch (error) {
         throw error;
       }

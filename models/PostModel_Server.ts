@@ -5,7 +5,7 @@ const PostSchema = new Schema(
     dateTime: { type: 'String' },
     description: { type: 'String' },
     image: { type: 'String' },
-    orgID: { type: 'String' },
+    org: { type: Schema.Types.ObjectId, ref: 'Org' },
     authorID: { type: 'String' },
     viewByGroups: { type: 'Array' },
     comments: { type: 'Array' },
