@@ -9,12 +9,12 @@ import IconImage from '../Icons/Icon-Image';
 
 const myOrgs = [
   {
-    name: 'Adrians Family',
-    id: 'Adrian',
+    name: 'Adrian Test Org',
+    id: '61f28acf4956e23fa1c4534c',
   },
   {
-    name: 'Emelies Family',
-    id: 'Emelie',
+    name: '61f28df14956e23fa1c45352',
+    id: 'Emelie Org',
   },
 ];
 
@@ -29,7 +29,7 @@ export const NewPost = () => {
       myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
       myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
   );
-  const [selectedOrg, setSelectedOrg] = useState(approvedOrgs[0].id);
+  const [selectedOrg, setSelectedOrg] = useState(approvedOrgs[0]?.id);
 
   function canPost() {
     if (newPostText !== '') {

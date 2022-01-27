@@ -25,29 +25,33 @@ const Wall = ({ posts }: IProps) => {
 export async function getServerSideProps() {
   const data = await queryGraphql(
     `
-    {getPosts{
-      id
-      description
-      image
-      dateTime
-      orgID
-      orgName
-      viewByGroups
-      postedBy{
-        name
+    query allPosts{
+      getPosts{
         id
-      }
-      likedBy
-      comments{
-        id
-        parentComment
-        message
-        commentAuthor{
+        description
+        image
+        dateTime
+        org{
           id
           name
         }
+        viewByGroups
+        postedBy{
+          name
+          id
+        }
+        likedBy
+        comments{
+          id
+          message
+          dateTime
+          author{
+            name
+            id
+          }
+        }
       }
-    }}
+    }
   `,
   );
   return {

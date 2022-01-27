@@ -4,7 +4,7 @@ export interface IComment {
   dateTime: string;
   postID: string;
   parentComment?: string;
-  commentAuthor: ICommentAuthor;
+  author: ICommentAuthor;
 }
 
 export interface ICommentAuthor {

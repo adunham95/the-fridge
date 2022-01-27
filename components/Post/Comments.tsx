@@ -15,7 +15,7 @@ const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
     <div className="px-2">
       {filteredComments.map((c) => (
         <div key={c.id} className="text-xs pb-1">
-          <span className=" font-bold">{c.commentAuthor.name}: </span>
+          <span className=" font-bold">{c.author.name}: </span>
           <span>{c.message}</span>
         </div>
       ))}
