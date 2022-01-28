@@ -1,8 +1,6 @@
-import { useContext } from 'react';
 import Layout from '../components/Layout/Layout';
 import { NewPost } from '../components/Post/NewPost';
 import PostCard from '../components/Post/PostCard';
-import { StateContext } from '../context';
 import { IPost } from '../models/PostModel';
 import queryGraphql from '../shared/query-graphql';
 

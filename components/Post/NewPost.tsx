@@ -2,7 +2,7 @@
 import { useMutation } from 'graphql-hooks';
 import React, { useContext, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../api/mutation/createPost';
-import { StateContext } from '../../context';
+import { UserContext } from '../../context/UserContext';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
@@ -23,7 +23,7 @@ export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const [postMessage, setPostMessage] = useState('');
   const [postSubmitting, setPostSubmitting] = useState(false);
-  const { state } = useContext(StateContext);
+  const { state } = useContext(UserContext);
   const myUser = state?.user;
   const approvedOrgs = myOrgs.filter(
     (o) =>
@@ -66,7 +66,7 @@ export const NewPost = () => {
   return (
     <div className="p-2">
       <div className="flex justify-between">
-        <Avatar name={myUser.name} />
+        <Avatar name={myUser?.name} />
         <select
           className="px-2"
           value={selectedOrg}

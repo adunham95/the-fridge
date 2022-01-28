@@ -3,7 +3,8 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ClientContext } from 'graphql-hooks';
 import { useGraphQLClient } from '../lib/graphql-client';
-import { StateProvider } from '../context';
+import { UserProvider } from '../context/UserContext';
+import { OrgProvider } from '../context/OrgContext';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const graphQLClient = useGraphQLClient(pageProps.initialGraphQLState);
@@ -36,11 +37,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"></link>
         <meta name="theme-color" content="#00abd5" />
       </Head>
-      <StateProvider>
-        <ClientContext.Provider value={graphQLClient}>
-          <Component {...pageProps} />
-        </ClientContext.Provider>
-      </StateProvider>
+      <UserProvider>
+        <OrgProvider>
+          <ClientContext.Provider value={graphQLClient}>
+            <Component {...pageProps} />
+          </ClientContext.Provider>
+        </OrgProvider>
+      </UserProvider>
     </>
   );
 }

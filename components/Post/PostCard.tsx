@@ -6,7 +6,7 @@ import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
 import { useContext } from 'react';
-import { StateContext } from '../../context';
+import { UserContext } from '../../context/UserContext';
 
 function PostCard({
   description = '',
@@ -96,7 +96,7 @@ interface IPostLikeProps {
 }
 
 function PostLikes({ likes }: IPostLikeProps) {
-  const { state } = useContext(StateContext);
+  const { state } = useContext(UserContext);
   const myUser = state?.user;
   return (
     <button className="flex">
