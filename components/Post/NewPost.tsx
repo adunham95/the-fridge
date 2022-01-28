@@ -1,8 +1,8 @@
 // @flow
 import { useMutation } from 'graphql-hooks';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../api/mutation/createPost';
-import { useAppSelector } from '../../hooks/hooks';
+import { StateContext } from '../../context';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
@@ -23,11 +23,12 @@ export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const [postMessage, setPostMessage] = useState('');
   const [postSubmitting, setPostSubmitting] = useState(false);
-  const myUser = useAppSelector((state) => state?.user);
+  const { state } = useContext(StateContext);
+  const myUser = state?.user;
   const approvedOrgs = myOrgs.filter(
     (o) =>
-      myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
-      myUser.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
+      myUser?.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
+      myUser?.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
   );
   const [selectedOrg, setSelectedOrg] = useState(approvedOrgs[0]?.id);
 

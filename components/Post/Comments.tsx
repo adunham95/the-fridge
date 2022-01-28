@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useAppSelector } from '../../hooks/hooks';
+import { useContext, useState } from 'react';
+import { StateContext } from '../../context';
 import { IComment } from '../../models/CommentModel';
 import { Avatar } from '../Avatar/Avatar';
 
@@ -26,11 +26,12 @@ const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
 
 function NewComment() {
   const [comment, setComment] = useState('');
-  const myUser = useAppSelector((state) => state.user);
+  const { state } = useContext(StateContext);
+  const myUser = state?.user;
 
   return (
     <div className="flex">
-      <Avatar name={myUser.name} />
+      <Avatar name={myUser?.name || 'A'} />
       <input
         onChange={(e) => setComment(e.target.value)}
         className="w-full border-b-2 border-black"

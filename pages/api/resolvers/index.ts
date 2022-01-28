@@ -64,13 +64,11 @@ export const resolvers = {
             path: 'comments', // 1st level subdoc (get comments)
             populate: ['author'],
           });
-        console.log(posts);
         return posts
           .sort((a, b) => {
             return Date.parse(b.dateTime) - Date.parse(a.dateTime);
           })
           .map((post) => {
-            console.log({ ...post.toJSON() });
             return {
               ...post.toJSON(),
               likedBy: [],
@@ -114,7 +112,6 @@ export const resolvers = {
           dateTime: new Date(),
         });
         const newPostFromDB = await newPost.save();
-        console.log(newPostFromDB);
         return newPostFromDB;
       } catch (error) {
         throw error;
@@ -134,7 +131,6 @@ export const resolvers = {
           { _id: args.input.postID },
           { $push: { comments: newCommentFromDB.id } },
         );
-        console.log(res);
 
         return newCommentFromDB;
       } catch (error) {
@@ -148,7 +144,6 @@ export const resolvers = {
           ...args.input,
         });
         const newOrgFromDB = await newOrg.save();
-        console.log(newOrg.toJSON());
         return newOrgFromDB;
       } catch (error) {
         throw error;

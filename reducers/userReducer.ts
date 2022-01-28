@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { EUserPermissions, IUser } from '../models/UserModel';
 
-const initialState: IUser = {
+export const initialUserState: IUser = {
   id: '61f28b404956e23fa1c4534e',
   name: 'Adrian Dunham',
   permissions: {
@@ -14,10 +13,15 @@ const initialState: IUser = {
   },
 };
 
-const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {},
-});
+export enum USER_ACTION {
+  LOGGED_IN_USER = 'LOGGED_IN_USER',
+}
 
-export default userSlice.reducer;
+export function userReducer(state: any, action: any) {
+  switch (action.type) {
+    case USER_ACTION.LOGGED_IN_USER:
+      return { ...state, user: action.payload };
+    default:
+      return state;
+  }
+}

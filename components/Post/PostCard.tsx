@@ -5,7 +5,8 @@ import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
-import { useAppSelector } from '../../hooks/hooks';
+import { useContext } from 'react';
+import { StateContext } from '../../context';
 
 function PostCard({
   description = '',
@@ -95,13 +96,14 @@ interface IPostLikeProps {
 }
 
 function PostLikes({ likes }: IPostLikeProps) {
-  const myUser = useAppSelector((state) => state.user);
+  const { state } = useContext(StateContext);
+  const myUser = state?.user;
   return (
     <button className="flex">
       <IconHeart
         width={28}
         height={28}
-        fill={likes.includes(myUser.id) ? 'red' : 'pink'}
+        fill={likes.includes(myUser?.id) ? 'red' : 'pink'}
       />
       <span className=" ml-2 text-lg">{likes.length}</span>
     </button>
