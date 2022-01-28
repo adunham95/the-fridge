@@ -1,8 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { Provider } from 'react-redux';
-import store from '../stores/store';
 import { ClientContext } from 'graphql-hooks';
 import { useGraphQLClient } from '../lib/graphql-client';
 
@@ -38,9 +36,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#00abd5" />
       </Head>
       <ClientContext.Provider value={graphQLClient}>
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <Component {...pageProps} />
       </ClientContext.Provider>
     </>
   );
