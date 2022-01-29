@@ -1,4 +1,4 @@
-import { useReducer, createContext, ReactChild } from 'react';
+import { useReducer, createContext, ReactChild, useContext } from 'react';
 import { IUser } from '../models/UserModel';
 import {
   userReducer,
@@ -43,4 +43,14 @@ const UserProvider = ({ children }: IProps) => {
   );
 };
 
-export { UserContext, UserProvider };
+const useUser = () => {
+  const context = useContext(UserContext);
+
+  if (context === undefined) {
+    throw new Error('useOrg must be used within OrgContext');
+  }
+
+  return context;
+};
+
+export { UserContext, UserProvider, useUser };

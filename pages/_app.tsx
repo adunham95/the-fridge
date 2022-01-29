@@ -5,6 +5,7 @@ import { ClientContext } from 'graphql-hooks';
 import { useGraphQLClient } from '../lib/graphql-client';
 import { UserProvider } from '../context/UserContext';
 import { OrgProvider } from '../context/OrgContext';
+import { ContextLoader } from '../context/ContextLoader';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const graphQLClient = useGraphQLClient(pageProps.initialGraphQLState);
@@ -40,6 +41,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <UserProvider>
         <OrgProvider>
           <ClientContext.Provider value={graphQLClient}>
+            <ContextLoader />
             <Component {...pageProps} />
           </ClientContext.Provider>
         </OrgProvider>
