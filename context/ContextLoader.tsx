@@ -1,28 +1,52 @@
-import { useQuery } from 'graphql-hooks';
-import React, { Fragment } from 'react';
+import { useManualQuery, useQuery } from 'graphql-hooks';
+import React, { Fragment, useEffect } from 'react';
+import { USER_ACTION } from '../reducers/userReducer';
 import { useUser } from './UserContext';
 
 const INITIAL_QUERY = `
-query InitalQuery($id:String!){
-    getUser(id:$id){
+query GetUsertByID($id:String!){
+  getUser(id:$id){
+    id
+    name
+    accountColor
+    permissions{
+      orgId
+      permissions
+    }
+    orgs{
+      name
+      id
+      groups{
         id
         name
-        orgs{
-            name
-            id
-        }
+        permissions
+      }
     }
+  }
 }`;
 
 export function ContextLoader() {
-  const { dispatch } = useUser();
-  const { loading, error, data } = useQuery(INITIAL_QUERY, {
-    variables: {
-      id: '61f28b404956e23fa1c4534e',
-    },
+  const currentUserID = '61f28b404956e23fa1c4534e';
+  const { state, dispatch } = useUser();
+  const [fetchUser, { loading, error, data }] = useManualQuery(INITIAL_QUERY, {
+    variables: { id: currentUserID },
   });
 
-  console.log(data);
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      console.log(data);
+      dispatch({
+        type: USER_ACTION.SET_USER,
+        payload: {
+          user: data.getUser,
+        },
+      });
+    }
+  }, [data]);
 
   return <Fragment />;
 }
