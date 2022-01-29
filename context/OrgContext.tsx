@@ -1,4 +1,4 @@
-import { useReducer, createContext, ReactChild } from 'react';
+import { useReducer, createContext, ReactChild, useContext } from 'react';
 import { IOrg } from '../models/OrgModel';
 import { orgReducer, OrgActions } from '../reducers/orgReducer';
 
@@ -38,5 +38,19 @@ const OrgProvider = ({ children }: IProps) => {
     </OrgContext.Provider>
   );
 };
+
+const useOrg = () => {
+  const context = useContext(OrgContext)
+
+  if (context === undefined) {
+    throw new Error("useOrg must be used within OrgContext")
+  }
+
+  return context
+}
+
+export default useOrg
+
+
 
 export { OrgContext, OrgProvider };
