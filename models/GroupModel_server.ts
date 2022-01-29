@@ -1,11 +1,10 @@
 import { Schema, model, models } from 'mongoose';
 
-export const OrgSchema = new Schema(
+export const GroupSchema = new Schema(
   {
     name: { type: 'String' },
-    groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
-    defaultPostSettings: [{ type: 'String' }],
-    defaultPostGroups: [{ type: 'String' }],
+    permissions: [{ type: 'String' }],
+    orgID: { type: Schema.Types.ObjectId, ref: 'Org' },
   },
   {
     toJSON: {
@@ -18,4 +17,4 @@ export const OrgSchema = new Schema(
   },
 );
 
-export const OrgModel = models.Org || model('Org', OrgSchema);
+export const GroupModel = models.Group || model('Group', GroupSchema);

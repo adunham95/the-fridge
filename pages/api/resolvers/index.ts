@@ -1,3 +1,4 @@
+import { GroupModel } from './../../../models/GroupModel_server';
 import { UserModel } from './../../../models/UserModel_Server';
 import dbConnect from '../../../utils/dbConnect';
 import { PostModel } from '../../../models/PostModel_Server';
@@ -50,6 +51,10 @@ export const resolvers = {
           { enabled: { $exists: false } },
           { enabled: false },
         );
+        GroupModel.updateMany(
+          { enabled: { $exists: false } },
+          { enabled: false },
+        );
         return { success: true };
       } catch (error) {
         throw error;
@@ -95,9 +100,22 @@ export const resolvers = {
     getUser: async (_: any, args: any) => {
       try {
         await dbConnect();
-        const post = await UserModel.findById(args.id).populate('orgs');
+        const post = await UserModel.findById(args.id).populate({
+          path: 'orgs', // 1st level subdoc (get comments)
+          populate: ['groups'],
+        });
         const user = { ...post.toJSON() };
-        return user;
+        const returnUser = {
+          ...user,
+          permissions: user.orgs.map((o: { id: any, groups: any[] }) => {
+            return {
+              orgId: o.id,
+              permissions: o.groups.map((g) => g?.permissions).flat(),
+            };
+          }),
+        };
+        console.log(returnUser);
+        return returnUser;
       } catch (error) {
         throw error;
       }
@@ -156,6 +174,24 @@ export const resolvers = {
         });
         const newOrgFromDB = await newOrg.save();
         return newOrgFromDB;
+      } catch (error) {
+        throw error;
+      }
+    },
+    createGroup: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newGroup = new GroupModel({
+          ...args.input,
+        });
+        const newGroupFromDB = await newGroup.save();
+
+        const res = await OrgModel.updateOne(
+          { _id: args.input.orgID },
+          { $push: { groups: newGroupFromDB.id } },
+        );
+
+        return newGroupFromDB;
       } catch (error) {
         throw error;
       }

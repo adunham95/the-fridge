@@ -45,12 +45,26 @@ export const typeDefs = gql`
   type Org {
     id: String!
     name: String!
+    groups: [Group!]
+  }
+
+  type Group {
+    id: String!
+    name: String!
+    orgID: String!
+    permissions: [String!]
+  }
+
+  type UserPermissions {
+    orgId: String!
+    permissions: [String!]
   }
 
   type User {
     id: String!
     name: String!
     accountColor: String
+    permissions: [UserPermissions]
     orgs: [Org]
   }
 
@@ -62,6 +76,11 @@ export const typeDefs = gql`
 
   input OrgInput {
     name: String!
+  }
+
+  input GroupInput {
+    name: String!
+    orgID: String!
   }
 
   input UserInput {
@@ -87,5 +106,6 @@ export const typeDefs = gql`
     createComment(input: CommentInput!): Comment!
     createOrg(input: OrgInput!): Org!
     createUser(input: UserInput!): User!
+    createGroup(input: GroupInput!): Group!
   }
 `;
