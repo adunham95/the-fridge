@@ -102,6 +102,17 @@ export const resolvers = {
         throw error;
       }
     },
+    getOrgs: async () => {
+      try {
+        await dbConnect();
+        const orgs = await OrgModel.find();
+        return orgs.map((org) => {
+          return org.toJSON();
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
   },
   Mutation: {
     createPost: async (_: any, args: any) => {
