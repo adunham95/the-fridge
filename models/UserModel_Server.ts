@@ -3,6 +3,7 @@ import { Schema, model, models } from 'mongoose';
 const UserSchema = new Schema(
   {
     name: { type: 'String' },
+    accountColor: { type: 'String' },
     orgs: [{ type: Schema.Types.ObjectId, ref: 'Org' }],
   },
   {

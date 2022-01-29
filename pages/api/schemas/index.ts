@@ -50,6 +50,7 @@ export const typeDefs = gql`
   type User {
     id: String!
     name: String!
+    accountColor: String
     orgs: [Org]
   }
 
@@ -65,6 +66,7 @@ export const typeDefs = gql`
 
   input UserInput {
     name: String!
+    accountColor: String
     orgs: [String!]
   }
 
