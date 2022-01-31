@@ -64,7 +64,6 @@ export const NewPost = () => {
     if (newPostText !== '') {
       return true;
     }
-    return false;
   }
 
   async function createNewPost() {
@@ -121,13 +120,13 @@ export const NewPost = () => {
         </div>
         <div>{postMessage}</div>
       </div>
-      {canPost && (
+      {canPost() && (
         <>
           <h2>Share With Groups:</h2>
           <div className="flex">
             <div>
               {orgGroups.map((g) => (
-                <span>{g.name}</span>
+                <span key={g.id}>{g.name}</span>
               ))}
             </div>
           </div>
