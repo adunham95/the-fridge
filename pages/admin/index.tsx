@@ -1,0 +1,29 @@
+import { Avatar } from '../../components/Avatar/Avatar';
+import Layout from '../../components/Layout/Layout';
+import { useUser } from '../../context/UserContext';
+
+const states = [];
+
+const AdminHome = () => {
+  const {
+    state: { user: myUser },
+  } = useUser();
+  console.log(myUser);
+  return (
+    <Layout>
+      <>
+        <header className="bg-white shadow">
+          <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
+            <Avatar name={myUser.name} color={myUser.accountColor} />
+            <h1 className="text-3xl font-bold text-gray-900 inline-block">
+              {myUser.name}
+            </h1>
+          </div>
+        </header>
+        <main className="pt-2 px-1"></main>
+      </>
+    </Layout>
+  );
+};
+
+export default AdminHome;

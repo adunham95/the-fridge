@@ -13,11 +13,11 @@ interface IUserOrg {
 export interface IUser {
   id: string;
   name: string;
+  accountColor?: string;
   orgs: Array<IUserOrg>;
 }
 
 export enum EUserPermissions {
   CAN_POST = 'canPost',
-  CAN_POST_W_APPROVAL = 'canPostWithApproval',
   IS_ADMIN = 'isAdmin',
 }

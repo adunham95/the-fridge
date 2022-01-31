@@ -7,13 +7,20 @@ export interface INavMenuItem {
   icon: EIcons;
   path: string;
   title: string;
+  permissions?: Array<string>;
 }
 
 interface IProps extends INavMenuItem {
   isCollapsed?: boolean;
 }
 
-const NavItem = ({ title, icon, path, isCollapsed = false }: IProps) => {
+const NavItem = ({
+  title,
+  icon,
+  path,
+  permissions = [],
+  isCollapsed = false,
+}: IProps) => {
   const [showToolTip, setShowToolTip] = useState(false);
   const router = useRouter();
 

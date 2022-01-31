@@ -1,4 +1,5 @@
 import { useIsomorphicEffect } from '../../hooks/useIsomorphicEffect';
+import { EUserPermissions } from '../../models/UserModel';
 import { EIcons } from '../Icons';
 import IconLogo from '../Icons/Icon-Logo';
 import NavItem, { INavMenuItem } from './NavItem';
@@ -13,6 +14,12 @@ const navMenu: Array<INavMenuItem> = [
     path: '/wall',
     title: 'Wall',
     icon: EIcons.USER,
+  },
+  {
+    path: '/admin',
+    title: 'Admin',
+    icon: EIcons.USER,
+    permissions: [EUserPermissions.IS_ADMIN],
   },
 ];
 
