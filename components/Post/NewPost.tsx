@@ -61,7 +61,7 @@ export const NewPost = () => {
 
       const orgData = orgs.map((o) => {
         const orgData = orgNames.data.getOrgsByIDs.find(
-          (p) => p.id === o.orgID,
+          (p: { id: string }) => p.id === o.orgID,
         );
         return {
           ...o,
