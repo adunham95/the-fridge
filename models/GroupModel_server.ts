@@ -2,9 +2,9 @@ import { Schema, model, models } from 'mongoose';
 
 export const GroupSchema = new Schema(
   {
-    name: { type: 'String' },
+    name: { type: 'String', required: true },
     permissions: [{ type: 'String' }],
-    orgID: { type: Schema.Types.ObjectId, ref: 'Org' },
+    orgID: { type: Schema.Types.ObjectId, ref: 'Org', required: true },
   },
   {
     toJSON: {

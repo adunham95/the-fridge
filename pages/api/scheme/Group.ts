@@ -2,6 +2,7 @@ import { GroupModel } from './../../../models/GroupModel_server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../../../utils/dbConnect';
 import mongoose from 'mongoose';
+import { OrgModel } from '../../../models/OrgModel_Server';
 
 export const typeDef = gql`
   input GroupInput {
@@ -42,6 +43,26 @@ export const resolvers = {
         return groups.map((group) => {
           return group.toJSON();
         });
+      } catch (error) {
+        throw error;
+      }
+    },
+  },
+  Mutation: {
+    createGroup: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newGroup = new GroupModel({
+          ...args.input,
+        });
+        const newGroupFromDB = await newGroup.save();
+
+        const res = await OrgModel.updateOne(
+          { _id: args.input.orgID },
+          { $push: { groups: newGroupFromDB.id } },
+        );
+
+        return newGroupFromDB;
       } catch (error) {
         throw error;
       }

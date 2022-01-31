@@ -133,24 +133,6 @@ const defaultResolvers = {
         throw error;
       }
     },
-    createGroup: async (_: any, args: any) => {
-      try {
-        await dbConnect();
-        const newGroup = new GroupModel({
-          ...args.input,
-        });
-        const newGroupFromDB = await newGroup.save();
-
-        const res = await OrgModel.updateOne(
-          { _id: args.input.orgID },
-          { $push: { groups: newGroupFromDB.id } },
-        );
-
-        return newGroupFromDB;
-      } catch (error) {
-        throw error;
-      }
-    },
     createUser: async (_: any, args: any) => {
       try {
         await dbConnect();
