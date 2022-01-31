@@ -2,7 +2,7 @@ import { Schema, model, models } from 'mongoose';
 
 export const OrgSchema = new Schema(
   {
-    name: { type: 'String' },
+    name: { type: 'String', required: true },
     groups: [{ type: Schema.Types.ObjectId, ref: 'Group' }],
     defaultPostSettings: [{ type: 'String' }],
     defaultPostGroups: [{ type: 'String' }],
