@@ -78,7 +78,7 @@ export const resolvers = {
         }
         console.log(update);
         const updatedOrg = OrgModel.findByIdAndUpdate(
-          Types.ObjectId(args.input.id),
+          new Types.ObjectId(args.input.id),
           update,
           { upsert: true, returnDocument: 'after' },
         );
