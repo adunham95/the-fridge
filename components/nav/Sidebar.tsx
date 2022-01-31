@@ -8,7 +8,7 @@ const Sidebar = ({}) => {
     <>
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute left-[calc(var(--sidebar-width)+10px)] z-40 bg-white shadow-md top-2 p-1 rounded-md"
+        className="absolute left-[calc(var(--sidebar-width)+3px)] z-40 bg-white shadow-md text-sm top-[3px] p-1 rounded-md"
       >
         {isCollapsed ? 'Open' : 'Close'}
       </button>
