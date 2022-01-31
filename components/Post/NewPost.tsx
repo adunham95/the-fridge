@@ -14,6 +14,11 @@ query GetGroupsByOrg($orgIDs:[String!]){
     name
     orgID
   }
+  getOrgsByIDs(orgIDs:$orgIDs){
+    id
+    defaultPostGroups
+    defaultPostSettings
+  }
 }
 `;
 
@@ -31,6 +36,10 @@ export const NewPost = () => {
   const [selectedOrg, setSelectedOrg] = useState('');
   // eslint-disable-next-line prettier/prettier
   const [orgGroups, setOrgGroups] = useState<Array<any>>([]);
+  // eslint-disable-next-line prettier/prettier
+  const [selectedGroups, setSelectedGroups] = useState<Array<any>>([])
+  // eslint-disable-next-line prettier/prettier
+  const [selectedSettings, setSelectedSettings] = useState<Array<any>>([])
 
   useEffect(() => {
     const orgs = myUser.orgs
@@ -49,13 +58,29 @@ export const NewPost = () => {
       const orgNames = await fetchUser({
         variables: { orgIDs },
       });
-      console.log(orgNames);
+
+      const orgData = orgs.map((o) => {
+        const orgData = orgNames.data.getOrgsByIDs.find(
+          (p) => p.id === o.orgID,
+        );
+        return {
+          ...o,
+          defaults: {
+            postGroups: orgData?.defaultPostGroups,
+            postSettings: orgData?.defaultPostSettings,
+          },
+        };
+      });
+      console.log(orgData);
+
       setOrgGroups(orgNames.data.getGroupsByOrg);
+      setApprovedOrgs(orgData);
+      setSelectedOrg(orgs[0].orgID);
+      setSelectedGroups(orgData[0].defaults.postGroups);
+      setSelectedSettings(orgData[0].defaults.postSettings);
     };
 
     if (orgs.length > 0) {
-      setApprovedOrgs(orgs);
-      setSelectedOrg(orgs[0].orgID);
       fetchOrgs().catch(console.error);
     }
   }, [myUser]);
@@ -77,6 +102,7 @@ export const NewPost = () => {
         description: newPostText,
         org: selectedOrg,
         postedBy: myUser.id,
+        viewBy: selectedGroups,
       },
     };
     console.log(newPostData);
@@ -84,6 +110,16 @@ export const NewPost = () => {
     setNewPostText('');
     setPostMessage('Post Submitted');
     setPostSubmitting(false);
+  }
+
+  function setOrgGroup(groupVal: string) {
+    let newGroup = [...selectedGroups];
+    if (newGroup.includes(groupVal)) {
+      newGroup = newGroup.filter((g) => g !== groupVal);
+    } else if (!newGroup.includes(groupVal)) {
+      newGroup = [...newGroup, groupVal];
+    }
+    setSelectedGroups(newGroup);
   }
 
   if (approvedOrgs.length === 0) {
@@ -123,24 +159,35 @@ export const NewPost = () => {
       {canPost() && (
         <>
           <h2>Share With Groups:</h2>
-          <div className="flex">
-            <div>
-              {orgGroups.map((g) => (
-                <span key={g.id}>{g.name}</span>
-              ))}
-            </div>
+          <div className="overflow-x-auto whitespace-nowrap">
+            <span className="mr-1">
+              <button
+                className="bg-red-400 text-white p-1 rounded text-sm"
+                onClick={() => setSelectedGroups([])}
+              >
+                Clear
+              </button>
+            </span>
+            {orgGroups.map((g) => (
+              <span key={g.id} className="inline-flex mr-1">
+                <input
+                  type="checkbox"
+                  id={`${g.id}-value`}
+                  checked={selectedGroups.includes(g.id)}
+                  onChange={() => setOrgGroup(g.id)}
+                  className="hidden peer"
+                />
+                <label
+                  className="peer-checked:bg-blue-500 peer-checked:bg-opacity-100 bg-blue-400 bg-opacity-50 text-white p-1 rounded text-sm"
+                  htmlFor={`${g.id}-value`}
+                >
+                  {g.name}
+                </label>
+              </span>
+            ))}
           </div>
         </>
       )}
-      <div className="flex justify-between">
-        <div>
-          <button className="flex rounded-md bg-slate-500 text-white px-2 py-1 ">
-            <IconImage height={20} width={20} />
-            <span className="pl-2 text-sm">Images</span>
-          </button>
-        </div>
-        <div>{postMessage}</div>
-      </div>
       <div>
         <div>
           <button
@@ -151,6 +198,9 @@ export const NewPost = () => {
             Post
           </button>
         </div>
+      </div>
+      <div className="flex justify-between">
+        <div>{postMessage}</div>
       </div>
     </div>
   );
