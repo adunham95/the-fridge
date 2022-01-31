@@ -4,34 +4,11 @@ import dbConnect from '../../../utils/dbConnect';
 import { PostModel } from '../../../models/PostModel_Server';
 import { CommentModel } from '../../../models/CommentMode_Server';
 import { OrgModel } from '../../../models/OrgModel_Server';
+import { merge } from 'lodash';
 
-const Authors = [
-  {
-    id: 'Adrian',
-    name: 'Adrian Dunham',
-  },
-  {
-    id: 'Emelie',
-    name: 'Emelie Dunham',
-  },
-  {
-    id: 'Annabelle',
-    name: 'Annabelle Dunham',
-  },
-];
+import { resolvers as GroupResolvers } from '../scheme/Group';
 
-const orgs = [
-  {
-    id: 'Adrian',
-    orgName: 'Adrian Family',
-  },
-  {
-    id: 'Emelie',
-    orgName: 'Emelie Family',
-  },
-];
-
-export const resolvers = {
+const defaultResolvers = {
   Query: {
     update: async () => {
       try {
@@ -90,9 +67,6 @@ export const resolvers = {
         const post = await PostModel.findById(args.id);
         return {
           ...post.toJSON(),
-          likedBy: [],
-          orgName: orgs.find((o) => o.id === post.orgID)?.orgName,
-          postedBy: Authors.find((a) => a.id === post.authorID) || Authors[0],
         };
       } catch (error) {
         throw error;
@@ -156,7 +130,6 @@ export const resolvers = {
         const newComment = new CommentModel({
           ...args.input,
           dateTime: new Date(),
-          authorID: Authors[0].id,
         });
         const newCommentFromDB = await newComment.save();
 
@@ -214,3 +187,5 @@ export const resolvers = {
     },
   },
 };
+
+export default merge(defaultResolvers, GroupResolvers);

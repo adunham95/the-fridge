@@ -3,8 +3,8 @@ import { ApolloServer } from 'apollo-server-micro';
 import { makeExecutableSchema } from '@graphql-tools/schema';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { typeDefs } from './schemas';
-import { resolvers } from './resolvers';
+import typeDefs from './schemas';
+import resolvers from './resolvers';
 
 const apolloServer = new ApolloServer({
   typeDefs,
