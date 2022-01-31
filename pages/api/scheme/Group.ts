@@ -30,16 +30,13 @@ export const resolvers = {
   Query: {
     getGroupsByOrg: async (_: any, args: any) => {
       try {
-        console.log(args.orgIDs);
         const idList = args.orgIDs.map(
           (id: string) => new mongoose.Types.ObjectId(id),
         );
-        console.log(idList);
         await dbConnect();
         const groups = await GroupModel.find({
           orgID: idList,
         });
-        console.log(groups);
         return groups.map((group) => {
           return group.toJSON();
         });

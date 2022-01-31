@@ -1,3 +1,4 @@
+import { GroupModel } from './../../../models/GroupModel_server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../../../utils/dbConnect';
 import { OrgModel } from '../../../models/OrgModel_Server';
@@ -27,6 +28,7 @@ export const typeDef = gql`
 
   extend type Query {
     getOrgs: [Org]
+    getOrgsByIDs(orgIDs: [String!]): [Org!]
   }
 
   extend type Mutation {
@@ -41,6 +43,23 @@ export const resolvers = {
       try {
         await dbConnect();
         const orgs = await OrgModel.find();
+        return orgs.map((org) => {
+          return org.toJSON();
+        });
+      } catch (error) {
+        throw error;
+      }
+    },
+    getOrgsByIDs: async (_: any, args: any) => {
+      try {
+        console.log(args.orgIDs);
+        const idList = args.orgIDs.map((id: string) => new Types.ObjectId(id));
+        await dbConnect();
+        console.log(idList);
+        const orgs = await OrgModel.find({
+          _id: idList,
+        });
+        console.log(orgs);
         return orgs.map((org) => {
           return org.toJSON();
         });
