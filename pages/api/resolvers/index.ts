@@ -55,6 +55,7 @@ export const resolvers = {
           { enabled: { $exists: false } },
           { enabled: false },
         );
+        console.log('Updated complete');
         return { success: true };
       } catch (error) {
         throw error;
@@ -102,17 +103,20 @@ export const resolvers = {
         await dbConnect();
         const post = await UserModel.findById(args.id).populate({
           path: 'orgs', // 1st level subdoc (get comments)
-          populate: ['groups'],
+          populate: ['group', 'org'],
         });
         const user = { ...post.toJSON() };
+        console.log(user);
         const returnUser = {
           ...user,
-          permissions: user.orgs.map((o: { id: any, groups: any[] }) => {
-            return {
-              orgId: o.id,
-              permissions: o.groups.map((g) => g?.permissions).flat(),
-            };
-          }),
+          permissions: user.orgs.map(
+            (o: { org: { id: string }, group: { permissions: string[] } }) => {
+              return {
+                orgId: o.org.id,
+                permissions: o.group?.permissions || [],
+              };
+            },
+          ),
         };
         console.log(returnUser);
         return returnUser;

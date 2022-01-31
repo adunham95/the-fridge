@@ -3,8 +3,17 @@ import { Schema, model, models } from 'mongoose';
 const UserSchema = new Schema(
   {
     name: { type: 'String' },
-    accountColor: { type: 'String' },
-    orgs: [{ type: Schema.Types.ObjectId, ref: 'Org' }],
+    accountColor: { type: 'String', default: '#0000FF' },
+    created: {
+      type: Date,
+      default: Date.now,
+    },
+    orgs: [
+      {
+        org: { type: Schema.Types.ObjectId, ref: 'Org' },
+        group: { type: Schema.Types.ObjectId, ref: 'Group' },
+      },
+    ],
   },
   {
     toJSON: {

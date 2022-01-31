@@ -60,12 +60,28 @@ export const typeDefs = gql`
     permissions: [String!]
   }
 
+  type UserOrgs {
+    org: UserOrg
+    group: UserGroup
+  }
+
+  type UserGroup {
+    id: String
+    name: String
+    permissions: [String!]
+  }
+
+  type UserOrg {
+    id: String
+    name: String
+  }
+
   type User {
     id: String!
     name: String!
     accountColor: String
     permissions: [UserPermissions]
-    orgs: [Org]
+    orgs: [UserOrgs]
   }
 
   input CommentInput {

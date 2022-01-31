@@ -16,7 +16,6 @@ type ActionMap<M extends { [index: string]: any }> = {
 export const initialUserState: IUser = {
   id: 'test',
   name: 'Test User',
-  permissions: [],
   orgs: [],
 };
 
@@ -36,8 +35,7 @@ export type UserActions = ActionMap<UserPayload>[keyof ActionMap<UserPayload>];
 export function userReducer(state: IUser, action: UserActions) {
   switch (action.type) {
     case USER_ACTION.SET_USER:
-      console.log( action.payload.user)
-      return { ...state, user: action.payload.user };
+      return { ...state, ...action.payload.user };
     default:
       return state;
   }

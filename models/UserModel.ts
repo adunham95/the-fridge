@@ -1,14 +1,19 @@
-import { IOrg } from './OrgModel';
-interface IPermissions {
-  orgID: string;
-  permissions: [EUserPermissions];
+interface IUserOrg {
+  org: {
+    id: string,
+    name: string,
+  };
+  group: {
+    id: string,
+    name: string,
+    permissions: [EUserPermissions],
+  };
 }
 
 export interface IUser {
   id: string;
   name: string;
-  permissions: Array<IPermissions>;
-  orgs: Array<IOrg>;
+  orgs: Array<IUserOrg>;
 }
 
 export enum EUserPermissions {

@@ -1,6 +1,6 @@
 // @flow
 import { useMutation } from 'graphql-hooks';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../api/mutation/createPost';
 import { UserContext } from '../../context/UserContext';
 import { EUserPermissions } from '../../models/UserModel';
@@ -13,7 +13,7 @@ const myOrgs = [
     id: '61f28acf4956e23fa1c4534c',
   },
   {
-    name: '61f28df14956e23fa1c45352',
+    name: '61f57f24ca7353688e4f94cd',
     id: 'Emelie Org',
   },
 ];
@@ -25,12 +25,26 @@ export const NewPost = () => {
   const [postSubmitting, setPostSubmitting] = useState(false);
   const { state } = useContext(UserContext);
   const myUser = state?.user;
-  const approvedOrgs = myOrgs.filter(
-    (o) =>
-      myUser?.permissions[o.id]?.includes(EUserPermissions.CAN_POST) ||
-      myUser?.permissions[o.id]?.includes(EUserPermissions.CAN_POST_W_APPROVAL),
-  );
-  const [selectedOrg, setSelectedOrg] = useState(approvedOrgs[0]?.id);
+  // eslint-disable-next-line prettier/prettier
+  const [approvedOrgs, setApprovedOrgs] = useState<Array<{ orgID: string, name: string }>>([]);
+  const [selectedOrg, setSelectedOrg] = useState('');
+
+  useEffect(() => {
+    const orgs = myUser.orgs
+      .filter((o) => {
+        return o.group?.permissions.includes(EUserPermissions.CAN_POST);
+      })
+      .map((o) => {
+        return {
+          orgID: o.org.id,
+          name: o.org.name,
+        };
+      });
+    if (orgs.length > 0) {
+      setApprovedOrgs(orgs);
+      setSelectedOrg(orgs[0].orgID);
+    }
+  }, [myUser]);
 
   function canPost() {
     if (newPostText !== '') {
@@ -73,7 +87,7 @@ export const NewPost = () => {
           onChange={(e) => setSelectedOrg(e.target.value)}
         >
           {approvedOrgs.map((o) => (
-            <option key={o.id} value={o.id}>
+            <option key={o.orgID} value={o.orgID}>
               {o.name}
             </option>
           ))}

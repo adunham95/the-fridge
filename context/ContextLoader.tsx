@@ -9,17 +9,15 @@ query GetUsertByID($id:String!){
     id
     name
     accountColor
-    permissions{
-      orgId
-      permissions
-    }
     orgs{
-      name
+     org{
       id
-      groups{
-        id
-        name
-        permissions
+      name
+    }
+      group{
+			id
+      name
+      permissions
       }
     }
   }
@@ -38,7 +36,6 @@ export function ContextLoader() {
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       dispatch({
         type: USER_ACTION.SET_USER,
         payload: {
