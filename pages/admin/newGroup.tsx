@@ -1,11 +1,13 @@
 import Layout from '../../components/Layout/Layout';
 import { useUser } from '../../context/UserContext';
+import { UserPermissionDetails } from '../../models/UserPermission';
 
 const AdminGroup = () => {
   const {
     state: { user: myUser },
   } = useUser();
   console.log(myUser);
+
   return (
     <Layout>
       <>
@@ -16,7 +18,23 @@ const AdminGroup = () => {
             </h1>
           </div>
         </header>
-        <main className="pt-2 px-1"></main>
+        <main className="pt-2 px-3">
+          <form>
+            <div>
+              <label htmlFor="name">Group Name</label>
+              <input id="name" placeholder="Admin" />
+            </div>
+            <div>
+              <h2>Group Permissions</h2>
+              {Object.keys(UserPermissionDetails).map((key) => (
+                <div key={key}>
+                  <span>{UserPermissionDetails[key].title}</span>
+                  <p>{UserPermissionDetails[key].description}</p>
+                </div>
+              ))}
+            </div>
+          </form>
+        </main>
       </>
     </Layout>
   );
