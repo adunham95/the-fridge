@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@heroicons/react": "^1.0.5",
+    "@types/lodash": "^4.14.178",
     "apollo-server-micro": "^3.6.2",
+    "D": "^1.0.0",
     "graphql": "^16.2.0",
     "graphql-hooks": "^5.5.1",
     "graphql-hooks-memcache": "^2.2.3",
