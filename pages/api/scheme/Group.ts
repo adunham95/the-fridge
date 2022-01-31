@@ -8,6 +8,7 @@ export const typeDef = gql`
   input GroupInput {
     name: String!
     orgID: String!
+    permissions: [String!]
   }
 
   type Group {
