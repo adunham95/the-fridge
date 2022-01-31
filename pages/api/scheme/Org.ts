@@ -82,7 +82,6 @@ export const resolvers = {
           update,
           { upsert: true, returnDocument: 'after' },
         );
-        console.log(updatedOrg);
         return updatedOrg;
       } catch (error) {
         throw error;
