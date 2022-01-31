@@ -7,6 +7,7 @@ import { OrgModel } from '../../../models/OrgModel_Server';
 import { merge } from 'lodash';
 
 import { resolvers as GroupResolvers } from '../scheme/Group';
+import { resolvers as OrgResolvers } from '../scheme/Org';
 
 const defaultResolvers = {
   Query: {
@@ -98,17 +99,6 @@ const defaultResolvers = {
         throw error;
       }
     },
-    getOrgs: async () => {
-      try {
-        await dbConnect();
-        const orgs = await OrgModel.find();
-        return orgs.map((org) => {
-          return org.toJSON();
-        });
-      } catch (error) {
-        throw error;
-      }
-    },
   },
   Mutation: {
     createPost: async (_: any, args: any) => {
@@ -139,18 +129,6 @@ const defaultResolvers = {
         );
 
         return newCommentFromDB;
-      } catch (error) {
-        throw error;
-      }
-    },
-    createOrg: async (_: any, args: any) => {
-      try {
-        await dbConnect();
-        const newOrg = new OrgModel({
-          ...args.input,
-        });
-        const newOrgFromDB = await newOrg.save();
-        return newOrgFromDB;
       } catch (error) {
         throw error;
       }
@@ -188,4 +166,4 @@ const defaultResolvers = {
   },
 };
 
-export default merge(defaultResolvers, GroupResolvers);
+export default merge(defaultResolvers, GroupResolvers, OrgResolvers);

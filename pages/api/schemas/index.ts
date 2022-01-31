@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-micro';
 import { typeDef as GroupDef } from '../scheme/Group';
+import { typeDef as OrgDef } from '../scheme/Org';
 
 const typeDefs = gql`
   type Query {
@@ -49,12 +50,6 @@ const typeDefs = gql`
     name: String
   }
 
-  type Org {
-    id: String!
-    name: String!
-    groups: [Group!]
-  }
-
   type UserPermissions {
     orgId: String!
     permissions: [String!]
@@ -90,10 +85,6 @@ const typeDefs = gql`
     parentComment: String
   }
 
-  input OrgInput {
-    name: String!
-  }
-
   input UserInput {
     name: String!
     accountColor: String
@@ -109,15 +100,13 @@ const typeDefs = gql`
     getPosts: [Post]
     getPost(id: String!): Post!
     getUser(id: String!): User!
-    getOrgs: [Org]
   }
 
   type Mutation {
     createPost(input: PostInput): Post!
     createComment(input: CommentInput!): Comment!
-    createOrg(input: OrgInput!): Org!
     createUser(input: UserInput!): User!
   }
 `;
 
-export default [typeDefs, GroupDef];
+export default [typeDefs, GroupDef, OrgDef];
