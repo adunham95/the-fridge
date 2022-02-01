@@ -6,9 +6,36 @@ import { useGraphQLClient } from '../lib/graphql-client';
 import { UserProvider } from '../context/UserContext';
 import { OrgProvider } from '../context/OrgContext';
 import { ContextLoader } from '../context/ContextLoader';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
+import { ReactChild, ReactComponentElement } from 'react';
+import { NextComponentType } from 'next';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+interface IAuth {
+  children: ReactChild;
+}
+
+function Auth({ children }: IAuth): JSX.Element {
+  const { data: session, status } = useSession({ required: true });
+  const isUser = !!session?.user;
+
+  if (isUser) {
+    return <>children</>;
+  }
+
+  // Session is being fetched, or no user.
+  // If no user, useEffect() will redirect.
+  return <div>Loading...</div>;
+}
+
+type AuthComponent = NextComponentType & {
+  auth?: boolean,
+};
+
+type MyAppProps = AppProps & {
+  Component: AuthComponent,
+};
+
+export default function MyApp({ Component, pageProps }: MyAppProps) {
   const graphQLClient = useGraphQLClient(pageProps.initialGraphQLState);
   return (
     <>
@@ -43,8 +70,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <UserProvider>
           <OrgProvider>
             <ClientContext.Provider value={graphQLClient}>
-              <ContextLoader />
-              <Component {...pageProps} />
+              {Component.auth ? (
+                <Auth>
+                  <Component {...pageProps} />
+                </Auth>
+              ) : (
+                <Component {...pageProps} />
+              )}
             </ClientContext.Provider>
           </OrgProvider>
         </UserProvider>
