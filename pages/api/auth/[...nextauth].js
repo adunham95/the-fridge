@@ -5,6 +5,33 @@ import { Types } from 'mongoose';
 import { UserModel } from '../../../models/UserModel_Server';
 import bcrypt from 'bcrypt';
 
+async function getUser(credentials) {
+  console.log('getUser');
+  try {
+    // eslint-disable-next-line prettier/prettier
+    await dbConnect();
+    const post = await UserModel.findOne({
+      email: credentials.username,
+    }).populate({
+      path: 'orgs', // 1st level subdoc (get comments)
+      populate: ['group', 'org'],
+    });
+    console.log(post);
+    const user = { ...post.toJSON() };
+    // console.log('user', user);
+    const match = await bcrypt.compare(credentials.password, user.password);
+    console.log(match);
+    if (!match) {
+      throw 'Passwords Dont Match';
+    }
+    // console.log(returnUser);
+    delete user.password;
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 export default NextAuth({
   secret: process.env.JWT_SECRET,
   pages: {
@@ -21,40 +48,12 @@ export default NextAuth({
       async authorize(credentials, req) {
         console.log('credentials', credentials);
 
-        async function getUser() {
-          try {
-            // eslint-disable-next-line prettier/prettier
-            await dbConnect();
-            const post = await UserModel.findOne({
-              email: credentials.username,
-            }).populate({
-              path: 'orgs', // 1st level subdoc (get comments)
-              populate: ['group', 'org'],
-            });
-            delete post.password;
-            const user = { ...post.toJSON() };
-            console.log('user', user);
-            const match = await bcrypt.compare(
-              credentials.password,
-              user.password,
-            );
-            console.log(match);
-            if (!match) {
-              throw 'Passwords Dont Match';
-            }
-            // console.log(returnUser);
-            return user;
-          } catch (error) {
-            throw error;
-          }
-        }
-
         // Add logic here to look up the user from the credentials supplied
-        const user = await getUser();
+        const user = await getUser(credentials);
 
         if (user) {
           // Any object returned will be saved in `user` property of the JWT
-          console.log(user);
+          console.log('user', user);
           return user;
         } else {
           // If you return null then an error will be displayed advising the user to check their details.
@@ -65,4 +64,32 @@ export default NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      console.log({ user, account, profile, email, credentials });
+      return true;
+    },
+    async jwt({ token, user, account }) {
+      if (user) {
+        const { accessToken, ...rest } = user;
+        token.accessToken = accessToken;
+        token.user = rest;
+        console.log(token);
+      }
+      // Persist the OAuth access_token to the token right after signin
+      //   if (account) {
+      //     token.accessToken = account.access_token;
+      //   }
+      return token;
+    },
+    async session({ session, token, user }) {
+      console.log({ token, user });
+      session.user = {
+        ...session.user,
+        ...token.user,
+      };
+      session.accessToken = token.accessToken;
+      return session;
+    },
+  },
 });

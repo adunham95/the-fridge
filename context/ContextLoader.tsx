@@ -1,4 +1,5 @@
 import { useManualQuery, useQuery } from 'graphql-hooks';
+import { useSession } from 'next-auth/react';
 import React, { Fragment, useEffect } from 'react';
 import { USER_ACTION } from '../reducers/userReducer';
 import { useUser } from './UserContext';
@@ -30,9 +31,13 @@ export function ContextLoader() {
     variables: { id: currentUserID },
   });
 
+  const { data: session, status } = useSession();
+
   useEffect(() => {
-    fetchUser();
-  }, []);
+    // fetchUser();
+    console.log('session', session);
+    console.log('status', status);
+  }, [session]);
 
   useEffect(() => {
     if (data) {
