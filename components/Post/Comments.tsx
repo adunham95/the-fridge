@@ -26,9 +26,8 @@ const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
 
 function NewComment() {
   const [comment, setComment] = useState('');
-  const {
-    data: { user: myUser },
-  } = useSession();
+  const { data: session } = useSession();
+  const myUser = session?.user;
 
   return (
     <div className="flex">

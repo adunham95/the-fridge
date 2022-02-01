@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import NextAuth from "next-auth"
+import NextAuth from "next-auth";
 import { IUser } from "../models/UserModel";
 
 declare module "next-auth" {
@@ -8,6 +8,6 @@ declare module "next-auth" {
    */
   // eslint-disable-next-line prettier/prettier
   interface Session {
-    user: IUser
+    user:IUser
   }
 }

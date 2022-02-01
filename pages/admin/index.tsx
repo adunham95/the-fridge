@@ -5,17 +5,16 @@ import Layout from '../../components/Layout/Layout';
 const states = [];
 
 const AdminHome = () => {
-  const {
-    data: { user: myUser },
-  } = useSession();
+  const { data: session } = useSession();
+  const myUser = session?.user;
   return (
     <Layout>
       <>
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
-            <Avatar name={myUser.name} color={myUser.accountColor} />
+            <Avatar name={myUser?.name || 'A'} color={myUser?.accountColor} />
             <h1 className="text-3xl font-bold text-gray-900 inline-block">
-              {myUser.name}
+              {myUser?.name}
             </h1>
           </div>
         </header>

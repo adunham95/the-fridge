@@ -95,15 +95,14 @@ interface IPostLikeProps {
 }
 
 function PostLikes({ likes }: IPostLikeProps) {
-  const {
-    data: { user: myUser },
-  } = useSession();
+  const { data: session } = useSession();
+  const myUser = session?.user;
   return (
     <button className="flex">
       <IconHeart
         width={28}
         height={28}
-        fill={likes.includes(myUser?.id) ? 'red' : 'pink'}
+        fill={likes.includes(myUser?.id || '') ? 'red' : 'pink'}
       />
       <span className=" ml-2 text-lg">{likes.length}</span>
     </button>

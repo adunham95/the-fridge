@@ -2,11 +2,14 @@
 import * as React from 'react';
 import theme from '../../theme/theme.json';
 type IProps = {
-  name: string,
+  name?: string,
   color?: string,
 };
 
-export const Avatar = ({ name, color = theme.COLORS.blue[500] }: IProps) => {
+export const Avatar = ({
+  name = 'A',
+  color = theme.COLORS.blue[500],
+}: IProps) => {
   return (
     <span
       style={{ backgroundColor: color }}

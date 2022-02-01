@@ -29,9 +29,8 @@ export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const [postMessage, setPostMessage] = useState('');
   const [postSubmitting, setPostSubmitting] = useState(false);
-  const {
-    data: { user: myUser },
-  } = useSession();
+  const { data: session } = useSession();
+  const myUser = session?.user;
   // eslint-disable-next-line prettier/prettier
   const [approvedOrgs, setApprovedOrgs] = useState<Array<{ orgID: string, name: string }>>([]);
   const [selectedOrg, setSelectedOrg] = useState('');
@@ -43,16 +42,17 @@ export const NewPost = () => {
   const [selectedSettings, setSelectedSettings] = useState<Array<any>>([])
 
   useEffect(() => {
-    const orgs = myUser.orgs
-      .filter((o) => {
-        return o.group?.permissions.includes(EUserPermissions.CAN_POST);
-      })
-      .map((o) => {
-        return {
-          orgID: o.org.id,
-          name: o.org.name,
-        };
-      });
+    const orgs =
+      myUser?.orgs
+        .filter((o) => {
+          return o.group?.permissions.includes(EUserPermissions.CAN_POST);
+        })
+        .map((o) => {
+          return {
+            orgID: o.org.id,
+            name: o.org.name,
+          };
+        }) || [];
     const fetchOrgs = async () => {
       console.log(orgs);
       const orgIDs = orgs.map((o) => o.orgID);
@@ -102,7 +102,7 @@ export const NewPost = () => {
       newPost: {
         description: newPostText,
         org: selectedOrg,
-        postedBy: myUser.id,
+        postedBy: myUser?.id,
         viewBy: selectedGroups,
       },
     };
