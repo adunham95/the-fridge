@@ -8,6 +8,7 @@ import { merge } from 'lodash';
 
 import { resolvers as GroupResolvers } from '../scheme/Group';
 import { resolvers as OrgResolvers } from '../scheme/Org';
+import { resolvers as UserResolvers } from '../scheme/User';
 
 const defaultResolvers = {
   Query: {
@@ -73,32 +74,6 @@ const defaultResolvers = {
         throw error;
       }
     },
-    getUser: async (_: any, args: any) => {
-      try {
-        await dbConnect();
-        const post = await UserModel.findById(args.id).populate({
-          path: 'orgs', // 1st level subdoc (get comments)
-          populate: ['group', 'org'],
-        });
-        const user = { ...post.toJSON() };
-        console.log(user);
-        const returnUser = {
-          ...user,
-          permissions: user.orgs.map(
-            (o: { org: { id: string }, group: { permissions: string[] } }) => {
-              return {
-                orgId: o.org.id,
-                permissions: o.group?.permissions || [],
-              };
-            },
-          ),
-        };
-        console.log(returnUser);
-        return returnUser;
-      } catch (error) {
-        throw error;
-      }
-    },
   },
   Mutation: {
     createPost: async (_: any, args: any) => {
@@ -133,19 +108,12 @@ const defaultResolvers = {
         throw error;
       }
     },
-    createUser: async (_: any, args: any) => {
-      try {
-        await dbConnect();
-        const newUser = new UserModel({
-          ...args.input,
-        });
-        const newUserFromDB = await newUser.save();
-        return newUserFromDB;
-      } catch (error) {
-        throw error;
-      }
-    },
   },
 };
 
-export default merge(defaultResolvers, GroupResolvers, OrgResolvers);
+export default merge(
+  defaultResolvers,
+  GroupResolvers,
+  OrgResolvers,
+  UserResolvers,
+);

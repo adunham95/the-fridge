@@ -2,8 +2,11 @@ import { Schema, model, models } from 'mongoose';
 
 const UserSchema = new Schema(
   {
-    name: { type: 'String' },
+    name: { type: 'String', required: true },
     accountColor: { type: 'String', default: '#0000FF' },
+    password: { type: 'String', required: true },
+    email: { type: 'String', required: true, index: true },
+    username: { type: 'String' },
     created: {
       type: Date,
       default: Date.now,

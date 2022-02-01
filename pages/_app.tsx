@@ -6,6 +6,7 @@ import { useGraphQLClient } from '../lib/graphql-client';
 import { UserProvider } from '../context/UserContext';
 import { OrgProvider } from '../context/OrgContext';
 import { ContextLoader } from '../context/ContextLoader';
+import { SessionProvider } from 'next-auth/react';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const graphQLClient = useGraphQLClient(pageProps.initialGraphQLState);
@@ -38,14 +39,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"></link>
         <meta name="theme-color" content="#00abd5" />
       </Head>
-      <UserProvider>
-        <OrgProvider>
-          <ClientContext.Provider value={graphQLClient}>
-            <ContextLoader />
-            <Component {...pageProps} />
-          </ClientContext.Provider>
-        </OrgProvider>
-      </UserProvider>
+      <SessionProvider session={pageProps.session}>
+        <UserProvider>
+          <OrgProvider>
+            <ClientContext.Provider value={graphQLClient}>
+              <ContextLoader />
+              <Component {...pageProps} />
+            </ClientContext.Provider>
+          </OrgProvider>
+        </UserProvider>
+      </SessionProvider>
     </>
   );
 }
