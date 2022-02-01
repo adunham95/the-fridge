@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import { UserContext } from '../../context/UserContext';
+import { useSession } from 'next-auth/react';
+import { useState } from 'react';
 import { IComment } from '../../models/CommentModel';
 import { Avatar } from '../Avatar/Avatar';
 
@@ -26,8 +26,9 @@ const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
 
 function NewComment() {
   const [comment, setComment] = useState('');
-  const { state } = useContext(UserContext);
-  const myUser = state?.user;
+  const {
+    data: { user: myUser },
+  } = useSession();
 
   return (
     <div className="flex">

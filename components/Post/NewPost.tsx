@@ -1,8 +1,8 @@
 // @flow
 import { useManualQuery, useMutation } from 'graphql-hooks';
-import React, { useContext, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../api/mutation/createPost';
-import { UserContext } from '../../context/UserContext';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
@@ -29,8 +29,9 @@ export const NewPost = () => {
   const [newPostText, setNewPostText] = useState('');
   const [postMessage, setPostMessage] = useState('');
   const [postSubmitting, setPostSubmitting] = useState(false);
-  const { state } = useContext(UserContext);
-  const myUser = state?.user;
+  const {
+    data: { user: myUser },
+  } = useSession();
   // eslint-disable-next-line prettier/prettier
   const [approvedOrgs, setApprovedOrgs] = useState<Array<{ orgID: string, name: string }>>([]);
   const [selectedOrg, setSelectedOrg] = useState('');

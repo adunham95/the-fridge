@@ -5,8 +5,7 @@ import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
-import { useContext } from 'react';
-import { UserContext } from '../../context/UserContext';
+import { useSession } from 'next-auth/react';
 
 function PostCard({
   description = '',
@@ -96,8 +95,9 @@ interface IPostLikeProps {
 }
 
 function PostLikes({ likes }: IPostLikeProps) {
-  const { state } = useContext(UserContext);
-  const myUser = state?.user;
+  const {
+    data: { user: myUser },
+  } = useSession();
   return (
     <button className="flex">
       <IconHeart

@@ -1,13 +1,7 @@
 import Layout from '../../components/Layout/Layout';
-import { useUser } from '../../context/UserContext';
 import { UserPermissionDetails } from '../../models/UserPermission';
 
 const AdminGroup = () => {
-  const {
-    state: { user: myUser },
-  } = useUser();
-  console.log(myUser);
-
   return (
     <Layout>
       <>

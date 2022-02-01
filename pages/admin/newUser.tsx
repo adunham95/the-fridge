@@ -1,14 +1,7 @@
 import { useState } from 'react';
-import { Avatar } from '../../components/Avatar/Avatar';
 import Layout from '../../components/Layout/Layout';
-import { useUser } from '../../context/UserContext';
 
 const NewUser = () => {
-  const {
-    state: { user: myUser },
-  } = useUser();
-  console.log(myUser);
-
   const [accountColor, setAccountColor] = useState('#fff');
 
   return (

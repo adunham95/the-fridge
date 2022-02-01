@@ -1,14 +1,13 @@
+import { useSession } from 'next-auth/react';
 import { Avatar } from '../../components/Avatar/Avatar';
 import Layout from '../../components/Layout/Layout';
-import { useUser } from '../../context/UserContext';
 
 const states = [];
 
 const AdminHome = () => {
   const {
-    state: { user: myUser },
-  } = useUser();
-  console.log(myUser);
+    data: { user: myUser },
+  } = useSession();
   return (
     <Layout>
       <>
