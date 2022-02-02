@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../../../utils/dbConnect';
 import { Types } from 'mongoose';
-import { UserModel } from '../../../models/UserModel_Server';
+import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
 
 export const typeDef = gql`

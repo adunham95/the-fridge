@@ -1,9 +1,9 @@
-import { GroupModel } from './../../../models/GroupModel_server';
-import { UserModel } from './../../../models/UserModel_Server';
+import { GroupModel } from '../auth/models/GroupModel_server';
+import { UserModel } from '../auth/models/UserModel_Server';
 import dbConnect from '../../../utils/dbConnect';
-import { PostModel } from '../../../models/PostModel_Server';
-import { CommentModel } from '../../../models/CommentMode_Server';
-import { OrgModel } from '../../../models/OrgModel_Server';
+import { PostModel } from '../auth/models/PostModel_Server';
+import { CommentModel } from '../auth/models/CommentMode_Server';
+import { OrgModel } from '../auth/models/OrgModel_Server';
 import { merge } from 'lodash';
 
 import { resolvers as GroupResolvers } from '../scheme/Group';

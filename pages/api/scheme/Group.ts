@@ -1,8 +1,8 @@
-import { GroupModel } from './../../../models/GroupModel_server';
+import { GroupModel } from '../auth/models/GroupModel_server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../../../utils/dbConnect';
 import mongoose from 'mongoose';
-import { OrgModel } from '../../../models/OrgModel_Server';
+import { OrgModel } from '../auth/models/OrgModel_Server';
 
 export const typeDef = gql`
   input GroupInput {
