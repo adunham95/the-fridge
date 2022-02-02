@@ -3,8 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { UserModel } from './models/UserModel_Server';
-import GroupModel from './models/GroupModel_server';
-import OrgModel from './models/OrgModel_Server';
+import { GroupModel } from './models/GroupModel_server';
+import { OrgModel } from './models/OrgModel_Server';
 import bcrypt from 'bcrypt';
 
 async function getUser(credentials) {
