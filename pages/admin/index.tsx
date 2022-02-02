@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { Avatar } from '../../components/Avatar/Avatar';
 import Layout from '../../components/Layout/Layout';
 
@@ -18,7 +19,15 @@ const AdminHome = () => {
             </h1>
           </div>
         </header>
-        <main className="pt-2 px-1"></main>
+        <main className="pt-2 px-1">
+          <div>
+            <Link href={'/admin/newGroup'} passHref>
+              <a>
+                <span>New Group</span>
+              </a>
+            </Link>
+          </div>
+        </main>
       </>
     </Layout>
   );
