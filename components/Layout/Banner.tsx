@@ -84,7 +84,7 @@ const Banner = ({
   copy,
 }: IProps) => {
   const [bannerIds, setBannerIds] = useState([]);
-  const [showBanner, setShowBanner] = useState(true);
+  const [showBanner, setShowBanner] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const { width } = useWindowSize();
   const isomorphicEffect = useIsomorphicEffect();
