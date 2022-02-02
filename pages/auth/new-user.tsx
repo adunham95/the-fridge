@@ -1,7 +1,9 @@
 // @flow
 import { LockClosedIcon } from '@heroicons/react/outline';
 import { useMutation } from 'graphql-hooks';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { ParsedUrlQuery } from 'querystring';
+import React, { useEffect, useState } from 'react';
 
 const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
     createUser(input:$newUser) {
@@ -10,17 +12,40 @@ const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
       id
     }}`;
 
+type NewUserQuery = ParsedUrlQuery & {
+  invitecode: string | undefined,
+  name: string | undefined,
+  email: string | undefined,
+};
+
 export default function NewUser() {
   const [createUser] = useMutation(CREATE_USER_MUTATION);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [inviteCode, setInviteCode] = useState('');
+  const [name, setName] = useState<string | string[]>('');
+  const [email, setEmail] = useState<string | string[]>('');
+  const [username, setUsername] = useState<string | string[]>('');
+  const [password, setPassword] = useState<string | string[]>('');
+  const [inviteCode, setInviteCode] = useState<string | string[]>('');
+  const { query } = useRouter();
+  console.log(query);
+
+  useEffect(() => {
+    if (query?.invitecode) {
+      setInviteCode(query.invitecode);
+    }
+    if (query?.name) {
+      setName(query.name);
+    }
+    if (query?.email) {
+      setName(query.email);
+    }
+  }, [query]);
 
   function CreateUser(e: React.FormEvent<EventTarget>) {
     e.preventDefault();
     console.log('Create User');
+    if (Array.isArray(inviteCode)) {
+      return;
+    }
     const orgData = inviteCode.split(',').map((c) => {
       const set = c.split('-');
       return {
@@ -40,7 +65,6 @@ export default function NewUser() {
     };
     console.log(newUser);
     createUser({ variables: newUser });
-    // updateUser({ variables: { id, name: newName } })
   }
 
   return (
@@ -64,6 +88,7 @@ export default function NewUser() {
                   type="text"
                   autoComplete="name"
                   required
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
                   placeholder="Name"
@@ -79,6 +104,7 @@ export default function NewUser() {
                   type="email"
                   autoComplete="email"
                   required
+                  value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
@@ -94,6 +120,7 @@ export default function NewUser() {
                   type="password"
                   autoComplete="password"
                   required
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900   focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
                   placeholder="Password"
@@ -106,6 +133,7 @@ export default function NewUser() {
                 <textarea
                   id="inviteCode"
                   name="inviteCode"
+                  value={inviteCode}
                   onChange={(e) => setInviteCode(e.target.value)}
                   className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-brand-500 focus:border-brand-500 focus:z-10 sm:text-sm"
                   placeholder="Invite Code"
