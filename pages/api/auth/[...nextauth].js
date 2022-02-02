@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import dbConnect from '../../../utils/dbConnect';
 import { Types } from 'mongoose';
 import { UserModel } from '../../../models/UserModel_Server';
+import GroupModel from '../../../models/GroupModel_server';
+import OrgModel from '../../../models/OrgModel_Server';
 import bcrypt from 'bcrypt';
 
 async function getUser(credentials) {
@@ -14,11 +16,14 @@ async function getUser(credentials) {
       email: credentials.username,
     }).populate({
       path: 'orgs', // 1st level subdoc (get comments)
-      populate: ['group', 'org'],
+      populate: [
+        { path: 'group', model: GroupModel },
+        { path: 'org', model: OrgModel },
+      ],
     });
     console.log(post);
     const user = { ...post.toJSON() };
-    // console.log('user', user);
+    console.log('user', user);
     const match = await bcrypt.compare(credentials.password, user.password);
     console.log(match);
     if (!match) {
@@ -28,6 +33,7 @@ async function getUser(credentials) {
     delete user.password;
     return user;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 }
