@@ -33,4 +33,6 @@ const AdminHome = () => {
   );
 };
 
+AdminHome.auth = true;
+
 export default AdminHome;

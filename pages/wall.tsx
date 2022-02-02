@@ -21,6 +21,8 @@ const Wall = ({ posts }: IProps) => {
   );
 };
 
+Wall.auth = true;
+
 export async function getServerSideProps() {
   const data = await queryGraphql(
     `
