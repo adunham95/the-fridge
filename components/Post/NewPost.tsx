@@ -131,22 +131,26 @@ export const NewPost = () => {
     <div className="p-2">
       <div className="flex justify-between">
         <Avatar name={myUser?.name} />
-        <select
-          className="px-2"
-          value={selectedOrg}
-          onChange={(e) => setSelectedOrg(e.target.value)}
-        >
-          {approvedOrgs.map((o) => (
-            <option key={o.orgID} value={o.orgID}>
-              {o.name}
-            </option>
-          ))}
-        </select>
+        <div className="col-span-6 sm:col-span-3">
+          <select
+            id="org"
+            name="org"
+            value={selectedOrg}
+            onChange={(e) => setSelectedOrg(e.target.value)}
+            className="block w-full py-2 px-3 pr-9 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
+          >
+            {approvedOrgs.map((o) => (
+              <option key={o.orgID} value={o.orgID}>
+                {o.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <textarea
         value={newPostText}
         onChange={(e) => setNewPostText(e.target.value)}
-        className="w-full p-1 border border-brand-400 mt-1 rounded"
+        className="w-full p-1 border border-slate-200 focus:active:border-brand-400 mt-1 rounded"
       />
       <div className="flex justify-between">
         <div>
