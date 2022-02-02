@@ -20,4 +20,5 @@ export interface IUser {
 export enum EUserPermissions {
   CAN_POST = 'canPost',
   IS_ADMIN = 'isAdmin',
+  POST_PERMISSION = 'postPermission',
 }

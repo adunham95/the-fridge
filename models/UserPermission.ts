@@ -14,7 +14,10 @@ export const UserPermissionDetails: IUserPermissionDetails = {
   },
   [EUserPermissions.IS_ADMIN]: {
     title: 'Is Admin',
-    description:
-      " 'They have permission to the admin panel, create groups, orgs'",
+    description: 'They have permission to the admin panel, create groups, orgs',
+  },
+  [EUserPermissions.POST_PERMISSION]: {
+    title: 'Post Permission',
+    description: 'The can post, but if they post it must be approved',
   },
 };
