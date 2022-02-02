@@ -19,7 +19,7 @@ function Auth({ children }: IAuth): JSX.Element {
   const isUser = !!session?.user;
 
   if (isUser) {
-    return <>children</>;
+    return <>{children}</>;
   }
 
   // Session is being fetched, or no user.
