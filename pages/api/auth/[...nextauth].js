@@ -7,6 +7,19 @@ import { GroupModel } from './models/GroupModel_server';
 import { OrgModel } from './models/OrgModel_Server';
 import bcrypt from 'bcrypt';
 
+function getTime(time) {
+  switch (time) {
+    case 's':
+      return 60;
+    case 'm':
+      return 60;
+    case 'h':
+      return 60;
+    default:
+      return 0;
+  }
+}
+
 async function getUser(credentials) {
   console.log('getUser');
   try {
@@ -38,10 +51,15 @@ async function getUser(credentials) {
   }
 }
 
+const maxAgeDays = 7;
+
 export default NextAuth({
   secret: process.env.JWT_SECRET,
   pages: {
     newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
+  jwt: {
+    maxAge: getTime('s') * getTime('m') * getTime('h') * maxAgeDays,
   },
   // Configure one or more authentication providers
   providers: [
