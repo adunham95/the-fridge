@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from '../../components/Avatar/Avatar';
 import Layout from '../../components/Layout/Layout';
+import { ERoutes } from '../../models/Routes';
 
 const states = [];
 
@@ -21,12 +22,12 @@ const AdminHome = () => {
         </header>
         <main className="pt-2 px-1">
           <div>
-            <Link href={'/admin/newGroup'} passHref>
+            <Link href={ERoutes.ADMIN_NEW_GROUP} passHref>
               <a>
                 <span>New Group</span>
               </a>
             </Link>
-            <Link href={'/admin/editOrg'} passHref>
+            <Link href={ERoutes.ADMIN_EDIT_ORG} passHref>
               <a>
                 <span>Edit Org</span>
               </a>

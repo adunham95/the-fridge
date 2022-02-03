@@ -5,16 +5,17 @@ import { EIcons } from '../Icons';
 import IconLogo from '../Icons/Icon-Logo';
 import NavItem, { INavMenuItem } from './NavItem';
 import theme from '../../theme/theme.json';
+import { ERoutes } from '../../models/Routes';
 
 const navMenu: Array<INavMenuItem> = [
   {
-    path: '/',
+    path: ERoutes.HOME,
     title: 'Home',
     icon: EIcons.HOME,
     exact: true,
   },
   {
-    path: '/wall',
+    path: ERoutes.WALL,
     title: 'Wall',
     icon: EIcons.BOOK,
     showIf: {
@@ -22,7 +23,7 @@ const navMenu: Array<INavMenuItem> = [
     },
   },
   {
-    path: '/admin',
+    path: ERoutes.ADMIN,
     title: 'Admin',
     icon: EIcons.GEAR,
     showIf: {
@@ -31,7 +32,7 @@ const navMenu: Array<INavMenuItem> = [
     permissions: [EUserPermissions.IS_ADMIN],
   },
   {
-    path: '/api/auth/signin',
+    path: ERoutes.SIGN_IN,
     title: 'Log In',
     icon: EIcons.LOCK,
     showIf: {
@@ -39,7 +40,7 @@ const navMenu: Array<INavMenuItem> = [
     },
   },
   {
-    path: '/api/auth/signout',
+    path: ERoutes.SIGN_OUT,
     title: 'Log Out',
     icon: EIcons.LOCK,
     showIf: {
