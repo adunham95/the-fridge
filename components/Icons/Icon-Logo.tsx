@@ -4,7 +4,7 @@ interface IProps {
   size?: number;
 }
 
-const IconLogo = ({ color = '#00abd5', size = 600 }: IProps) => {
+const IconLogo = ({ color = '#8c81a7', size = 600 }: IProps) => {
   return (
     <svg
       width={size}
