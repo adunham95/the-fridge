@@ -82,7 +82,7 @@ const AdminGroup = () => {
                   name="name"
                   id="name"
                   placeholder="Admin"
-                  className="focus:ring-brand-500 focus:brand-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md"
+                  className="focus:ring-brand-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
             </div>
