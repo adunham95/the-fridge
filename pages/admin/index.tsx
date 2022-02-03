@@ -26,6 +26,11 @@ const AdminHome = () => {
                 <span>New Group</span>
               </a>
             </Link>
+            <Link href={'/admin/editOrg'} passHref>
+              <a>
+                <span>Edit Org</span>
+              </a>
+            </Link>
           </div>
         </main>
       </>
