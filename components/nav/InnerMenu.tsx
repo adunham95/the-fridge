@@ -32,7 +32,7 @@ const navMenu: Array<INavMenuItem> = [
     permissions: [EUserPermissions.IS_ADMIN],
   },
   {
-    path: ERoutes.SIGN_IN,
+    path: ERoutes.AUTH_SIGN_IN,
     title: 'Log In',
     icon: EIcons.LOCK,
     showIf: {
@@ -40,7 +40,7 @@ const navMenu: Array<INavMenuItem> = [
     },
   },
   {
-    path: ERoutes.SIGN_OUT,
+    path: ERoutes.AUTH_SIGN_OUT,
     title: 'Log Out',
     icon: EIcons.LOCK,
     showIf: {
