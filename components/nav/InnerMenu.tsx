@@ -11,6 +11,7 @@ const navMenu: Array<INavMenuItem> = [
     path: '/',
     title: 'Home',
     icon: EIcons.HOME,
+    exact: true,
   },
   {
     path: '/wall',

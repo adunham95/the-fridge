@@ -6,6 +6,7 @@ import Icon, { EIcons } from '../Icons';
 export interface INavMenuItem {
   icon: EIcons;
   path: string;
+  exact?: boolean;
   title: string;
   badgeCount?: number;
   showIf?: {
@@ -25,6 +26,7 @@ const NavItem = ({
   path,
   isCollapsed = false,
   badgeCount,
+  exact = false,
 }: IProps) => {
   const [showToolTip, setShowToolTip] = useState(false);
   const router = useRouter();
@@ -38,7 +40,10 @@ const NavItem = ({
   }
 
   function getActiveClassStyles() {
-    if (router.pathname === path) {
+    if (exact && router.pathname === path) {
+      return 'bg-brand-400 text-white';
+    }
+    if (!exact && router.pathname.includes(path)) {
       return 'bg-brand-400 text-white';
     } else {
       return 'text-brand-400';
