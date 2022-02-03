@@ -1,22 +1,26 @@
+import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { CREATE_GROUP_MUTATION } from '../../apiData/mutation/createOrgs';
 import Layout from '../../components/Layout/Layout';
 import { EUserPermissions } from '../../models/UserModel';
 import { UserPermissionDetails } from '../../models/UserPermission';
 
 const AdminGroup = () => {
+  const [createGroup] = useMutation(CREATE_GROUP_MUTATION);
   const [selectedPermission, setSelectedPermission] = useState<Array<string>>([
     EUserPermissions.CAN_VIEW_POST,
   ]);
   const [groupName, setGroupName] = useState('');
   const [selectedOrg, setSelectedOrg] = useState('');
+  const [message, setMessage] = useState('');
   // eslint-disable-next-line prettier/prettier
   const [orgs, setOrgs] = useState<Array<{ orgID: string, name: string }>>([]);
   const { data: session } = useSession();
   const myUser = session?.user;
 
   useEffect(() => {
-    console.log(myUser);
+    // console.log(myUser);
     const orgList =
       myUser?.orgs.map((o) => {
         return {
@@ -25,7 +29,7 @@ const AdminGroup = () => {
         };
       }) || [];
 
-    console.log(orgList);
+    // console.log(orgList);
     setOrgs(orgList);
   }, [myUser]);
 
@@ -50,6 +54,28 @@ const AdminGroup = () => {
       newPermissions = [...newPermissions, permString];
     }
     setSelectedPermission(newPermissions);
+  }
+
+  async function makeGroup() {
+    const newGroup = {
+      name: groupName,
+      orgID: selectedOrg,
+      permissions: selectedPermission,
+    };
+    console.log(newGroup);
+    const { data, error } = await createGroup({
+      variables: { newGroup },
+    });
+
+    console.log(data);
+
+    if (data) {
+      setMessage(`Group ${data.createGroup.name} created`);
+    }
+    if (error) {
+      console.log('Create Group Error', error);
+      setMessage(`There was an issue creating the group`);
+    }
   }
 
   return (
@@ -145,6 +171,7 @@ const AdminGroup = () => {
             <div className="flex justify-end pt-2">
               <button
                 type="button"
+                onClick={makeGroup}
                 className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 ${
                   canSave()
                     ? 'bg-opacity-80 hover:bg-brand-600'
@@ -154,6 +181,7 @@ const AdminGroup = () => {
                 Save
               </button>
             </div>
+            <div>{message}</div>
           </form>
         </main>
       </>
