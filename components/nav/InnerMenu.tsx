@@ -81,7 +81,6 @@ function InnerMenu({
     if (navItem?.permissions) {
       const myPermissions =
         session?.user.orgs.map((o) => o.group.permissions).flat() || [];
-      console.log(myPermissions);
       const found = myPermissions.some((r) =>
         (navItem?.permissions || []).includes(r),
       );
