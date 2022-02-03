@@ -1,12 +1,15 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout/Layout';
+import { EUserPermissions } from '../../models/UserModel';
 import { UserPermissionDetails } from '../../models/UserPermission';
 
 const AdminGroup = () => {
-  const [selectedPermission, setSelectedPermission] = useState<Array<string>>(
-    [],
-  );
+  const [selectedPermission, setSelectedPermission] = useState<Array<string>>([
+    EUserPermissions.CAN_VIEW_POST,
+  ]);
+  const [groupName, setGroupName] = useState('');
+  const [selectedOrg, setSelectedOrg] = useState('');
   // eslint-disable-next-line prettier/prettier
   const [orgs, setOrgs] = useState<Array<{ orgID: string, name: string }>>([]);
   const { data: session } = useSession();
@@ -25,6 +28,19 @@ const AdminGroup = () => {
     console.log(orgList);
     setOrgs(orgList);
   }, [myUser]);
+
+  function canSave() {
+    if (selectedPermission.length === 0) {
+      return false;
+    }
+    if (groupName === '') {
+      return false;
+    }
+    if (selectedOrg === '') {
+      return false;
+    }
+    return true;
+  }
 
   function updatePermission(permString: string) {
     let newPermissions = [...selectedPermission];
@@ -59,6 +75,8 @@ const AdminGroup = () => {
               <select
                 id="org"
                 name="org"
+                value={selectedOrg}
+                onChange={(e) => setSelectedOrg(e.target.value)}
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
               >
                 <option>Select Org</option>
@@ -82,6 +100,8 @@ const AdminGroup = () => {
                   name="name"
                   id="name"
                   placeholder="Admin"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.target.value)}
                   className="focus:ring-brand-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -121,6 +141,18 @@ const AdminGroup = () => {
                   );
                 })}
               </div>
+            </div>
+            <div className="flex justify-end pt-2">
+              <button
+                type="button"
+                className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 ${
+                  canSave()
+                    ? 'bg-opacity-80 hover:bg-brand-600'
+                    : 'bg-opacity-50 cursor-not-allowed'
+                }`}
+              >
+                Save
+              </button>
             </div>
           </form>
         </main>
