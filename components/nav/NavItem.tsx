@@ -7,6 +7,7 @@ export interface INavMenuItem {
   icon: EIcons;
   path: string;
   title: string;
+  badgeCount?: number;
   showIf?: {
     loggedIn?: boolean,
     loggedOut?: boolean,
@@ -22,8 +23,8 @@ const NavItem = ({
   title,
   icon,
   path,
-  permissions = [],
   isCollapsed = false,
+  badgeCount,
 }: IProps) => {
   const [showToolTip, setShowToolTip] = useState(false);
   const router = useRouter();
@@ -49,7 +50,7 @@ const NavItem = ({
       <a
         onMouseEnter={() => setShowToolTip(true)}
         onMouseLeave={() => setShowToolTip(false)}
-        className={`flex w-full relative items-center justify-start mb-2 border border-transparent hover:bg-brand-200 hover:bg-opacity-70 p-1 rounded hover:text-brand-500 ${getWrapperStyles()} ${getActiveClassStyles()}`}
+        className={`flex group w-full relative items-center justify-start mt-[0.75em] border border-transparent hover:bg-brand-200 hover:bg-opacity-70 p-1 rounded hover:text-brand-500 ${getWrapperStyles()} ${getActiveClassStyles()}`}
       >
         <span className="flex items-center justify-center p-2">
           <Icon name={icon} width={28} />
@@ -57,8 +58,19 @@ const NavItem = ({
         {!isCollapsed && (
           <span className="uppercase text-left block w-full pl-1">{title}</span>
         )}
+        {badgeCount && (
+          <span
+            className={`absolute ${
+              isCollapsed
+                ? 'top-[-0.5em] right-[-0.5em]'
+                : 'top-[calc(50%-0.75em)] right-1'
+            } h-[1.5em] w-[1.5em] flex justify-center items-center rounded-full group-hover:bg-red-600 bg-brand-700 text-white text-xs`}
+          >
+            {badgeCount}
+          </span>
+        )}
         {isCollapsed && showToolTip && (
-          <div className="absolute left-[calc(var(--sidebar-width))] text-white whitespace-nowrap text-xs bg-slate-700 rounded p-1">
+          <div className="absolute left-[calc(var(--sidebar-width))] text-white whitespace-nowrap text-xs bg-brand-700 rounded p-1">
             <span>{title}</span>
           </div>
         )}
