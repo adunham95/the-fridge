@@ -1,4 +1,7 @@
+import IconBook from './Icon-book';
+import IconGear from './Icon-gear';
 import IconHouse from './Icon-house';
+import IconLock from './Icon-lock';
 import IconUser from './Icon-User';
 
 export interface IIconProps {
@@ -11,6 +14,9 @@ export interface IIconProps {
 export enum EIcons {
   HOME = 'Home',
   USER = 'User',
+  BOOK = 'Book',
+  GEAR = 'Gear',
+  LOCK = 'Lock',
 }
 
 export const IconList = Object.values(EIcons);
@@ -22,6 +28,12 @@ const Icon = (props: IIconProps) => {
       return <IconHouse {...props} />;
     case EIcons.USER:
       return <IconUser {...props} />;
+    case EIcons.BOOK:
+      return <IconBook {...props} />;
+    case EIcons.GEAR:
+      return <IconGear {...props} />;
+    case EIcons.LOCK:
+      return <IconLock {...props} />;
     default:
       return <></>;
   }
