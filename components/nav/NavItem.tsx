@@ -7,6 +7,10 @@ export interface INavMenuItem {
   icon: EIcons;
   path: string;
   title: string;
+  showIf?: {
+    loggedIn?: boolean,
+    isAdmin?: boolean,
+  };
   permissions?: Array<string>;
 }
 

@@ -1,3 +1,4 @@
+import { useSession } from 'next-auth/react';
 import { useIsomorphicEffect } from '../../hooks/useIsomorphicEffect';
 import { EUserPermissions } from '../../models/UserModel';
 import { EIcons } from '../Icons';
@@ -14,11 +15,17 @@ const navMenu: Array<INavMenuItem> = [
     path: '/wall',
     title: 'Wall',
     icon: EIcons.USER,
+    showIf: {
+      loggedIn: true,
+    },
   },
   {
     path: '/admin',
     title: 'Admin',
     icon: EIcons.USER,
+    showIf: {
+      loggedIn: true,
+    },
     permissions: [EUserPermissions.IS_ADMIN],
   },
 ];
@@ -35,6 +42,7 @@ function InnerMenu({
   className = '',
 }: IProps) {
   const isomorphicEffect = useIsomorphicEffect();
+  const { data: session } = useSession();
 
   isomorphicEffect(() => {
     const root = document.documentElement;
@@ -44,6 +52,22 @@ function InnerMenu({
     }
     root.style.setProperty('--sidebar-width', sidebarWidth);
   }, [isCollapsed]);
+
+  function showNavItem(navItem: INavMenuItem) {
+    if (navItem.showIf?.loggedIn && !session?.user) {
+      return false;
+    }
+    if (navItem?.permissions) {
+      const myPermissions =
+        session?.user.orgs.map((o) => o.group.permissions).flat() || [];
+      console.log(myPermissions);
+      const found = myPermissions.some((r) =>
+        (navItem?.permissions || []).includes(r),
+      );
+      return found;
+    }
+    return true;
+  }
 
   return (
     <div className={`p-2 h-screen min-w-[var(--sidebar-width)] ${className}`}>
@@ -63,7 +87,7 @@ function InnerMenu({
           </span>
         </div>
       )}
-      {navMenu.map((n) => (
+      {navMenu.filter(showNavItem).map((n) => (
         <NavItem isCollapsed={isCollapsed} key={n.path} {...n} />
       ))}
     </div>
