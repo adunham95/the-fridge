@@ -150,7 +150,7 @@ export const NewPost = () => {
       <textarea
         value={newPostText}
         onChange={(e) => setNewPostText(e.target.value)}
-        className="w-full p-1 border border-slate-200 focus:active:border-brand-400 mt-1 rounded"
+        className="w-full p-1 border border-slate-200  mt-1 rounded focus:ring-brand-500"
       />
       <div className="flex justify-between">
         <div>
@@ -183,7 +183,7 @@ export const NewPost = () => {
                   className="hidden peer"
                 />
                 <label
-                  className="peer-checked:bg-blue-500 peer-checked:bg-opacity-100 bg-blue-400 bg-opacity-50 text-white p-1 rounded text-sm"
+                  className="peer-checked:bg-brand-500 peer-checked:bg-opacity-100 bg-brand-400 bg-opacity-50 text-white p-1 rounded text-sm"
                   htmlFor={`${g.id}-value`}
                 >
                   {g.name}

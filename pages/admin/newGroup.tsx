@@ -104,7 +104,7 @@ const AdminGroup = () => {
                       />
                       <label
                         htmlFor={key}
-                        className={`p-2 block border  h-full rounded transition cursor-pointer ${
+                        className={`p-2 block border  h-full rounded transition cursor-pointer hover:border-brand-400 ${
                           isChecked
                             ? ' border-brand-300 shadow-md shadow-brand-200'
                             : 'border-gray-200'
