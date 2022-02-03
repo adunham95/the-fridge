@@ -14,7 +14,7 @@ const navMenu: Array<INavMenuItem> = [
   {
     path: '/wall',
     title: 'Wall',
-    icon: EIcons.USER,
+    icon: EIcons.BOOK,
     showIf: {
       loggedIn: true,
     },
@@ -22,11 +22,27 @@ const navMenu: Array<INavMenuItem> = [
   {
     path: '/admin',
     title: 'Admin',
-    icon: EIcons.USER,
+    icon: EIcons.GEAR,
     showIf: {
       loggedIn: true,
     },
     permissions: [EUserPermissions.IS_ADMIN],
+  },
+  {
+    path: '/api/auth/signin',
+    title: 'Log In',
+    icon: EIcons.LOCK,
+    showIf: {
+      loggedOut: true,
+    },
+  },
+  {
+    path: '/api/auth/signout',
+    title: 'Log Out',
+    icon: EIcons.LOCK,
+    showIf: {
+      loggedIn: true,
+    },
   },
 ];
 
@@ -55,6 +71,9 @@ function InnerMenu({
 
   function showNavItem(navItem: INavMenuItem) {
     if (navItem.showIf?.loggedIn && !session?.user) {
+      return false;
+    }
+    if (navItem.showIf?.loggedOut && session?.user) {
       return false;
     }
     if (navItem?.permissions) {
