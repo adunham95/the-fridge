@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { CREATE_GROUP_MUTATION } from '../../apiData/mutation/createOrgs';
 import Layout from '../../components/Layout/Layout';
+import { Select } from '../../components/StatelessInput/Select';
 import { EUserPermissions } from '../../models/UserModel';
 import { UserPermissionDetails } from '../../models/UserPermission';
 
@@ -90,29 +91,19 @@ const AdminGroup = () => {
         </header>
         <main className="pt-2 px-3">
           <form>
-            <div className="col-span-6 sm:col-span-3">
-              <label
-                htmlFor="org"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Group Belongs To:
-                <p></p>
-              </label>
-              <select
-                id="org"
-                name="org"
-                value={selectedOrg}
-                onChange={(e) => setSelectedOrg(e.target.value)}
-                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
-              >
-                <option>Select Org</option>
-                {orgs.map((o) => (
-                  <option value={o.orgID} key={o.orgID}>
-                    {o.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <Select
+              label="Group Belongs To"
+              id="org"
+              defaultOption="Select a Group"
+              onChange={setSelectedOrg}
+              value={selectedOrg}
+              options={orgs.map((o) => {
+                return {
+                  value: o.orgID,
+                  label: o.name,
+                };
+              })}
+            />
             <div className="pt-2">
               <label
                 htmlFor="name"

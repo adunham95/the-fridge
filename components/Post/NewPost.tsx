@@ -6,6 +6,7 @@ import { CREATE_POST_MUTATION } from '../../apiData/mutation/createPost';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
+import { Select } from '../StatelessInput/Select';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -131,21 +132,17 @@ export const NewPost = () => {
     <div className="p-2">
       <div className="flex justify-between">
         <Avatar name={myUser?.name} />
-        <div className="col-span-6 sm:col-span-3">
-          <select
-            id="org"
-            name="org"
-            value={selectedOrg}
-            onChange={(e) => setSelectedOrg(e.target.value)}
-            className="block w-full py-2 px-3 pr-9 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
-          >
-            {approvedOrgs.map((o) => (
-              <option key={o.orgID} value={o.orgID}>
-                {o.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Select
+          id="org"
+          onChange={setSelectedOrg}
+          value={selectedOrg}
+          options={approvedOrgs.map((o) => {
+            return {
+              value: o.orgID,
+              label: o.name,
+            };
+          })}
+        />
       </div>
       <textarea
         value={newPostText}
