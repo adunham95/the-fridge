@@ -19,11 +19,12 @@ export interface IUser {
 
 export enum EUserPermissions {
   CAN_POST = 'canPost',
-  CAN_COMMENT='canComment',
-  CAN_SHARE='canShare',
+  CAN_COMMENT = 'canComment',
+  CAN_SHARE = 'canShare',
   IS_ADMIN = 'isAdmin',
-  REQUIRES_POST_APPROVAL = 'requiresPostApprovl',
+  REQUIRES_POST_APPROVAL = 'requiresPostApproval',
   APPROVE_POST = 'canApprovePost',
-  UPDATE_GROUPS='canUpdateGroup"
-  CREATE_GROUPS='canCreateGroup'
+  UPDATE_GROUPS = 'canUpdateGroup',
+  CREATE_GROUPS = 'canCreateGroup',
+  CAN_VIEW_POST = 'canViewPost',
 }
