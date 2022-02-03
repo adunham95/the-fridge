@@ -49,15 +49,13 @@ const NavItem = ({
       <a
         onMouseEnter={() => setShowToolTip(true)}
         onMouseLeave={() => setShowToolTip(false)}
-        className={`flex w-full relative items-center justify-start mb-2 border border-transparent hover:bg-brand-200 hover:bg-opacity-70 p-1 rounded hover:text-slate-500 ${getWrapperStyles()} ${getActiveClassStyles()}`}
+        className={`flex w-full relative items-center justify-start mb-2 border border-transparent hover:bg-brand-200 hover:bg-opacity-70 p-1 rounded hover:text-brand-500 ${getWrapperStyles()} ${getActiveClassStyles()}`}
       >
         <span className="flex items-center justify-center p-2">
           <Icon name={icon} width={28} />
         </span>
         {!isCollapsed && (
-          <span className="uppercase font-semibold text-left block w-full pl-1">
-            {title}
-          </span>
+          <span className="uppercase text-left block w-full pl-1">{title}</span>
         )}
         {isCollapsed && showToolTip && (
           <div className="absolute left-[calc(var(--sidebar-width))] text-white whitespace-nowrap text-xs bg-slate-700 rounded p-1">

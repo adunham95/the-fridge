@@ -4,6 +4,7 @@ import { EUserPermissions } from '../../models/UserModel';
 import { EIcons } from '../Icons';
 import IconLogo from '../Icons/Icon-Logo';
 import NavItem, { INavMenuItem } from './NavItem';
+import theme from '../../theme/theme.json';
 
 const navMenu: Array<INavMenuItem> = [
   {
@@ -93,13 +94,19 @@ function InnerMenu({
       {showLogo && (
         <div className="pb-2">
           <span
-            className={` max-w-[calc(var(--sidebar-width)-1rem] bg-brand-500 rounded flex py-2 ${
-              isCollapsed && 'p-3 aspect-square justify-center items-center'
+            className={` max-w-[calc(var(--sidebar-width)-1rem]  rounded flex p-2 ${
+              isCollapsed &&
+              'p-2 aspect-square justify-center items-center bg-brand-400'
             }`}
           >
-            <IconLogo size={isCollapsed ? 28 : 75} color="white" />
+            <span className="flex items-center justify-center p-2">
+              <IconLogo
+                size={28}
+                color={isCollapsed ? 'white' : theme.COLORS.brand[400]}
+              />
+            </span>
             {!isCollapsed && (
-              <span className="text-white text-xl flex flex-col justify-center">
+              <span className="text-brand-400 text-xl flex flex-col justify-center">
                 The Fridge
               </span>
             )}
