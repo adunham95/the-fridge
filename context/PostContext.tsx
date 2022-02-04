@@ -43,7 +43,7 @@ const usePost = () => {
   const context = useContext(PostContext);
 
   if (context === undefined) {
-    throw new Error('useOrg must be used within OrgContext');
+    throw new Error('usePost must be used within PostContext');
   }
 
   return context;
