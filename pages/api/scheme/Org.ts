@@ -58,6 +58,8 @@ export const resolvers = {
         console.log(idList);
         const orgs = await OrgModel.find({
           _id: idList,
+        }).populate({
+          path: 'groups',
         });
         console.log(orgs);
         return orgs.map((org) => {
