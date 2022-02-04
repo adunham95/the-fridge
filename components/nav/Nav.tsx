@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import IconClose from '../Icons/Icon-Close';
 import IconLogo from '../Icons/Icon-Logo';
 import IconMenu from '../Icons/Icon-Menu';
 import InnerMenu from './InnerMenu';
@@ -26,13 +27,17 @@ const Nav = ({}) => {
       {isMenuOpen && (
         <div className="fixed inset-0 flex z-50">
           <div className="bg-white w-[var(--sidebar-width)] h-full">
-            <button onClick={() => setIsMenuOpen(false)}>Close</button>
+            {/* <button onClick={() => setIsMenuOpen(false)}>Close</button> */}
             <InnerMenu showLogo={false} />
           </div>
           <button
-            className="w-full h-full bg-black bg-opacity-30"
+            className="w-full h-full bg-black bg-opacity-30 relative"
             onClick={() => setIsMenuOpen(false)}
-          />
+          >
+            <span className="bg-white h-[2em] absolute top-2 left-2 flex justify-center items-center p-2 rounded">
+              <IconClose height={20} width={20} />
+            </span>
+          </button>
         </div>
       )}
     </>
