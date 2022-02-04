@@ -3,11 +3,8 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ClientContext } from 'graphql-hooks';
 import { useGraphQLClient } from '../lib/graphql-client';
-import { UserProvider } from '../context/UserContext';
-import { OrgProvider } from '../context/OrgContext';
-import { ContextLoader } from '../context/ContextLoader';
 import { SessionProvider, useSession } from 'next-auth/react';
-import { ReactChild, ReactComponentElement } from 'react';
+import { ReactChild } from 'react';
 import { NextComponentType } from 'next';
 
 interface IAuth {
@@ -67,19 +64,15 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         <meta name="theme-color" content="#00abd5" />
       </Head>
       <SessionProvider session={pageProps.session}>
-        <UserProvider>
-          <OrgProvider>
-            <ClientContext.Provider value={graphQLClient}>
-              {Component.auth ? (
-                <Auth>
-                  <Component {...pageProps} />
-                </Auth>
-              ) : (
-                <Component {...pageProps} />
-              )}
-            </ClientContext.Provider>
-          </OrgProvider>
-        </UserProvider>
+        <ClientContext.Provider value={graphQLClient}>
+          {Component.auth ? (
+            <Auth>
+              <Component {...pageProps} />
+            </Auth>
+          ) : (
+            <Component {...pageProps} />
+          )}
+        </ClientContext.Provider>
       </SessionProvider>
     </>
   );
