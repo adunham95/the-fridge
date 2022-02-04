@@ -37,6 +37,7 @@ const Wall = () => {
         {posts.map((p: IPost) => (
           <PostCard key={p.id} {...p} />
         ))}
+        {!loading && posts.length === 0 && <h1>No Posts</h1>}
       </div>
     </Layout>
   );
