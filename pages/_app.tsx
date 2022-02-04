@@ -6,6 +6,7 @@ import { useGraphQLClient } from '../lib/graphql-client';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { ReactChild } from 'react';
 import { NextComponentType } from 'next';
+import { PostProvider } from '../context/PostContext';
 
 interface IAuth {
   children: ReactChild;
@@ -64,15 +65,17 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         <meta name="theme-color" content="#00abd5" />
       </Head>
       <SessionProvider session={pageProps.session}>
-        <ClientContext.Provider value={graphQLClient}>
-          {Component.auth ? (
-            <Auth>
+        <PostProvider>
+          <ClientContext.Provider value={graphQLClient}>
+            {Component.auth ? (
+              <Auth>
+                <Component {...pageProps} />
+              </Auth>
+            ) : (
               <Component {...pageProps} />
-            </Auth>
-          ) : (
-            <Component {...pageProps} />
-          )}
-        </ClientContext.Provider>
+            )}
+          </ClientContext.Provider>
+        </PostProvider>
       </SessionProvider>
     </>
   );
