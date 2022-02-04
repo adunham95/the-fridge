@@ -9,6 +9,7 @@ import { merge } from 'lodash';
 import { resolvers as GroupResolvers } from '../scheme/Group';
 import { resolvers as OrgResolvers } from '../scheme/Org';
 import { resolvers as UserResolvers } from '../scheme/User';
+import { resolvers as PostResolvers } from '../scheme/Post';
 
 const defaultResolvers = {
   Query: {
@@ -116,4 +117,5 @@ export default merge(
   GroupResolvers,
   OrgResolvers,
   UserResolvers,
+  PostResolvers,
 );

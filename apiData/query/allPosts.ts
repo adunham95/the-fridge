@@ -7,7 +7,6 @@ query allPosts{
     dateTime
     orgID
     orgName
-    viewByGroups
     postedBy{
       name
       id

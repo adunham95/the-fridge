@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-micro';
 import { typeDef as GroupDef } from '../scheme/Group';
 import { typeDef as OrgDef } from '../scheme/Org';
 import { typeDef as UserDef } from '../scheme/User';
+import { typeDef as PostDef } from '../scheme/Post';
 
 const typeDefs = gql`
   type Query {
@@ -18,7 +19,6 @@ const typeDefs = gql`
     org: Org
     orgID: String
     orgName: String
-    viewByGroups: [String]
     postedBy: PostAuthor
     likedBy: [String]
     comments: [Comment]
@@ -73,4 +73,4 @@ const typeDefs = gql`
   }
 `;
 
-export default [typeDefs, GroupDef, OrgDef, UserDef];
+export default [typeDefs, GroupDef, OrgDef, UserDef, PostDef];

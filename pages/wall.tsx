@@ -1,18 +1,39 @@
+import { useManualQuery } from 'graphql-hooks';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { GET_POSTS_BY_GROUP } from '../apiData/query/getPostsByGroup';
 import Layout from '../components/Layout/Layout';
 import { NewPost } from '../components/Post/NewPost';
 import PostCard from '../components/Post/PostCard';
 import { IPost } from '../models/PostModel';
-import queryGraphql from '../shared/query-graphql';
 
-interface IProps {
-  posts: Array<IPost>;
-}
+const Wall = () => {
+  const { data: session } = useSession();
+  const [fetchPosts, { loading }] = useManualQuery(GET_POSTS_BY_GROUP);
+  const myUser = session?.user;
+  const [posts, setPosts] = useState([]);
 
-const Wall = ({ posts }: IProps) => {
+  useEffect(() => {
+    const myGroups = myUser?.orgs.map((o) => o.group.id);
+    console.log('myGroups', myGroups);
+    fetchPostData(myGroups || []);
+  }, [myUser]);
+
+  const fetchPostData = async (groupList: Array<string>) => {
+    const data = await fetchPosts({
+      variables: {
+        ids: groupList,
+      },
+    });
+
+    setPosts(data?.data?.getPostsByGroup || []);
+  };
+
   return (
     <Layout>
       <div className=" max-w-md mx-auto">
         <NewPost />
+        {loading && <h1>Loading...</h1>}
         {posts.map((p: IPost) => (
           <PostCard key={p.id} {...p} />
         ))}
@@ -22,44 +43,5 @@ const Wall = ({ posts }: IProps) => {
 };
 
 Wall.auth = true;
-
-export async function getServerSideProps() {
-  const data = await queryGraphql(
-    `
-    query allPosts{
-      getPosts{
-        id
-        description
-        image
-        dateTime
-        org{
-          id
-          name
-        }
-        viewByGroups
-        postedBy{
-          name
-          id
-        }
-        likedBy
-        comments{
-          id
-          message
-          dateTime
-          author{
-            name
-            id
-          }
-        }
-      }
-    }
-  `,
-  );
-  return {
-    props: {
-      posts: data.getPosts,
-    },
-  };
-}
 
 export default Wall;
