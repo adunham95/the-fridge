@@ -25,13 +25,6 @@ const typeDefs = gql`
     permissions: [String]
   }
 
-  input PostInput {
-    description: String
-    image: String
-    org: String
-    postedBy: String
-  }
-
   type PostAuthor {
     id: String
     name: String
@@ -68,7 +61,6 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createPost(input: PostInput): Post!
     createComment(input: CommentInput!): Comment!
   }
 `;

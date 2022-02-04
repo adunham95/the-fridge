@@ -3,6 +3,7 @@ import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../apiData/mutation/createPost';
+import { IPost } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
@@ -23,10 +24,13 @@ query GetGroupsByOrg($orgIDs:[String!]){
 }
 `;
 
-export const NewPost = () => {
+interface IProps {
+  onCreate: (post: IPost) => void;
+}
+
+export const NewPost = ({ onCreate }: IProps) => {
   const [createPost] = useMutation(CREATE_POST_MUTATION);
-  const [fetchUser, { loading, error, data }] =
-    useManualQuery(ALL_GROUPS_QUERY);
+  const [fetchUser] = useManualQuery(ALL_GROUPS_QUERY);
   const [newPostText, setNewPostText] = useState('');
   const [postMessage, setPostMessage] = useState('');
   const [postSubmitting, setPostSubmitting] = useState(false);
@@ -104,14 +108,22 @@ export const NewPost = () => {
         description: newPostText,
         org: selectedOrg,
         postedBy: myUser?.id,
-        viewBy: selectedGroups,
+        viewByGroups: selectedGroups,
       },
     };
     console.log(newPostData);
-    await createPost({ variables: newPostData });
-    setNewPostText('');
-    setPostMessage('Post Submitted');
-    setPostSubmitting(false);
+    const data = await createPost({ variables: newPostData });
+    if (data?.error) {
+      setNewPostText('');
+      setPostMessage('Post Failed to save');
+      setPostSubmitting(false);
+    }
+    if (data?.data) {
+      onCreate(data.data.createPost);
+      setNewPostText('');
+      setPostMessage('Post Submitted');
+      setPostSubmitting(false);
+    }
   }
 
   function setOrgGroup(groupVal: string) {

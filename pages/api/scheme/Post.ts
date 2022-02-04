@@ -27,8 +27,20 @@ export const typeDef = gql`
     permissions: [String]
   }
 
+  input PostInput {
+    description: String
+    image: String
+    org: String
+    postedBy: String
+    viewByGroups: [String]
+  }
+
   extend type Query {
     getPostsByGroup(groupIDs: [String!]): [WallPost!]
+  }
+
+  extend type Mutation {
+    createPost(input: PostInput): WallPost!
   }
 `;
 
@@ -57,5 +69,24 @@ export const resolvers = {
       }
     },
   },
-  Mutation: {},
+  Mutation: {
+    createPost: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newPost = new PostModel({
+          ...args.input,
+          dateTime: new Date(),
+        });
+        const newPostFromDB = await newPost.save();
+        const returnPost = await new PostModel(newPostFromDB).populate([
+          'org',
+          'postedBy',
+        ]);
+        console.log(returnPost);
+        return returnPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+  },
 };

@@ -8,7 +8,7 @@ const PostSchema = new Schema(
     org: { type: Schema.Types.ObjectId, ref: 'Org' },
     authorID: { type: 'String' },
     postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
-    viewByGroups: { type: 'String' },
+    viewByGroups: [{ type: 'String' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     permissions: { type: 'Array' },
     likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],

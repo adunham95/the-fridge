@@ -77,19 +77,6 @@ const defaultResolvers = {
     },
   },
   Mutation: {
-    createPost: async (_: any, args: any) => {
-      try {
-        await dbConnect();
-        const newPost = new PostModel({
-          ...args.input,
-          dateTime: new Date(),
-        });
-        const newPostFromDB = await newPost.save();
-        return newPostFromDB;
-      } catch (error) {
-        throw error;
-      }
-    },
     createComment: async (_: any, args: any) => {
       try {
         await dbConnect();

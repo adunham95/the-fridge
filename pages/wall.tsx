@@ -11,7 +11,7 @@ const Wall = () => {
   const { data: session } = useSession();
   const [fetchPosts, { loading }] = useManualQuery(GET_POSTS_BY_GROUP);
   const myUser = session?.user;
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Array<IPost>>([]);
 
   useEffect(() => {
     const myGroups = myUser?.orgs.map((o) => o.group.id);
@@ -29,10 +29,15 @@ const Wall = () => {
     setPosts(data?.data?.getPostsByGroup || []);
   };
 
+  const newPost = (post: IPost) => {
+    const newPostList = [post, ...posts];
+    setPosts(newPostList);
+  };
+
   return (
     <Layout>
       <div className=" max-w-md mx-auto">
-        <NewPost />
+        <NewPost onCreate={newPost} />
         {loading && <h1>Loading...</h1>}
         {posts.map((p: IPost) => (
           <PostCard key={p.id} {...p} />
