@@ -1,11 +1,13 @@
 export interface IOrg {
   name: string;
   id: string;
-  groupIDs: Array<string>;
   groups?: Array<IGroup>;
+  defaultPostGroups?: Array<string>;
+  defaultPostSettings?: Array<string>;
 }
 
 export interface IGroup {
   id: string;
-  userIDs: Array<string>;
+  name: string;
+  permissions: Array<string>;
 }
