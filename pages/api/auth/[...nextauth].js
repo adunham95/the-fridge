@@ -58,9 +58,6 @@ export default NextAuth({
   pages: {
     newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
   },
-  jwt: {
-    maxAge: getTime('s') * getTime('m') * getTime('h') * maxAgeDays,
-  },
   // Configure one or more authentication providers
   providers: [
     CredentialsProvider({
