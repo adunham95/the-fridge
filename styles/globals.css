@@ -2,6 +2,10 @@
     --sidebar-width: 208px;
 }
 
+body{
+    @apply bg-neutral-100
+}
+
 
 @tailwind base;
 @tailwind components;

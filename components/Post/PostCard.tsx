@@ -27,54 +27,55 @@ function PostCard({
   }
 
   return (
-    <div className="mb-3 border-b-2 border-gray-200 pb-1">
-      <div className="bg-white">
+    <div className="mb-3 pb-1">
+      <div className="bg-white rounded-md shadow-sm">
         <div className="p-2">
           <div className="flex items-center">
             <Avatar name={postedBy.name} />
-            {postedBy.name}
+            <div className="flex flex-col justify-start pl-1">
+              <p>{postedBy.name}</p>
+              <p className="text-slate-600 text-xs">{formatDate(dateTime)}</p>
+            </div>
           </div>
-          <div className=" text-slate-600 text-sm">{formatDate(dateTime)}</div>
         </div>
-        {image && (
-          <div className="w-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://picsum.photos/200/300" className="w-full" />
-          </div>
-        )}
         {description !== '' && (
-          <div className="px-2">
-            <span>{description}</span>
+          <div className="px-2 pb-1">
+            <span className=" text-slate-700">{description}</span>
           </div>
         )}
-        <div className="p-2 flex w-full justify-between">
-          <div className="flex">
-            <IconComment
-              width={28}
-              height={28}
-              fill={
-                permissions.includes(EPostPermission.ALLOW_COMMENT)
-                  ? theme.COLORS.share[400]
-                  : 'grey'
-              }
+        {image && (
+          <div className="w-full px-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://picsum.photos/200/300"
+              className="w-full rounded-md"
             />
-            <span className=" ml-2 text-lg">{comments.length}</span>
           </div>
+        )}
+        <div className="p-2 flex w-full justify-start">
           <PostLikes likes={likedBy} />
-          <button
+          <div className="flex items-center pl-3">
+            <IconComment
+              width={15}
+              height={15}
+              fill={theme.COLORS.brand[400]}
+            />
+            <span className=" ml-1 text-sm">{comments.length}</span>
+          </div>
+          {/* <button
             className={`flex`}
             disabled={!permissions.includes(EPostPermission.ALLOW_SHARE)}
           >
             <IconPlane
-              width={28}
-              height={28}
+              width={15}
+              height={15}
               fill={
                 permissions.includes(EPostPermission.ALLOW_COMMENT)
                   ? theme.COLORS.share[400]
                   : 'grey'
               }
             />
-          </button>
+          </button> */}
         </div>
       </div>
       <div>
@@ -98,13 +99,13 @@ function PostLikes({ likes }: IPostLikeProps) {
   const { data: session } = useSession();
   const myUser = session?.user;
   return (
-    <button className="flex">
+    <button className="flex items-center">
       <IconHeart
-        width={28}
-        height={28}
+        width={15}
+        height={15}
         fill={likes.includes(myUser?.id || '') ? 'red' : 'pink'}
       />
-      <span className=" ml-2 text-lg">{likes.length}</span>
+      <span className=" ml-1 text-sm">{likes.length}</span>
     </button>
   );
 }

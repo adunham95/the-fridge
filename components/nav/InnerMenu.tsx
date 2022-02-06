@@ -91,7 +91,9 @@ function InnerMenu({
   }
 
   return (
-    <div className={`p-2 h-screen min-w-[var(--sidebar-width)] ${className}`}>
+    <div
+      className={`p-2 h-screen min-w-[var(--sidebar-width)] bg-white ${className}`}
+    >
       {showLogo && (
         <div className="pb-2">
           <span

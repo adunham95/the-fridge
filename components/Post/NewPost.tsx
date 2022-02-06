@@ -141,8 +141,8 @@ export const NewPost = ({ onCreate }: IProps) => {
   }
 
   return (
-    <div className="p-2">
-      <div className="flex justify-between">
+    <div className="px-3 py-2 bg-white mb-4 shadow-sm rounded-md">
+      <div className="flex justify-between items-center">
         <Avatar name={myUser?.name} />
         <Select
           id="org"
@@ -159,7 +159,7 @@ export const NewPost = ({ onCreate }: IProps) => {
       <textarea
         value={newPostText}
         onChange={(e) => setNewPostText(e.target.value)}
-        className="w-full p-1 border border-slate-200  mt-1 rounded focus:ring-brand-500"
+        className="w-full p-1 border border-slate-200  my-2 rounded focus:ring-brand-500"
       />
       <div className="flex justify-between">
         <div>
@@ -168,7 +168,6 @@ export const NewPost = ({ onCreate }: IProps) => {
             <span className="pl-2 text-sm">Images</span>
           </button>
         </div>
-        <div>{postMessage}</div>
       </div>
       {canPost() && (
         <>
@@ -203,18 +202,20 @@ export const NewPost = ({ onCreate }: IProps) => {
         </>
       )}
       <div>
-        <div>
+        <div className="flex justify-between">
+          <div>
+            <p className="text-sm text-slate-500">{postMessage}</p>
+          </div>
+        </div>
+        <div className="flex justify-end">
           <button
             onClick={createNewPost}
             disabled={!canPost()}
-            className={`${canPost() ? 'text-green-400' : 'text-gray-500'}`}
+            className={`bg-emerald-400 hover:bg-emerald-500 px-2 py-1 text-white rounded disabled:cursor-not-allowed disabled:opacity-50`}
           >
             Post
           </button>
         </div>
-      </div>
-      <div className="flex justify-between">
-        <div>{postMessage}</div>
       </div>
     </div>
   );
