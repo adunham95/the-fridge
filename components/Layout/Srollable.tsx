@@ -31,9 +31,7 @@ function Scrollable({ children, isMobile, className = '' }: IProps) {
     >
       {isMobile && <Banner {...bannerData} />}
       <div
-        className={`py-5 ${
-          isMobile ? 'min-h-[calc(100vh-60px)]' : 'min-h-screen'
-        }`}
+        className={`${isMobile ? 'min-h-[calc(100vh-60px)]' : 'min-h-screen'}`}
       >
         {children}
       </div>

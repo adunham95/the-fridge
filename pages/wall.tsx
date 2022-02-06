@@ -46,7 +46,7 @@ const Wall = () => {
 
   return (
     <Layout>
-      <div className=" max-w-md mx-auto">
+      <div className=" max-w-md mx-auto py-5">
         <NewPost onCreate={newPost} />
         {loading && <h1>Loading...</h1>}
         {state.posts.map((p: IPost) => (
