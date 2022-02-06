@@ -1,11 +1,14 @@
 // @flow
+import { group } from 'console';
 import { useManualQuery } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { GROUP_BY_IDS } from '../../apiData/query/groupByIds';
 import Layout from '../../components/Layout/Layout';
+import { Input } from '../../components/StatelessInput/Input';
 import { Select } from '../../components/StatelessInput/Select';
-import { IOrg } from '../../models/OrgModel';
+import { IGroup, IOrg } from '../../models/OrgModel';
+import { ERoutes } from '../../models/Routes';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -96,6 +99,10 @@ export function EditOrg() {
           {selectedOrgData && (
             <div>
               <h2 className=" text-xl">{selectedOrgData.name}</h2>
+              <CreateInviteLink
+                orgID={selectedOrg}
+                groups={selectedOrgData?.groups || []}
+              />
               <h3>Set default post groups</h3>
               <div>
                 <button
@@ -129,6 +136,73 @@ export function EditOrg() {
         </main>
       </>
     </Layout>
+  );
+}
+
+interface IInviteLinkProps {
+  orgID: string;
+  groups: Array<IGroup>;
+}
+
+function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
+  const [newUserName, setNewUserName] = useState('');
+  const [selectedGroup, setSelectedGroup] = useState('');
+  const [inviteLink, setInviteLink] = useState('');
+  const [hasClipboard, setHasClipboard] = useState(false);
+
+  useEffect(() => {
+    if (navigator.clipboard) {
+      setHasClipboard(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}${ERoutes.AUTH_SIGN_UP}?invitecode=${orgID}-${selectedGroup}`;
+    if (newUserName !== '') {
+      url += `&name=${newUserName}`;
+    }
+    setInviteLink(url);
+  }, [newUserName, orgID, selectedGroup]);
+
+  async function copyText() {
+    await navigator.clipboard.writeText(inviteLink);
+  }
+
+  return (
+    <div>
+      <h3>Create Invite Link</h3>
+      <Input
+        label="New user name"
+        value={newUserName}
+        onChange={setNewUserName}
+        id={'newUserName'}
+      />
+      <Select
+        label="Select Group"
+        value={selectedGroup}
+        onChange={setSelectedGroup}
+        id={'group'}
+        defaultOption="Select Group"
+        options={groups.map((g) => {
+          return {
+            value: g.id,
+            label: g.name,
+          };
+        })}
+      />
+      <p className="flex justify-between pt-1 items-center">
+        {inviteLink}
+        {hasClipboard && (
+          <button
+            onClick={copyText}
+            disabled={selectedGroup === ''}
+            className="bg-brand-400 py-1 px-2 text-white rounded-md disabled:bg-red-400 flex-shrink-0"
+          >
+            Copy Link
+          </button>
+        )}
+      </p>
+    </div>
   );
 }
 
