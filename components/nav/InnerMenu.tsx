@@ -9,12 +9,6 @@ import { ERoutes } from '../../models/Routes';
 
 const navMenu: Array<INavMenuItem> = [
   {
-    path: ERoutes.HOME,
-    title: 'Home',
-    icon: EIcons.HOME,
-    exact: true,
-  },
-  {
     path: ERoutes.WALL,
     title: 'Wall',
     icon: EIcons.BOOK,
@@ -30,6 +24,14 @@ const navMenu: Array<INavMenuItem> = [
       loggedIn: true,
     },
     permissions: [EUserPermissions.IS_ADMIN],
+  },
+  {
+    path: ERoutes.USER,
+    title: 'Profile',
+    icon: EIcons.USER,
+    showIf: {
+      loggedIn: true,
+    },
   },
   {
     path: ERoutes.AUTH_SIGN_IN,
