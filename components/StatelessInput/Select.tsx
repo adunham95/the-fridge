@@ -35,7 +35,7 @@ export function Select({
         onChange={(e) => onChange(e.target.value)}
         className="mt-1 block w-full py-2 px-3 pr-9 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
       >
-        {defaultOption && <option>{defaultOption}</option>}
+        {defaultOption && <option value="">{defaultOption}</option>}
         {options.map((o) => (
           <option value={o.value} key={o.value}>
             {o.label}
