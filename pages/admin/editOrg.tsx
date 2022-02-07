@@ -7,6 +7,7 @@ import { GROUP_BY_IDS } from '../../apiData/query/groupByIds';
 import Layout from '../../components/Layout/Layout';
 import { Input } from '../../components/StatelessInput/Input';
 import { Select } from '../../components/StatelessInput/Select';
+import { useToast } from '../../components/Toast/ToastContext';
 import { IGroup, IOrg } from '../../models/OrgModel';
 import { ERoutes } from '../../models/Routes';
 
@@ -149,6 +150,7 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
   const [selectedGroup, setSelectedGroup] = useState('');
   const [inviteLink, setInviteLink] = useState('');
   const [hasClipboard, setHasClipboard] = useState(false);
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (navigator.clipboard) {
@@ -166,6 +168,7 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
 
   async function copyText() {
     await navigator.clipboard.writeText(inviteLink);
+    addToast('Link Copied');
   }
 
   return (
@@ -190,8 +193,8 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
           };
         })}
       />
-      <p className="flex justify-between pt-1 items-center">
-        {inviteLink}
+      <p className="flex justify-between pt-1 items-center">{inviteLink}</p>
+      <div className="flex justify-end">
         {hasClipboard && (
           <button
             onClick={copyText}
@@ -201,7 +204,7 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
             Copy Link
           </button>
         )}
-      </p>
+      </div>
     </div>
   );
 }

@@ -46,7 +46,7 @@ interface IProps {
 const ToastContainer = ({ toasts }: IProps) => {
   return (
     <ClientOnlyPortal>
-      <div className=" absolute top-0 right-0 p-2">
+      <div className="absolute top-[60px] sm:top-0 right-0 p-2">
         {toasts.map((item: IToast) => (
           <Toast key={item.id} id={item.id} type={item.type}>
             {item.content}
