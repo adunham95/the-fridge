@@ -8,4 +8,5 @@ export enum ERoutes {
   AUTH_SIGN_OUT = '/api/auth/signout',
   AUTH_SIGN_UP = '/auth/new-user',
   USER = '/user',
+  TIMELINE = '/timeline',
 }

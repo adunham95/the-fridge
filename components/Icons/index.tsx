@@ -1,4 +1,5 @@
 import IconBook from './Icon-book';
+import IconCalender from './Icon-Calender';
 import IconGear from './Icon-gear';
 import IconHouse from './Icon-house';
 import IconLock from './Icon-lock';
@@ -17,6 +18,7 @@ export enum EIcons {
   BOOK = 'Book',
   GEAR = 'Gear',
   LOCK = 'Lock',
+  CALENDER = 'Calender',
 }
 
 export const IconList = Object.values(EIcons);
@@ -34,6 +36,8 @@ const Icon = (props: IIconProps) => {
       return <IconGear {...props} />;
     case EIcons.LOCK:
       return <IconLock {...props} />;
+    case EIcons.CALENDER:
+      return <IconCalender {...props} />;
     default:
       return <></>;
   }

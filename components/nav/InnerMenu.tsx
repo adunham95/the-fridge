@@ -34,6 +34,14 @@ const navMenu: Array<INavMenuItem> = [
     },
   },
   {
+    path: ERoutes.TIMELINE,
+    title: 'Timeline',
+    icon: EIcons.CALENDER,
+    showIf: {
+      loggedIn: true,
+    },
+  },
+  {
     path: ERoutes.AUTH_SIGN_IN,
     title: 'Log In',
     icon: EIcons.LOCK,
