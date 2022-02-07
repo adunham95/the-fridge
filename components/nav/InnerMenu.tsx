@@ -12,6 +12,7 @@ const navMenu: Array<INavMenuItem> = [
     path: ERoutes.WALL,
     title: 'Wall',
     icon: EIcons.BOOK,
+    exact: true,
     showIf: {
       loggedIn: true,
     },
