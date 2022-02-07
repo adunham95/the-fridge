@@ -6,8 +6,10 @@ import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
 import { useSession } from 'next-auth/react';
+import { ImageCarousel } from '../Image/ImageCarousel';
 
 function PostCard({
+  id,
   description = '',
   permissions = [],
   comments = [],
@@ -27,7 +29,7 @@ function PostCard({
   }
 
   return (
-    <div className="mb-3 pb-1">
+    <div className="mb-3 pb-1" id={id}>
       <div className="bg-white rounded-md shadow-sm">
         <div className="p-2">
           <div className="flex items-center">
@@ -45,12 +47,7 @@ function PostCard({
         )}
         {image.length > 0 && (
           <div className="w-full px-2">
-            {image.map((img) => (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img loading="lazy" src={img} className="w-full rounded-md" />
-              </>
-            ))}
+            <ImageCarousel images={image} />
           </div>
         )}
         <div className="p-2 flex w-full justify-start">
