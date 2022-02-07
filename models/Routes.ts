@@ -1,6 +1,5 @@
 export enum ERoutes {
-  HOME = '/',
-  WALL = '/wall',
+  WALL = '/',
   ADMIN = '/admin',
   ADMIN_NEW_GROUP = '/admin/newGroup',
   ADMIN_EDIT_ORG = '/admin/editOrg',
