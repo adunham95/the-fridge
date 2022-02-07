@@ -14,6 +14,9 @@ export interface IUser {
   id: string;
   name: string;
   accountColor?: string;
+  email: string;
+  created: string;
+  username: string;
   orgs: Array<IUserOrg>;
 }
 

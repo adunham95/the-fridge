@@ -1,5 +1,7 @@
 import { useSession } from 'next-auth/react';
 import Layout from '../../components/Layout/Layout';
+import { PageBanner } from '../../components/Page/PageBanner';
+import { Select } from '../../components/StatelessInput/Select';
 
 const Wall = () => {
   const { data: session } = useSession();
@@ -7,9 +9,7 @@ const Wall = () => {
 
   return (
     <Layout>
-      <div className=" max-w-md mx-auto py-5">
-        <h1>Timeline</h1>
-      </div>
+      <PageBanner title="Timeline" />
     </Layout>
   );
 };

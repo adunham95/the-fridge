@@ -2,7 +2,7 @@
 import * as React from 'react';
 type Props = {
   title: string,
-  children: React.ReactChild,
+  children?: React.ReactChild,
 };
 export function PageBanner({ children, title }: Props) {
   return (
