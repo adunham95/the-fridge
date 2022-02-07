@@ -171,6 +171,28 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
     addToast('Link Copied');
   }
 
+  async function shareLink() {
+    const shareData = {
+      title: 'Share Link',
+      text: 'You have been invited to a group on The Fridge',
+      url: inviteLink,
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    if (navigator?.canShare) {
+      try {
+        await navigator.share(shareData);
+        console.log('shared link');
+        // resultPara.textContent = 'MDN shared successfully'
+      } catch (err) {
+        console.log('Could not share');
+        // resultPara.textContent = 'Error: ' + err
+      }
+    } else {
+      console.log(`Your system doesn't support sharing files.`);
+    }
+  }
+
   return (
     <div>
       <h3>Create Invite Link</h3>
@@ -204,6 +226,13 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
             Copy Link
           </button>
         )}
+        <button
+          disabled={!navigator.canShare}
+          onClick={shareLink}
+          className="bg-brand-400 py-1 px-2 text-white rounded-md ml-1 disabled:bg-red-400 flex-shrink-0"
+        >
+          Share Link
+        </button>
       </div>
     </div>
   );
