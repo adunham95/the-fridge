@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import { GET_POSTS_BY_GROUP } from '../apiData/query/getPostsByGroup';
 import Layout from '../components/Layout/Layout';
+import { Loader } from '../components/Loader/Loader';
 import { NewPost } from '../components/Post/NewPost';
 import PostCard from '../components/Post/PostCard';
 import { usePost } from '../context/PostContext';
@@ -48,7 +49,11 @@ const Wall = () => {
     <Layout>
       <div className=" max-w-md mx-auto py-5">
         <NewPost onCreate={newPost} />
-        {loading && <h1>Loading...</h1>}
+        {loading && (
+          <div className="flex justify-center pt-1 pb-2">
+            <Loader />
+          </div>
+        )}
         {state.posts.map((p: IPost) => (
           <PostCard key={p.id} {...p} />
         ))}
