@@ -4,7 +4,7 @@ const PostSchema = new Schema(
   {
     dateTime: { type: 'String' },
     description: { type: 'String' },
-    image: { type: 'String' },
+    image: [{ type: 'String' }],
     org: { type: Schema.Types.ObjectId, ref: 'Org' },
     authorID: { type: 'String' },
     postedBy: { type: Schema.Types.ObjectId, ref: 'User' },

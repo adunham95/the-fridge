@@ -15,7 +15,7 @@ const typeDefs = gql`
     id: String
     dateTime: String
     description: String
-    image: String
+    image: [String]
     org: Org
     orgID: String
     orgName: String

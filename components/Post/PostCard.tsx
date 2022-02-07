@@ -13,7 +13,7 @@ function PostCard({
   comments = [],
   likedBy = [],
   postedBy,
-  image = 'https://picsum.photos/200/300',
+  image = [],
   dateTime,
 }: IPost) {
   function formatDate(date: string) {
@@ -43,13 +43,14 @@ function PostCard({
             <span className=" text-slate-700">{description}</span>
           </div>
         )}
-        {image && (
+        {image.length > 0 && (
           <div className="w-full px-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://picsum.photos/200/300"
-              className="w-full rounded-md"
-            />
+            {image.map((img) => (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img loading="lazy" src={img} className="w-full rounded-md" />
+              </>
+            ))}
           </div>
         )}
         <div className="p-2 flex w-full justify-start">

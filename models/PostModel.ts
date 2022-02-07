@@ -4,7 +4,7 @@ export interface IPost {
   id: string;
   dateTime: string;
   description?: string;
-  image?: string;
+  image?: Array<string>;
   orgID: string;
   orgName?: string;
   viewByGroups?: Array<string>;

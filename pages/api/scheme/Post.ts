@@ -7,7 +7,7 @@ export const typeDef = gql`
     id: String
     dateTime: String
     description: String
-    image: String
+    image: [String]
     org: Org
     postedBy: PostAuthor
     likedBy: [String]
@@ -19,7 +19,7 @@ export const typeDef = gql`
     id: String
     dateTime: String
     description: String
-    image: String
+    image: [String]
     org: Org
     postedBy: PostAuthor
     likedBy: [String]
@@ -29,7 +29,7 @@ export const typeDef = gql`
 
   input PostInput {
     description: String
-    image: String
+    image: [String]
     org: String
     postedBy: String
     viewByGroups: [String]

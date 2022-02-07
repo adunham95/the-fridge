@@ -28,6 +28,7 @@ const Wall = () => {
         ids: groupList,
       },
     });
+    console.log(data.data);
     dispatch({
       type: POST_ACTION.SET_POSTS,
       payload: {
