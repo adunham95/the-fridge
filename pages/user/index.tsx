@@ -33,6 +33,14 @@ function UserProfile() {
             label="Account Color"
             onChange={setAccountColor}
           /> */}
+          <div className="mt-1 flex justify-end">
+            <button
+              disabled
+              className="bg-brand-400 disabled:bg-opacity-25 text-white px-3 py-2 rounded-md disabled:cursor-not-allowed"
+            >
+              Update Profile
+            </button>
+          </div>
         </div>
       </>
     </Layout>
