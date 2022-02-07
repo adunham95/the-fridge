@@ -47,9 +47,8 @@ export function ImageCarousel({ images }: Props) {
       setActiveSlide(nextSlide);
     }
     if (action === 'Slide') {
-      const nextThumb = slideNub;
-      const nextSlide = slideNub ? images.length - 1 : activeSlide - 1;
-      setActiveThumb(nextThumb);
+      const nextSlide = slideNub;
+      setActiveThumb(slideNub);
       setActiveSlide(nextSlide);
     }
   }
