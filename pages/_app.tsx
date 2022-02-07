@@ -7,6 +7,7 @@ import { SessionProvider, useSession } from 'next-auth/react';
 import { ReactChild } from 'react';
 import { NextComponentType } from 'next';
 import { PostProvider } from '../context/PostContext';
+import ToastProvider from '../components/Toast/ToastContext';
 
 interface IAuth {
   children: ReactChild;
@@ -65,17 +66,19 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         <meta name="theme-color" content="#4dc4e2" />
       </Head>
       <SessionProvider session={pageProps.session}>
-        <PostProvider>
-          <ClientContext.Provider value={graphQLClient}>
-            {Component.auth ? (
-              <Auth>
+        <ToastProvider>
+          <PostProvider>
+            <ClientContext.Provider value={graphQLClient}>
+              {Component.auth ? (
+                <Auth>
+                  <Component {...pageProps} />
+                </Auth>
+              ) : (
                 <Component {...pageProps} />
-              </Auth>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </ClientContext.Provider>
-        </PostProvider>
+              )}
+            </ClientContext.Provider>
+          </PostProvider>
+        </ToastProvider>
       </SessionProvider>
     </>
   );
