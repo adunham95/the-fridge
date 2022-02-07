@@ -27,12 +27,12 @@ function UserProfile() {
         <div className="py-2 px-0 md:px-3">
           <Input id="name" value={name} onChange={setName} label="Name" />
           <Input id="email" value={email} onChange={setEmail} label="Email" />
-          <ColorPicker
+          {/* <ColorPicker
             id="accountColor"
             value={accountColor}
             label="Account Color"
             onChange={setAccountColor}
-          />
+          /> */}
         </div>
       </>
     </Layout>
