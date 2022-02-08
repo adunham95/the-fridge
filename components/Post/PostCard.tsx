@@ -9,6 +9,11 @@ import { ImageCarousel } from '../Image/ImageCarousel';
 import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { IComment } from '../../models/CommentModel';
+import { useEffect, useState } from 'react';
+import { useManualQuery } from 'graphql-hooks';
+import { GET_COMMENT_BY_POST } from '../../apiData/query/getCommentsByPost';
+import { useToast } from '../Toast/ToastContext';
+import { loadComponents } from 'next/dist/server/load-components';
 
 function PostCard({
   id,
@@ -75,16 +80,38 @@ function PostCard({
         className="w-full max-w-[400px] rounded-t-md"
         closeClassName="bg-rose-400 text-white hover:text-rose-700 rounded-full h-[1em] w-[1em] shadow-sm flex justify-center items-center right-1"
       >
-        <PostComments />
+        <PostComments postID={id} />
       </Modal>
     </div>
   );
 }
 
-function PostComments() {
-  const comments: Array<IComment> = [];
-  //TODO fetch comments on load
-  console.log('Post comments ran');
+function PostComments({ postID }: { postID: string }) {
+  const [comments, setComments] = useState<Array<IComment>>([]);
+  const [fetchComments, { loading }] = useManualQuery(GET_COMMENT_BY_POST);
+  const { addToast } = useToast();
+
+  useEffect(() => {
+    console.log('postID', postID);
+    loadComments();
+  }, [postID]);
+
+  async function loadComments() {
+    const data = await fetchComments({
+      variables: {
+        id: postID,
+      },
+    });
+    console.log(data.data);
+    if (data.data.getCommentsByPost === null) {
+      addToast('Could not load comments');
+      setComments([]);
+    }
+    if (data.data.getCommentsByPost !== null) {
+      setComments(data.data.getCommentsByPost);
+    }
+  }
+
   return (
     <div className=" pt-1 pb-1 w-full bg-white rounded-t-md">
       <p className="mx-2 border-b border-slate-200">Comments</p>
