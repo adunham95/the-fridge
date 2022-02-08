@@ -1,6 +1,7 @@
 import { PostModel } from './../auth/models/PostModel_Server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
+import { Types } from 'mongoose';
 
 export const typeDef = gql`
   type WallPost {
@@ -37,6 +38,7 @@ export const typeDef = gql`
 
   extend type Query {
     getPostsByGroup(groupIDs: [String!]): [WallPost!]
+    getSinglePost(id: String!): AdvancedWallPost
   }
 
   extend type Mutation {
@@ -64,6 +66,18 @@ export const resolvers = {
             return Date.parse(b.dateTime) - Date.parse(a.dateTime);
           })
           .map((post) => post.toJSON());
+      } catch (error) {
+        throw error;
+      }
+    },
+    getSinglePost: async (_: any, args: any) => {
+      try {
+        console.log(args.id);
+        await dbConnect();
+        const post = await PostModel.findById(
+          new Types.ObjectId(args.id),
+        ).populate(['org', 'postedBy', 'comments']);
+        return post.toJSON();
       } catch (error) {
         throw error;
       }
