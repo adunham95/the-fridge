@@ -8,6 +8,7 @@ import { ReactChild } from 'react';
 import { NextComponentType } from 'next';
 import { PostProvider } from '../context/PostContext';
 import ToastProvider from '../components/Toast/ToastContext';
+import { ModalProvider } from '../components/Modal/ModalContext';
 
 interface IAuth {
   children: ReactChild;
@@ -67,17 +68,19 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
       </Head>
       <SessionProvider session={pageProps.session}>
         <ToastProvider>
-          <PostProvider>
-            <ClientContext.Provider value={graphQLClient}>
-              {Component.auth ? (
-                <Auth>
+          <ModalProvider>
+            <PostProvider>
+              <ClientContext.Provider value={graphQLClient}>
+                {Component.auth ? (
+                  <Auth>
+                    <Component {...pageProps} />
+                  </Auth>
+                ) : (
                   <Component {...pageProps} />
-                </Auth>
-              ) : (
-                <Component {...pageProps} />
-              )}
-            </ClientContext.Provider>
-          </PostProvider>
+                )}
+              </ClientContext.Provider>
+            </PostProvider>
+          </ModalProvider>
         </ToastProvider>
       </SessionProvider>
     </>
