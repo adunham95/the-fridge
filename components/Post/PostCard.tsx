@@ -78,7 +78,7 @@ function PostCard({
         id={`${id}-comments`}
         position="center bottom"
         background="light"
-        className="w-full max-w-[400px] rounded-t-md"
+        className="w-full sm:max-w-[500px] rounded-t-md"
         closeClassName="bg-rose-400 text-white hover:text-rose-700 rounded-full h-[1em] w-[1em] shadow-sm flex justify-center items-center right-1"
       >
         <PostComments postID={id} />

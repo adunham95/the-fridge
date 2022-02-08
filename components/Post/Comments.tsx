@@ -54,7 +54,7 @@ function NewComment() {
   const myUser = session?.user;
 
   return (
-    <div className="flex">
+    <div className="flex sticky bottom-0 bg-white py-1 px-1">
       <input
         placeholder="Write Comment"
         onChange={(e) => setComment(e.target.value)}
