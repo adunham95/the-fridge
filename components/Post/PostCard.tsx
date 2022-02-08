@@ -121,7 +121,7 @@ function PostComments({ postID }: { postID: string }) {
           <Loader />
         </div>
       )}
-      <Comments comments={comments} allowComment />
+      <Comments comments={comments} allowComment postID={postID} />
     </div>
   );
 }
