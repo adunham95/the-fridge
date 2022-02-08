@@ -30,26 +30,6 @@ const typeDefs = gql`
     name: String
   }
 
-  type Comment {
-    id: String
-    message: String
-    dateTime: String
-    postID: String
-    parentComment: String
-    author: CommentAuthor
-  }
-
-  type CommentAuthor {
-    id: String
-    name: String
-  }
-
-  input CommentInput {
-    message: String
-    postID: String
-    parentComment: String
-  }
-
   type updateResponse {
     success: Boolean
   }
@@ -58,10 +38,6 @@ const typeDefs = gql`
     update: updateResponse
     getPosts: [Post]
     getPost(id: String!): Post!
-  }
-
-  type Mutation {
-    createComment(input: CommentInput!): Comment!
   }
 `;
 

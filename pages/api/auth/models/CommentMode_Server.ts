@@ -3,7 +3,7 @@ import { Schema, model, models } from 'mongoose';
 const CommentSchema = new Schema(
   {
     dateTime: { type: 'String' },
-    message: { type: 'String' },
+    message: { type: 'String', required: true },
     postID: { type: 'String' },
     parentComment: { type: 'String' },
     author: { type: Schema.Types.ObjectId, ref: 'User' },

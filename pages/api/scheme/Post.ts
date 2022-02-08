@@ -37,6 +37,27 @@ export const typeDef = gql`
     viewByGroups: [String]
   }
 
+  type Comment {
+    id: String
+    message: String
+    dateTime: String
+    postID: String
+    parentComment: String
+    author: CommentAuthor
+  }
+
+  type CommentAuthor {
+    id: String
+    name: String
+  }
+
+  input CommentInput {
+    message: String!
+    postID: String!
+    parentComment: String
+    author: String!
+  }
+
   extend type Query {
     getPostsByGroup(groupIDs: [String!]): [WallPost!]
     getSinglePost(id: String!): AdvancedWallPost
@@ -45,6 +66,7 @@ export const typeDef = gql`
 
   extend type Mutation {
     createPost(input: PostInput): WallPost!
+    createComment(input: CommentInput!): Comment!
   }
 `;
 
@@ -112,6 +134,29 @@ export const resolvers = {
         ]);
         console.log(returnPost);
         return returnPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    createComment: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const newComment = new CommentModel({
+          ...args.input,
+          dateTime: new Date(),
+        });
+        const newCommentFromDB = await newComment.save();
+
+        const res = await PostModel.updateOne(
+          { _id: args.input.postID },
+          { $push: { comments: newCommentFromDB.id } },
+        );
+
+        const returnComment = await new CommentModel(newCommentFromDB).populate(
+          ['author'],
+        );
+
+        return returnComment.toJSON();
       } catch (error) {
         throw error;
       }

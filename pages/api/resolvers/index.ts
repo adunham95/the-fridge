@@ -76,27 +76,6 @@ const defaultResolvers = {
       }
     },
   },
-  Mutation: {
-    createComment: async (_: any, args: any) => {
-      try {
-        await dbConnect();
-        const newComment = new CommentModel({
-          ...args.input,
-          dateTime: new Date(),
-        });
-        const newCommentFromDB = await newComment.save();
-
-        const res = await PostModel.updateOne(
-          { _id: args.input.postID },
-          { $push: { comments: newCommentFromDB.id } },
-        );
-
-        return newCommentFromDB;
-      } catch (error) {
-        throw error;
-      }
-    },
-  },
 };
 
 export default merge(
