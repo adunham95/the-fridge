@@ -4,6 +4,7 @@ import { useMutation } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
+import { useToast } from '../../components/Toast/ToastContext';
 
 const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
     createUser(input:$newUser) {
@@ -26,6 +27,7 @@ export default function NewUser() {
   const [password, setPassword] = useState<string | string[]>('');
   const [inviteCode, setInviteCode] = useState<string | string[]>('');
   const { query } = useRouter();
+  const { addToast } = useToast();
   console.log(query);
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export default function NewUser() {
       },
     };
     console.log(newUser);
+    addToast('User Created');
     createUser({ variables: newUser });
   }
 
