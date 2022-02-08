@@ -34,10 +34,13 @@ const Comments = ({
       {filteredComments.map((c) => (
         <div
           key={c.id}
-          className={`text-sm p-1 bg-white w-full ${setStyleType()}`}
+          className={`text-sm p-1 bg-white w-full flex ${setStyleType()}`}
         >
-          <span className=" font-bold">{c.author.name}: </span>
-          <span>{c.message}</span>
+          <Avatar name={c.author.name} />
+          <div className=" bg-slate-400 text-white w-full rounded-md p-2">
+            <p className=" font-bold uppercase">{c.author.name}</p>
+            <p>{c.message}</p>
+          </div>
         </div>
       ))}
       {allowComment && <NewComment />}
@@ -52,8 +55,8 @@ function NewComment() {
 
   return (
     <div className="flex">
-      <Avatar name={myUser?.name || 'A'} />
       <input
+        placeholder="Write Comment"
         onChange={(e) => setComment(e.target.value)}
         className="w-full border-b-2 mx-1 border-black text-sm"
       />
