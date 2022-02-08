@@ -1,18 +1,23 @@
 // @flow
+import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
+import { UPDATE_USER_MUTATION } from '../../apiData/mutation/updateUser';
 import Layout from '../../components/Layout/Layout';
 import { PageBanner } from '../../components/Page/PageBanner';
 import { Button } from '../../components/StatelessInput/Button';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
+import { useToast } from '../../components/Toast/ToastContext';
 
 function UserProfile() {
+  const [updateUser] = useMutation(UPDATE_USER_MUTATION);
   const { data: session } = useSession();
   const myUser = session?.user;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [accountColor, setAccountColor] = useState('');
+  const { addToast } = useToast();
 
   useEffect(() => {
     console.log(myUser);
@@ -21,8 +26,26 @@ function UserProfile() {
     setAccountColor(myUser?.accountColor || '');
   }, [myUser]);
 
-  function updateUser() {
-    return '';
+  async function updateMyUser() {
+    const updatedUser = {
+      name,
+      email,
+    };
+    const { data, error } = await updateUser({
+      variables: {
+        userInfo: {
+          id: myUser?.id,
+          ...updatedUser,
+        },
+      },
+    });
+    if (data) {
+      addToast(`User Updated`);
+    }
+    if (error) {
+      console.log('Create Group Error', error);
+      addToast(`There was an issue updating the user`);
+    }
   }
 
   return (
@@ -39,13 +62,7 @@ function UserProfile() {
             onChange={setAccountColor}
           /> */}
           <div className="mt-1 flex justify-end">
-            <Button
-              disabled
-              className="bg-brand-400 text-white"
-              onClick={() => {
-                console.log();
-              }}
-            >
+            <Button className="bg-brand-400 text-white" onClick={updateMyUser}>
               Update Profile
             </Button>
           </div>
