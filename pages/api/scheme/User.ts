@@ -9,6 +9,7 @@ export const typeDef = gql`
     id: String!
     name: String!
     accountColor: String
+    email: String
     orgs: [UserOrgs]
   }
 
@@ -42,12 +43,20 @@ export const typeDef = gql`
     orgs: [NewUserOrg]
   }
 
+  input UpdateUserInput {
+    id: String!
+    name: String
+    email: String
+    password: String
+  }
+
   extend type Query {
     getUser(id: String!): User!
   }
 
   extend type Mutation {
     createUser(input: NewUserInput!): User!
+    updateUser(input: UpdateUserInput!): User!
   }
 `;
 
@@ -97,6 +106,31 @@ export const resolvers = {
         const newUser = new UserModel(newUserData);
         const newUserFromDB = await newUser.save();
         return newUserFromDB;
+      } catch (error) {
+        throw error;
+      }
+    },
+    updateUser: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        console.log(args);
+        const update: any = {};
+        if (args.input?.name) {
+          update.name = args.input.name;
+        }
+        if (args.input?.email) {
+          update.email = args.input.email;
+        }
+        if (args.input?.password) {
+          update.password = bcrypt.hashSync(args.input.password, 10);
+        }
+        console.log(update);
+        const updatedUser = UserModel.findByIdAndUpdate(
+          new Types.ObjectId(args.input.id),
+          update,
+          { upsert: true, returnDocument: 'after' },
+        );
+        return updatedUser;
       } catch (error) {
         throw error;
       }
