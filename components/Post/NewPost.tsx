@@ -2,7 +2,7 @@
 import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import { CREATE_POST_MUTATION } from '../../apiData/mutation/createPost';
+import { CREATE_POST_MUTATION } from '../../graphql/mutation/createPost';
 import { IPost } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';

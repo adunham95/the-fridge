@@ -1,7 +1,7 @@
 import { useManualQuery } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
-import { GET_POSTS_BY_GROUP } from '../apiData/query/getPostsByGroup';
+import { GET_POSTS_BY_GROUP } from '../graphql/query/getPostsByGroup';
 import Layout from '../components/Layout/Layout';
 import { Loader } from '../components/Loader/Loader';
 import { NewPost } from '../components/Post/NewPost';

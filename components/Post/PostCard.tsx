@@ -11,7 +11,7 @@ import Modal from '../Modal/Modal';
 import { IComment } from '../../models/CommentModel';
 import { useEffect, useState } from 'react';
 import { useManualQuery } from 'graphql-hooks';
-import { GET_COMMENT_BY_POST } from '../../apiData/query/getCommentsByPost';
+import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
 import { useToast } from '../Toast/ToastContext';
 import { loadComponents } from 'next/dist/server/load-components';
 import { Loader } from '../Loader/Loader';

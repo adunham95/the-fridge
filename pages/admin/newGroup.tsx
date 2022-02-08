@@ -1,7 +1,7 @@
 import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { CREATE_GROUP_MUTATION } from '../../apiData/mutation/createOrgs';
+import { CREATE_GROUP_MUTATION } from '../../graphql/mutation/createOrgs';
 import Layout from '../../components/Layout/Layout';
 import { Select } from '../../components/StatelessInput/Select';
 import { EUserPermissions } from '../../models/UserModel';

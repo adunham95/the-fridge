@@ -2,7 +2,7 @@
 import { useManualQuery } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { GET_SINGLE_POST_BY_ID } from '../../apiData/query/getSingePostById';
+import { GET_SINGLE_POST_BY_ID } from '../../graphql/query/getSingePostById';
 import { Avatar } from '../../components/Avatar/Avatar';
 import Layout from '../../components/Layout/Layout';
 import { Loader } from '../../components/Loader/Loader';

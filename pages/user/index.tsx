@@ -2,7 +2,7 @@
 import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import { UPDATE_USER_MUTATION } from '../../apiData/mutation/updateUser';
+import { UPDATE_USER_MUTATION } from '../../graphql/mutation/updateUser';
 import Layout from '../../components/Layout/Layout';
 import { PageBanner } from '../../components/Page/PageBanner';
 import { Button } from '../../components/StatelessInput/Button';

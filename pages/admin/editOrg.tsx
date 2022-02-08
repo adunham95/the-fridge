@@ -3,7 +3,7 @@ import { group } from 'console';
 import { useManualQuery } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import { GROUP_BY_IDS } from '../../apiData/query/groupByIds';
+import { GROUP_BY_IDS } from '../../graphql/query/groupByIds';
 import Layout from '../../components/Layout/Layout';
 import { Input } from '../../components/StatelessInput/Input';
 import { Select } from '../../components/StatelessInput/Select';
