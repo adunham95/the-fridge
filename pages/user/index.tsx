@@ -20,6 +20,10 @@ function UserProfile() {
     setAccountColor(myUser?.accountColor || '');
   }, [myUser]);
 
+  function updateUser() {
+    return '';
+  }
+
   return (
     <Layout>
       <>
