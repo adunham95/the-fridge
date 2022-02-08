@@ -63,7 +63,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
           sizes="32x32"
         />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"></link>
-        <meta name="theme-color" content="#4dc4e2" />
+        <meta name="theme-color" content="#5b4b81" />
       </Head>
       <SessionProvider session={pageProps.session}>
         <ToastProvider>
