@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import Layout from '../../components/Layout/Layout';
 import { PageBanner } from '../../components/Page/PageBanner';
+import { Button } from '../../components/StatelessInput/Button';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 
@@ -38,12 +39,15 @@ function UserProfile() {
             onChange={setAccountColor}
           /> */}
           <div className="mt-1 flex justify-end">
-            <button
+            <Button
               disabled
-              className="bg-brand-400 disabled:bg-opacity-25 text-white px-3 py-2 rounded-md disabled:cursor-not-allowed"
+              className="bg-brand-400 text-white"
+              onClick={() => {
+                console.log();
+              }}
             >
               Update Profile
-            </button>
+            </Button>
           </div>
         </div>
       </>
