@@ -1,12 +1,14 @@
 import IconComment from '../Icons/Icon-Comment';
 import IconHeart from '../Icons/Icon-Heart';
-import IconPlane from '../Icons/Icon-Plane';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
 import { useSession } from 'next-auth/react';
 import { ImageCarousel } from '../Image/ImageCarousel';
+import { useModal } from '../Modal/ModalContext';
+import Modal from '../Modal/Modal';
+import { IComment } from '../../models/CommentModel';
 
 function PostCard({
   id,
@@ -18,6 +20,7 @@ function PostCard({
   image = [],
   dateTime,
 }: IPost) {
+  const { setModalID } = useModal();
   function formatDate(date: string) {
     const d = new Date(date);
     const datestring = `${
@@ -52,39 +55,39 @@ function PostCard({
         )}
         <div className="p-2 flex w-full justify-start">
           <PostLikes likes={likedBy} />
-          <div className="flex items-center pl-3">
+          <button
+            onClick={() => setModalID(`${id}-comments`)}
+            className="flex items-center pl-3"
+          >
             <IconComment
               width={15}
               height={15}
               fill={theme.COLORS.brand[400]}
             />
             <span className=" ml-1 text-sm">{comments.length}</span>
-          </div>
-          {/* <button
-            className={`flex`}
-            disabled={!permissions.includes(EPostPermission.ALLOW_SHARE)}
-          >
-            <IconPlane
-              width={15}
-              height={15}
-              fill={
-                permissions.includes(EPostPermission.ALLOW_COMMENT)
-                  ? theme.COLORS.share[400]
-                  : 'grey'
-              }
-            />
-          </button> */}
+          </button>
         </div>
       </div>
-      <div>
-        <div>
-          <Comments
-            comments={comments}
-            limit={2}
-            allowComment={permissions.includes(EPostPermission.ALLOW_COMMENT)}
-          />
-        </div>
-      </div>
+      <Modal
+        id={`${id}-comments`}
+        position="center bottom"
+        background="light"
+        className="w-full max-w-[400px] rounded-t-md"
+        closeClassName="bg-rose-400 text-white hover:text-rose-700 rounded-full h-[1em] w-[1em] shadow-sm flex justify-center items-center right-1"
+      >
+        <PostComments />
+      </Modal>
+    </div>
+  );
+}
+
+function PostComments() {
+  const comments: Array<IComment> = [];
+  console.log('Post comments ran');
+  return (
+    <div className=" pt-1 pb-1 w-full bg-white rounded-t-md">
+      <p className="mx-2 border-b border-slate-200">Comments</p>
+      <Comments comments={comments} allowComment />
     </div>
   );
 }

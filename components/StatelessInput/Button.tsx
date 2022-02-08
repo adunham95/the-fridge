@@ -21,7 +21,7 @@ export function Button({
   function getButtonSize() {
     switch (size) {
       case 'sm':
-        return '';
+        return 'px-2 py-1 text-sm';
       case 'md':
         return '';
       case 'xl':

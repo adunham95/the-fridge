@@ -2,19 +2,40 @@ import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { IComment } from '../../models/CommentModel';
 import { Avatar } from '../Avatar/Avatar';
+import { Button } from '../StatelessInput/Button';
 
 interface IProps {
   comments: Array<IComment>;
   limit?: number | null;
   allowComment?: boolean;
+  individual?: boolean;
 }
 
-const Comments = ({ comments = [], limit, allowComment = false }: IProps) => {
+const Comments = ({
+  comments = [],
+  limit,
+  allowComment = false,
+  individual = false,
+}: IProps) => {
   const filteredComments = limit ? comments.slice(0, limit) : comments;
+  function setStyleType() {
+    if (individual) {
+      return 'bg-white rounded-md shadow-md mb-2';
+    }
+    if (!individual) {
+      return 'mb-1';
+    }
+  }
   return (
-    <div className="px-2">
+    <div className="px-2 w-full max-h-half-screen overflow-y-auto">
+      {filteredComments.length === 0 && (
+        <p className="text-center text-sm p-1">No Comments</p>
+      )}
       {filteredComments.map((c) => (
-        <div key={c.id} className="text-xs pb-1">
+        <div
+          key={c.id}
+          className={`text-sm p-1 bg-white w-full ${setStyleType()}`}
+        >
           <span className=" font-bold">{c.author.name}: </span>
           <span>{c.message}</span>
         </div>
@@ -34,13 +55,17 @@ function NewComment() {
       <Avatar name={myUser?.name || 'A'} />
       <input
         onChange={(e) => setComment(e.target.value)}
-        className="w-full border-b-2 border-black"
+        className="w-full border-b-2 mx-1 border-black text-sm"
       />
-      <button
-        className={`${comment === '' ? 'text-gray-400' : 'text-green-500'}`}
+      <Button
+        onClick={() => console.log}
+        size={'sm'}
+        className={`text-white ${
+          comment === '' ? 'bg-gray-400' : 'bg-emerald-500'
+        }`}
       >
         Post
-      </button>
+      </Button>
     </div>
   );
 }
