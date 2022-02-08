@@ -14,6 +14,7 @@ import { useManualQuery } from 'graphql-hooks';
 import { GET_COMMENT_BY_POST } from '../../apiData/query/getCommentsByPost';
 import { useToast } from '../Toast/ToastContext';
 import { loadComponents } from 'next/dist/server/load-components';
+import { Loader } from '../Loader/Loader';
 
 function PostCard({
   id,
@@ -115,6 +116,11 @@ function PostComments({ postID }: { postID: string }) {
   return (
     <div className=" pt-1 pb-1 w-full bg-white rounded-t-md">
       <p className="mx-2 border-b border-slate-200">Comments</p>
+      {loading && (
+        <div className="flex justify-center">
+          <Loader />
+        </div>
+      )}
       <Comments comments={comments} allowComment />
     </div>
   );
