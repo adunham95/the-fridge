@@ -14,5 +14,6 @@ query GetPostsByGroup($ids:[String!]){
         id
       }
       likedBy
+      comments
     }
   }`;
