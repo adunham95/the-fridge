@@ -1,5 +1,4 @@
 let theme = require('./theme/theme.js');
-console.log(theme.COLORS);
 
 module.exports = {
   content: [
@@ -10,6 +9,9 @@ module.exports = {
     extend: {
       colors: {
         ...theme.COLORS,
+      },
+      maxHeight: {
+        'half-screen': '50vh',
       },
     },
   },
