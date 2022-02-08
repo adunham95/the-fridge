@@ -52,7 +52,7 @@ function UserProfile() {
     <Layout>
       <>
         <PageBanner title="Profile" />
-        <div className="py-2 px-0 md:px-3">
+        <div className="py-2 px-3 md:px-3">
           <Input id="name" value={name} onChange={setName} label="Name" />
           <Input id="email" value={email} onChange={setEmail} label="Email" />
           {/* <ColorPicker
