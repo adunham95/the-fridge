@@ -2,6 +2,7 @@ import { PostModel } from './../auth/models/PostModel_Server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
+import { CommentModel } from '../auth/models/CommentMode_Server';
 
 export const typeDef = gql`
   type WallPost {
@@ -39,6 +40,7 @@ export const typeDef = gql`
   extend type Query {
     getPostsByGroup(groupIDs: [String!]): [WallPost!]
     getSinglePost(id: String!): AdvancedWallPost
+    getCommentsByPost(id: String!): [Comment]
   }
 
   extend type Mutation {
@@ -78,6 +80,18 @@ export const resolvers = {
           new Types.ObjectId(args.id),
         ).populate(['org', 'postedBy', 'comments']);
         return post.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    getCommentsByPost: async (_: any, args: any) => {
+      console.log(args);
+      try {
+        await dbConnect();
+        const comments = CommentModel.find({
+          postID: args.id,
+        }).populate(['author']);
+        return comments;
       } catch (error) {
         throw error;
       }

@@ -83,6 +83,7 @@ function PostCard({
 
 function PostComments() {
   const comments: Array<IComment> = [];
+  //TODO fetch comments on load
   console.log('Post comments ran');
   return (
     <div className=" pt-1 pb-1 w-full bg-white rounded-t-md">
