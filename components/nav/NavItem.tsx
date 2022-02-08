@@ -75,7 +75,7 @@ const NavItem = ({
           </span>
         )}
         {isCollapsed && showToolTip && (
-          <div className="absolute left-[calc(var(--sidebar-width))] text-white whitespace-nowrap text-xs bg-brand-700 rounded p-1">
+          <div className="absolute z-30 left-[calc(var(--sidebar-width))] text-white whitespace-nowrap text-xs bg-brand-700 rounded p-1">
             <span>{title}</span>
           </div>
         )}
