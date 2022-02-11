@@ -9,12 +9,14 @@ import PostCard from '../components/Post/PostCard';
 import { usePost } from '../context/PostContext';
 import { IPost } from '../models/PostModel';
 import { POST_ACTION } from '../reducers/postReducer';
+import { EToastType, useToast } from '../components/Toast/ToastContext';
 
 const Wall = () => {
   const { data: session } = useSession();
   const [fetchPosts, { loading }] = useManualQuery(GET_POSTS_BY_GROUP);
   const myUser = session?.user;
   const { state, dispatch } = usePost();
+  const { addToast } = useToast();
 
   useEffect(() => {
     const myGroups = myUser?.orgs.map((o) => o.group.id);
@@ -29,12 +31,17 @@ const Wall = () => {
       },
     });
     console.log(data.data);
-    dispatch({
-      type: POST_ACTION.SET_POSTS,
-      payload: {
-        posts: data?.data.getPostsByGroup || [],
-      },
-    });
+    if (data.data?.getPostsByGroup) {
+      dispatch({
+        type: POST_ACTION.SET_POSTS,
+        payload: {
+          posts: data?.data.getPostsByGroup || [],
+        },
+      });
+    }
+    if (data.error) {
+      addToast('Error Fetching Posts', EToastType.ERROR);
+    }
   };
 
   const newPost = (post: IPost) => {
