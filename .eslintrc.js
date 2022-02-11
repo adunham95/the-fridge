@@ -76,6 +76,7 @@ module.exports = {
     ],
     'react/jsx-indent-props': [2, 2],
     'react/jsx-closing-bracket-location': [2, 'tag-aligned'],
+    '@typescript-eslint/no-empty-function': 0,
     'prettier/prettier': [
       'error',
       {
