@@ -17,7 +17,8 @@ type ActionMap<M extends { [index: string]: any }> = {
 export enum POST_ACTION{
     SET_POSTS = 'setPosts',
     ADD_POST = 'addPost',
-    ADD_COMMENT = 'addComment'
+    ADD_COMMENT = 'addComment',
+    UPDATE_LIKE = 'updateLike'
 }
 
 type PostPayload = {
@@ -30,6 +31,10 @@ type PostPayload = {
     [POST_ACTION.ADD_COMMENT]: {
         postID: string,
         comment: IComment
+    },
+    [POST_ACTION.UPDATE_LIKE]: {
+        postID: string,
+        userID: string
     }
 }
 
@@ -48,11 +53,21 @@ export function postReducer(state: Array<IPost>, action: PostActions){
             return sortByDate([...state, action.payload.post])
         }
         case POST_ACTION.ADD_COMMENT: {
-            console.log(action.payload)
             const newState = [...state];
             const postToUpdate = newState.find(p => p.id === action.payload.postID);
             postToUpdate?.comments.push(action.payload.comment)
             return sortByDate(newState)
+        }
+        case POST_ACTION.UPDATE_LIKE: {
+            const newState = [...state];
+            const postToUpdate = newState.find(p => p.id === action.payload.postID);
+            if(postToUpdate?.likedBy.includes(action.payload.userID)){
+                postToUpdate.likedBy = postToUpdate?.likedBy.filter(p => p !== action.payload.userID);
+            }
+            else{
+                postToUpdate?.likedBy.push(action.payload.userID)
+            }
+            return newState
         }
         default:
             return state

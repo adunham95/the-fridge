@@ -15,6 +15,8 @@ import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
 import { useToast } from '../Toast/ToastContext';
 import { loadComponents } from 'next/dist/server/load-components';
 import { Loader } from '../Loader/Loader';
+import { usePost } from '../../context/PostContext';
+import { POST_ACTION } from '../../reducers/postReducer';
 
 function PostCard({
   id,
@@ -60,7 +62,7 @@ function PostCard({
           </div>
         )}
         <div className="p-2 flex w-full justify-start">
-          <PostLikes likes={likedBy} />
+          <PostLikes likes={likedBy} postID={id} />
           <button
             onClick={() => setModalID(`${id}-comments`)}
             className="flex items-center pl-3"
@@ -133,13 +135,26 @@ function PostComments({ postID }: { postID: string }) {
 
 interface IPostLikeProps {
   likes: Array<string>;
+  postID: string;
 }
 
-function PostLikes({ likes }: IPostLikeProps) {
+function PostLikes({ likes, postID }: IPostLikeProps) {
   const { data: session } = useSession();
   const myUser = session?.user;
+  const { dispatch } = usePost();
+
+  async function updateLike() {
+    dispatch({
+      type: POST_ACTION.UPDATE_LIKE,
+      payload: {
+        userID: myUser?.id || '',
+        postID,
+      },
+    });
+  }
+
   return (
-    <button className="flex items-center">
+    <button className="flex items-center" onClick={updateLike}>
       <IconHeart
         width={15}
         height={15}

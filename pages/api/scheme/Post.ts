@@ -161,5 +161,8 @@ export const resolvers = {
         throw error;
       }
     },
+    // updateLike: async (_: any, args: any) => {
+    //   return '';
+    // },
   },
 };
