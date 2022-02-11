@@ -1,4 +1,5 @@
 import React from "react"
+
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import NavItem from './NavItem';
@@ -19,8 +20,18 @@ export default {
 const Template: ComponentStory<typeof NavItem> = (args) => <NavItem {...args}/>
 
 export const Primary = Template.bind({});
+
+Primary.parameters = {
+  nextRouter: {
+    pathname: '/feed',
+    asPath: '/feed',
+  },
+};
+
 Primary.args = {
+    path: "/",
     icon: EIcons.HOME,
     title: "Adrian",
     isCollapsed: false,
+  
 };

@@ -9,6 +9,8 @@ module.exports = {
     'storybook-addon-themes',
     'storybook-tailwind-dark-mode',
     'storybook-dark-mode',
+    '@storybook/preset-scss',
+    "storybook-addon-next-router",
     {
       name: '@storybook/addon-postcss',
       options: {
