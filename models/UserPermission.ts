@@ -33,4 +33,8 @@ export const UserPermissionDetails: IUserPermissionDetails = {
     title: 'Can Share',
     description: 'This groups is allowed to share the posts',
   },
+  [EUserPermissions.CAN_VIEW_LIKERS]: {
+    title: "Can View Likers",
+    description: "This group can view who has liked a post. Unselected will just see the number"
+  }
 };
