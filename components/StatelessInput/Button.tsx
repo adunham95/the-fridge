@@ -35,7 +35,7 @@ export function Button({
     <button
       className={`${getButtonSize()} ${className} ${
         rounded && 'rounded-md'
-      } disabled:cursor-not-allowed disabled:bg-opacity-25 `}
+      } disabled:cursor-not-allowed disabled:bg-opacity-50 `}
       type={type}
       onClick={onClick}
       disabled={disabled}
