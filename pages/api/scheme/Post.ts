@@ -69,7 +69,7 @@ export const typeDef = gql`
   }
 
   extend type Query {
-    getPostsByGroup(groupIDs: [String!]): [WallPost!]
+    getPostsByGroup(groupIDs: [String!], skip: Float, limit: Float): [WallPost!]
     getSinglePost(id: String!): AdvancedWallPost
     getCommentsByPost(id: String!): [Comment]
   }
@@ -84,17 +84,28 @@ export const typeDef = gql`
 export const resolvers = {
   Query: {
     getPostsByGroup: async (_: any, args: any) => {
+      console.log(args);
       const groupList = args.groupIDs;
       console.log(groupList);
       try {
         await dbConnect();
-        const posts = await PostModel.find({
-          viewByGroups: {
-            $in: groupList,
+        let pagination = {};
+        if (args?.limit > 0) {
+          console.log({ skip: args.skip || 0, limit: args.limit });
+          pagination = { skip: args.skip || 0, limit: args.limit };
+        }
+        console.log(pagination);
+        const posts = await PostModel.find(
+          {
+            viewByGroups: {
+              $in: groupList,
+            },
           },
-        }).populate(['org', 'postedBy']);
+          null,
+          pagination,
+        ).populate(['org', 'postedBy']);
 
-        console.log('posts', posts);
+        // console.log('posts', posts);
 
         return posts
           .sort((a, b) => {
