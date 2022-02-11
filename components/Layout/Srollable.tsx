@@ -25,6 +25,7 @@ const bannerData = {
 function Scrollable({ children, isMobile, className = '' }: IProps) {
   return (
     <div
+      id="scrollable-container"
       className={`w-full ${
         isMobile ? 'h-[calc(100vh-60px)]' : 'h-screen'
       } overflow-y-auto ${className}`}

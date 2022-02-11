@@ -26,6 +26,11 @@ const Wall = () => {
   const [hitLimit, setHitLimit] = useState(false);
 
   useEffect(() => {
+    setSkip(0);
+  }, []);
+
+  useEffect(() => {
+    setSkip(0);
     const myGroups = myUser?.orgs.map((o) => o.group.id);
     console.log('myGroups', myGroups);
     fetchPostData(myGroups || []);
@@ -75,16 +80,23 @@ const Wall = () => {
     <Layout>
       <div className=" max-w-md mx-auto py-5">
         <NewPost onCreate={newPost} />
+        {state.posts.map((p: IPost) => (
+          <PostCard key={p.id} {...p} />
+        ))}
         {loading && (
           <div className="flex justify-center pt-1 pb-2">
             <Loader />
           </div>
         )}
-        {state.posts.map((p: IPost) => (
-          <PostCard key={p.id} {...p} />
-        ))}
         {!loading && state.posts.length === 0 && <h1>No Posts</h1>}
-        {!hitLimit && <button onClick={loadMorePosts}>Load More Posts</button>}
+        {!hitLimit && !loading && (
+          <button onClick={loadMorePosts}>Load More Posts</button>
+        )}
+        {hitLimit && (
+          <p className="text-center border-t-2 border-brand-500 pt-2">
+            All Posts Loaded
+          </p>
+        )}
       </div>
     </Layout>
   );
