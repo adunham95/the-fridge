@@ -25,8 +25,10 @@ export function Toast({ children, id, type }: Props) {
     switch (type) {
       case EToastType.INFO:
         return 'bg-brand-600 shadow-brand-900';
+      case EToastType.ERROR:
+        return 'bg-rose-600 shadow-rose-900';
       default:
-        return 'bg-slate-900 shadow-slate-600';
+        return 'bg-slate-600 shadow-slate-600';
     }
   }
 

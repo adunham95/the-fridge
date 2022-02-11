@@ -26,6 +26,7 @@ let id = 0;
 export enum EToastType {
   INFO = 'info',
   DEFAULT = 'default',
+  ERROR = 'error',
 }
 
 export interface IToast {
