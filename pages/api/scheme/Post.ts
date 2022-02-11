@@ -58,6 +58,16 @@ export const typeDef = gql`
     author: String!
   }
 
+  input UpdateLikeInput {
+    postID: String!
+    userID: String!
+    action: String!
+  }
+
+  type UpdateLikeResponse {
+    success: Boolean!
+  }
+
   extend type Query {
     getPostsByGroup(groupIDs: [String!]): [WallPost!]
     getSinglePost(id: String!): AdvancedWallPost
@@ -67,6 +77,7 @@ export const typeDef = gql`
   extend type Mutation {
     createPost(input: PostInput): WallPost!
     createComment(input: CommentInput!): Comment!
+    updateLike(input: UpdateLikeInput!): UpdateLikeResponse
   }
 `;
 
@@ -161,8 +172,24 @@ export const resolvers = {
         throw error;
       }
     },
-    // updateLike: async (_: any, args: any) => {
-    //   return '';
-    // },
+    updateLike: async (_: any, args: any) => {
+      console.log(args);
+      try {
+        await dbConnect();
+        let action = '$pull';
+        if (args.input.action === 'add') {
+          action = '$push';
+        }
+        const res = await PostModel.updateOne(
+          { _id: args.input.postID },
+          { [action]: { likedBy: args.input.userID } },
+        );
+        return {
+          success: res.modifiedCount > 0,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
   },
 };

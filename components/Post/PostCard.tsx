@@ -10,13 +10,14 @@ import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { IComment } from '../../models/CommentModel';
 import { useEffect, useState } from 'react';
-import { useManualQuery, useQuery } from 'graphql-hooks';
+import { useManualQuery, useMutation, useQuery } from 'graphql-hooks';
 import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
-import { useToast } from '../Toast/ToastContext';
+import { EToastType, useToast } from '../Toast/ToastContext';
 import { loadComponents } from 'next/dist/server/load-components';
 import { Loader } from '../Loader/Loader';
 import { usePost } from '../../context/PostContext';
 import { POST_ACTION } from '../../reducers/postReducer';
+import { UPDATE_LIKE } from '../../graphql/mutation/updateLike';
 
 function PostCard({
   id,
@@ -139,18 +140,35 @@ interface IPostLikeProps {
 }
 
 function PostLikes({ likes, postID }: IPostLikeProps) {
+  const [createLike, { loading }] = useMutation(UPDATE_LIKE);
+  const { addToast } = useToast();
   const { data: session } = useSession();
   const myUser = session?.user;
   const { dispatch } = usePost();
 
   async function updateLike() {
-    dispatch({
-      type: POST_ACTION.UPDATE_LIKE,
-      payload: {
-        userID: myUser?.id || '',
-        postID,
+    const data = await createLike({
+      variables: {
+        likeInput: {
+          userID: myUser?.id || '',
+          postID,
+          action: likes.includes(myUser?.id || '') ? 'remove' : 'add',
+        },
       },
     });
+    if (data.error || data?.data?.updateLike?.success === false) {
+      addToast('Error updating like', EToastType.ERROR);
+    }
+    if (data?.data?.updateLike?.success) {
+      addToast('Updated LIke', EToastType.INFO);
+      dispatch({
+        type: POST_ACTION.UPDATE_LIKE,
+        payload: {
+          userID: myUser?.id || '',
+          postID,
+        },
+      });
+    }
   }
 
   return (
