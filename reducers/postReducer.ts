@@ -1,3 +1,4 @@
+import { IComment } from './../models/CommentModel';
 import { IPost } from "../models/PostModel";
 import { sortByDate } from "../util/reducerHelper";
 
@@ -15,7 +16,8 @@ type ActionMap<M extends { [index: string]: any }> = {
 
 export enum POST_ACTION{
     SET_POSTS = 'setPosts',
-    ADD_POST = 'addPost'
+    ADD_POST = 'addPost',
+    ADD_COMMENT = 'addComment'
 }
 
 type PostPayload = {
@@ -24,6 +26,10 @@ type PostPayload = {
     }
     [POST_ACTION.ADD_POST]: {
         post: IPost
+    },
+    [POST_ACTION.ADD_COMMENT]: {
+        postID: string,
+        comment: IComment
     }
 }
 
@@ -40,6 +46,13 @@ export function postReducer(state: Array<IPost>, action: PostActions){
         }
         case POST_ACTION.ADD_POST:{
             return sortByDate([...state, action.payload.post])
+        }
+        case POST_ACTION.ADD_COMMENT: {
+            console.log(action.payload)
+            const newState = [...state];
+            const postToUpdate = newState.find(p => p.id === action.payload.postID);
+            postToUpdate?.comments.push(action.payload.comment)
+            return sortByDate(newState)
         }
         default:
             return state

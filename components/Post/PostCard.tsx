@@ -10,7 +10,7 @@ import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { IComment } from '../../models/CommentModel';
 import { useEffect, useState } from 'react';
-import { useManualQuery } from 'graphql-hooks';
+import { useManualQuery, useQuery } from 'graphql-hooks';
 import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
 import { useToast } from '../Toast/ToastContext';
 import { loadComponents } from 'next/dist/server/load-components';
@@ -89,39 +89,44 @@ function PostCard({
 
 function PostComments({ postID }: { postID: string }) {
   const [comments, setComments] = useState<Array<IComment>>([]);
-  const [fetchComments, { loading }] = useManualQuery(GET_COMMENT_BY_POST);
+  const { loading, data, error, refetch } = useQuery(GET_COMMENT_BY_POST, {
+    variables: { id: postID },
+  });
   const { addToast } = useToast();
 
   useEffect(() => {
     console.log('postID', postID);
-    loadComments();
   }, [postID]);
 
-  async function loadComments() {
-    const data = await fetchComments({
-      variables: {
-        id: postID,
-      },
-    });
-    console.log(data.data);
-    if (data.data.getCommentsByPost === null) {
+  useEffect(() => {
+    console.log(data);
+    if (error) {
       addToast('Could not load comments');
       setComments([]);
     }
-    if (data.data.getCommentsByPost !== null) {
-      setComments(data.data.getCommentsByPost);
+    if (data?.getCommentsByPost !== null) {
+      setComments(data?.getCommentsByPost);
     }
+  }, [data, error]);
+
+  function onCommentUpdate() {
+    refetch();
   }
 
   return (
     <div className=" pt-1 pb-1 w-full bg-white rounded-t-md">
-      <p className="mx-2 border-b border-slate-200">Comments</p>
+      <p className="mx-2 mb-2 border-b border-slate-200">Comments</p>
       {loading && (
         <div className="flex justify-center">
           <Loader />
         </div>
       )}
-      <Comments comments={comments} allowComment postID={postID} />
+      <Comments
+        comments={comments}
+        allowComment
+        postID={postID}
+        onCommentUpdate={onCommentUpdate}
+      />
     </div>
   );
 }

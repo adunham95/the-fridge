@@ -1,10 +1,13 @@
 import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
+import { usePost } from '../../context/PostContext';
 import { CREATE_COMMENT_MUTATION } from '../../graphql/mutation/createComment';
 import { IComment } from '../../models/CommentModel';
+import { POST_ACTION } from '../../reducers/postReducer';
 import { Avatar } from '../Avatar/Avatar';
 import { Button } from '../StatelessInput/Button';
+import { Input } from '../StatelessInput/Input';
 import { useToast } from '../Toast/ToastContext';
 
 interface IProps {
@@ -13,6 +16,7 @@ interface IProps {
   limit?: number | null;
   allowComment?: boolean;
   individual?: boolean;
+  onCommentUpdate?: (comment: IComment) => void;
 }
 
 const Comments = ({
@@ -21,6 +25,7 @@ const Comments = ({
   limit,
   allowComment = false,
   individual = false,
+  onCommentUpdate = () => {},
 }: IProps) => {
   const [filteredComments, setFilteredComments] = useState<Array<IComment>>([]);
 
@@ -29,6 +34,7 @@ const Comments = ({
   }, [comments]);
 
   function addComment(newComment: IComment) {
+    onCommentUpdate(newComment);
     setFilteredComments([...filteredComments, newComment]);
   }
 
@@ -76,10 +82,12 @@ function NewComment({ postID, onSave }: INewCommentProps) {
   const [comment, setComment] = useState('');
   const [createComment, { loading }] = useMutation(CREATE_COMMENT_MUTATION);
   const { addToast } = useToast();
+  const { state, dispatch } = usePost();
   const { data: session } = useSession();
   const myUser = session?.user;
 
-  async function createNewComment() {
+  async function createNewComment(e: FormEvent) {
+    e.preventDefault();
     const newCommentData = {
       newComment: {
         message: comment,
@@ -87,9 +95,7 @@ function NewComment({ postID, onSave }: INewCommentProps) {
         postID,
       },
     };
-    console.log(newCommentData);
     const data = await createComment({ variables: newCommentData });
-    console.log(data);
     if (data?.error) {
       addToast('Error posting comment');
     }
@@ -97,25 +103,37 @@ function NewComment({ postID, onSave }: INewCommentProps) {
       addToast('Created comment');
       onSave(data.data.createComment);
       setComment('');
+      dispatch({
+        type: POST_ACTION.ADD_COMMENT,
+        payload: {
+          comment: data.data.createComment,
+          postID,
+        },
+      });
     }
   }
 
   return (
-    <div className="flex sticky bottom-0 bg-white py-1 px-1">
-      <input
-        placeholder="Write Comment"
-        onChange={(e) => setComment(e.target.value)}
-        className="w-full border-b-2 mx-1 border-black text-sm"
-      />
-      <Button
-        onClick={createNewComment}
-        size={'sm'}
-        className={`text-white ${
-          comment === '' ? 'bg-gray-400' : 'bg-emerald-500'
-        }`}
-      >
-        Post
-      </Button>
+    <div className="sticky bottom-0 bg-white py-1 px-1">
+      <form className="flex" onSubmit={createNewComment}>
+        <Input
+          id="new-comment"
+          placeholder="Write Comment"
+          value={comment}
+          required
+          onChange={(e) => setComment(e)}
+          containerClass={'w-full h-full pr-1'}
+        />
+        <Button
+          onClick={() => {}}
+          disabled={comment === ''}
+          type="submit"
+          size={'sm'}
+          className={`text-white bg-emerald-500`}
+        >
+          Post
+        </Button>
+      </form>
     </div>
   );
 }
