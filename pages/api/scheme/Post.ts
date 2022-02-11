@@ -81,6 +81,12 @@ export const typeDef = gql`
   }
 `;
 
+interface IPagination {
+  skip?: number;
+  sort: string;
+  limit?: number;
+}
+
 export const resolvers = {
   Query: {
     getPostsByGroup: async (_: any, args: any) => {
@@ -89,10 +95,14 @@ export const resolvers = {
       console.log(groupList);
       try {
         await dbConnect();
-        let pagination = {};
+        let pagination: IPagination = { sort: '-dateTime' };
         if (args?.limit > 0) {
           console.log({ skip: args.skip || 0, limit: args.limit });
-          pagination = { skip: args.skip || 0, limit: args.limit };
+          pagination = {
+            sort: '-dateTime',
+            skip: args.skip || 0,
+            limit: args.limit,
+          };
         }
         console.log(pagination);
         const posts = await PostModel.find(

@@ -43,10 +43,11 @@ export type PostActions = ActionMap<PostPayload>[keyof ActionMap<PostPayload>];
 export function postReducer(state: Array<IPost>, action: PostActions){
     switch(action.type){
         case POST_ACTION.SET_POSTS:{
-            const currentState = [...state, ...action.payload.posts]
+            const currentState = [...state, ...action.payload.posts];
             const newState = currentState.filter(function(item, pos) {
+                console.log(currentState.indexOf(item) == pos)
                 return currentState.indexOf(item) == pos;
-            })
+            });
             return sortByDate(newState);
         }
         case POST_ACTION.ADD_POST:{
