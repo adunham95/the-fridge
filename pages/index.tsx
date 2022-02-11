@@ -13,6 +13,7 @@ import { usePost } from '../context/PostContext';
 import { IPost } from '../models/PostModel';
 import { POST_ACTION } from '../reducers/postReducer';
 import { EToastType, useToast } from '../components/Toast/ToastContext';
+import { Button } from '../components/StatelessInput/Button';
 
 const Wall = () => {
   const { data: session } = useSession();
@@ -90,7 +91,14 @@ const Wall = () => {
         )}
         {!loading && state.posts.length === 0 && <h1>No Posts</h1>}
         {!hitLimit && !loading && (
-          <button onClick={loadMorePosts}>Load More Posts</button>
+          <div className=" flex justify-center">
+            <Button
+              className="bg-brand-400 hover:bg-brand-400 text-white"
+              onClick={loadMorePosts}
+            >
+              Load More Posts
+            </Button>
+          </div>
         )}
         {hitLimit && (
           <p className="text-center border-t-2 border-brand-500 pt-2">
