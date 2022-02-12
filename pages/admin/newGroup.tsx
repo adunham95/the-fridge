@@ -8,6 +8,7 @@ import { EUserPermissions } from '../../models/UserModel';
 import { UserPermissionDetails } from '../../models/UserPermission';
 import { EToastType, useToast } from '../../components/Toast/ToastContext';
 import { Button } from '../../components/StatelessInput/Button';
+import { BreadCrumb } from '../../components/nav/BreadCrumb';
 
 const AdminGroup = () => {
   const [createGroup] = useMutation(CREATE_GROUP_MUTATION);
@@ -92,6 +93,7 @@ const AdminGroup = () => {
           </div>
         </header>
         <main className="pt-2 px-3">
+          <BreadCrumb />
           <form onSubmit={makeGroup}>
             <Select
               label="Group Belongs To"

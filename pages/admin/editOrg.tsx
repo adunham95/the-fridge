@@ -1,5 +1,4 @@
 // @flow
-import { group } from 'console';
 import { useManualQuery } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
@@ -10,6 +9,7 @@ import { Select } from '../../components/StatelessInput/Select';
 import { useToast } from '../../components/Toast/ToastContext';
 import { IGroup, IOrg } from '../../models/OrgModel';
 import { ERoutes } from '../../models/Routes';
+import { BreadCrumb } from '../../components/nav/BreadCrumb';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -96,6 +96,7 @@ export function EditOrg() {
           </div>
         </header>
         <main className="pt-2 px-2">
+          <BreadCrumb />
           {loading && <h1>Loading...</h1>}
           {selectedOrgData && (
             <div>

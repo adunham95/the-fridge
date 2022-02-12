@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from '../../components/Avatar/Avatar';
 import Layout from '../../components/Layout/Layout';
+import { BreadCrumb } from '../../components/nav/BreadCrumb';
 import { ERoutes } from '../../models/Routes';
 
 const states = [];
@@ -21,6 +22,7 @@ const AdminHome = () => {
           </div>
         </header>
         <main className="pt-2 px-1">
+          <BreadCrumb />
           <div className="flex">
             <Link href={ERoutes.ADMIN_NEW_GROUP} passHref>
               <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
