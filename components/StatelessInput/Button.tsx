@@ -4,7 +4,7 @@ type Props = {
   type?: 'button' | 'submit' | 'reset' | undefined,
   children: React.ReactChild,
   size?: 'sm' | 'md' | 'base' | 'xl',
-  onClick: () => void,
+  onClick?: () => void,
   className?: string,
   disabled?: boolean,
   rounded?: boolean,

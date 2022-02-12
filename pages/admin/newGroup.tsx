@@ -6,6 +6,8 @@ import Layout from '../../components/Layout/Layout';
 import { Select } from '../../components/StatelessInput/Select';
 import { EUserPermissions } from '../../models/UserModel';
 import { UserPermissionDetails } from '../../models/UserPermission';
+import { EToastType, useToast } from '../../components/Toast/ToastContext';
+import { Button } from '../../components/StatelessInput/Button';
 
 const AdminGroup = () => {
   const [createGroup] = useMutation(CREATE_GROUP_MUTATION);
@@ -14,7 +16,7 @@ const AdminGroup = () => {
   ]);
   const [groupName, setGroupName] = useState('');
   const [selectedOrg, setSelectedOrg] = useState('');
-  const [message, setMessage] = useState('');
+  const { addToast } = useToast();
   // eslint-disable-next-line prettier/prettier
   const [orgs, setOrgs] = useState<Array<{ orgID: string, name: string }>>([]);
   const { data: session } = useSession();
@@ -71,11 +73,11 @@ const AdminGroup = () => {
     console.log(data);
 
     if (data) {
-      setMessage(`Group ${data.createGroup.name} created`);
+      addToast(`Group ${data.createGroup.name} created`);
     }
     if (error) {
       console.log('Create Group Error', error);
-      setMessage(`There was an issue creating the group`);
+      addToast(`There was an issue creating the group`, EToastType.ERROR);
     }
   }
 
@@ -90,7 +92,7 @@ const AdminGroup = () => {
           </div>
         </header>
         <main className="pt-2 px-3">
-          <form>
+          <form onSubmit={makeGroup}>
             <Select
               label="Group Belongs To"
               id="org"
@@ -160,19 +162,14 @@ const AdminGroup = () => {
               </div>
             </div>
             <div className="flex justify-end pt-2">
-              <button
-                type="button"
-                onClick={makeGroup}
-                className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-brand-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 ${
-                  canSave()
-                    ? 'bg-opacity-80 hover:bg-brand-600'
-                    : 'bg-opacity-50 cursor-not-allowed'
-                }`}
+              <Button
+                disabled={!canSave()}
+                className="text-white bg-brand-400 hover:bg-brand-600"
+                type="submit"
               >
                 Save
-              </button>
+              </Button>
             </div>
-            <div>{message}</div>
           </form>
         </main>
       </>
