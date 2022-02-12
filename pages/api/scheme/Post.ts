@@ -49,6 +49,7 @@ export const typeDef = gql`
   type CommentAuthor {
     id: String
     name: String
+    accountColor: String
   }
 
   input CommentInput {

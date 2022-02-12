@@ -17,6 +17,7 @@ export interface IPost {
 interface IPostAuthor {
   id: string;
   name: string;
+  accountColor?: string;
 }
 
 export enum EPostPermission {

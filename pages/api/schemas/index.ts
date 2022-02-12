@@ -28,6 +28,7 @@ const typeDefs = gql`
   type PostAuthor {
     id: String
     name: String
+    accountColor: String
   }
 
   type updateResponse {

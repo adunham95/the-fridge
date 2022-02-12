@@ -2,7 +2,7 @@ import IconComment from '../Icons/Icon-Comment';
 import IconHeart from '../Icons/Icon-Heart';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
-import { EPostPermission, IPost } from '../../models/PostModel';
+import { IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
 import { useSession } from 'next-auth/react';
 import { ImageCarousel } from '../Image/ImageCarousel';
@@ -10,10 +10,9 @@ import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { IComment } from '../../models/CommentModel';
 import { useEffect, useState } from 'react';
-import { useManualQuery, useMutation, useQuery } from 'graphql-hooks';
+import { useMutation, useQuery } from 'graphql-hooks';
 import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
 import { EToastType, useToast } from '../Toast/ToastContext';
-import { loadComponents } from 'next/dist/server/load-components';
 import { Loader } from '../Loader/Loader';
 import { usePost } from '../../context/PostContext';
 import { POST_ACTION } from '../../reducers/postReducer';
@@ -45,7 +44,7 @@ function PostCard({
       <div className="bg-white rounded-md shadow-sm">
         <div className="p-2">
           <div className="flex items-center">
-            <Avatar name={postedBy.name} />
+            <Avatar name={postedBy.name} color={postedBy.accountColor} />
             <div className="flex flex-col justify-start pl-1">
               <p>{postedBy.name}</p>
               <p className="text-slate-600 text-xs">{formatDate(dateTime)}</p>

@@ -12,6 +12,7 @@ query GetPostsByGroup($ids:[String!]){
       postedBy{
         name
         id
+        accountColor
       }
       likedBy
       comments
@@ -32,6 +33,7 @@ query GetPostsByGroup($ids:[String!],$limit:Float,$skip:Float){
       postedBy{
         name
         id
+        accountColor
       }
       likedBy
       comments
