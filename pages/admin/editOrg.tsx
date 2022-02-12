@@ -1,5 +1,5 @@
 // @flow
-import { useManualQuery } from 'graphql-hooks';
+import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { GROUP_BY_IDS } from '../../graphql/query/groupByIds';
@@ -10,12 +10,16 @@ import { EToastType, useToast } from '../../components/Toast/ToastContext';
 import { IGroup, IOrg } from '../../models/OrgModel';
 import { ERoutes } from '../../models/Routes';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
+import { Button } from '../../components/StatelessInput/Button';
+import { UPDATE_ORG_MUTATION } from '../../graphql/mutation/updateOrg';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
+  const [updateOrg] = useMutation(UPDATE_ORG_MUTATION);
   const [selectedOrg, setSelectedOrg] = useState('');
   const [selectedOrgData, setSelectedOrgData] = useState<IOrg>();
   const [orgs, setOrgs] = useState<Array<{ value: string, label: string }>>([]);
+  const { addToast } = useToast();
 
   // eslint-disable-next-line prettier/prettier
   const [orgData, setOrgData] = useState<Array<IOrg>>([]);
@@ -78,13 +82,35 @@ export function EditOrg() {
     setSelectedOrgData(newOrg);
   }
 
+  async function updateOrgData() {
+    console.log(selectedOrgData);
+    const update = {
+      id: selectedOrgData?.id,
+      defaultPostGroups: selectedOrgData?.defaultPostGroups,
+    };
+
+    const { data, error } = await updateOrg({
+      variables: { updateOrg: update },
+    });
+
+    console.log(data);
+
+    if (data) {
+      addToast(`Updated Org`);
+    }
+    if (error) {
+      console.log('Update Org Error', error);
+      addToast(`There was an issue updating the group`, EToastType.ERROR);
+    }
+  }
+
   return (
     <Layout>
       <>
         <header className="bg-white shadow">
           <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-gray-900 inline-block">
-              Org
+              Update Org
             </h1>
             <Select
               containerClass="ml-auto"
@@ -105,7 +131,9 @@ export function EditOrg() {
                 orgID={selectedOrg}
                 groups={selectedOrgData?.groups || []}
               />
-              <h3>Set default post groups</h3>
+              <h3 className="block text-sm font-medium text-gray-700 pb-1">
+                Set default post groups
+              </h3>
               <div>
                 <button
                   onClick={() => setDefaultPostGroups(null, true)}
@@ -132,6 +160,14 @@ export function EditOrg() {
                     {g.name}
                   </button>
                 ))}
+              </div>
+              <div className="flex justify-end">
+                <Button
+                  onClick={updateOrgData}
+                  className="bg-teal-600 text-white"
+                >
+                  Update Org Data
+                </Button>
               </div>
             </div>
           )}
