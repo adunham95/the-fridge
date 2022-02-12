@@ -6,7 +6,7 @@ import { GROUP_BY_IDS } from '../../graphql/query/groupByIds';
 import Layout from '../../components/Layout/Layout';
 import { Input } from '../../components/StatelessInput/Input';
 import { Select } from '../../components/StatelessInput/Select';
-import { useToast } from '../../components/Toast/ToastContext';
+import { EToastType, useToast } from '../../components/Toast/ToastContext';
 import { IGroup, IOrg } from '../../models/OrgModel';
 import { ERoutes } from '../../models/Routes';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
@@ -184,9 +184,11 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
       try {
         await navigator.share(shareData);
         console.log('shared link');
+        addToast('Link Shared');
         // resultPara.textContent = 'MDN shared successfully'
       } catch (err) {
         console.log('Could not share');
+        addToast('Failed to share link', EToastType.ERROR);
         // resultPara.textContent = 'Error: ' + err
       }
     } else {
