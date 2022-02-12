@@ -21,14 +21,14 @@ const AdminHome = () => {
           </div>
         </header>
         <main className="pt-2 px-1">
-          <div>
+          <div className="flex">
             <Link href={ERoutes.ADMIN_NEW_GROUP} passHref>
-              <a>
+              <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
                 <span>New Group</span>
               </a>
             </Link>
             <Link href={ERoutes.ADMIN_EDIT_ORG} passHref>
-              <a>
+              <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
                 <span>Edit Org</span>
               </a>
             </Link>
