@@ -13,7 +13,7 @@ export const Avatar = ({
   name = 'A',
   color = theme.COLORS.blue[500],
   height = 'h-8',
-  width = 'h-8',
+  width = 'w-8',
   className = '',
 }: IProps) => {
   return (

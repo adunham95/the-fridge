@@ -22,7 +22,7 @@ export const UserPermissionDetails: IUserPermissionDetails = {
       'This group has permission to the admin panel, create groups, orgs',
   },
   [EUserPermissions.REQUIRES_POST_APPROVAL]: {
-    title: 'Post Permission',
+    title: 'Can Set Post Permission',
     description: 'The can post, but if the posts require approval ',
   },
   [EUserPermissions.CAN_COMMENT]: {
@@ -34,7 +34,8 @@ export const UserPermissionDetails: IUserPermissionDetails = {
     description: 'This groups is allowed to share the posts',
   },
   [EUserPermissions.CAN_VIEW_LIKERS]: {
-    title: "Can View Likers",
-    description: "This group can view who has liked a post. Unselected will just see the number"
-  }
+    title: 'Can View Likers',
+    description:
+      'This group can view who has liked a post. Unselected will just see the number',
+  },
 };
