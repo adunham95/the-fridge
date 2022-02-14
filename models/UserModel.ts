@@ -20,6 +20,13 @@ export interface IUser {
   orgs: Array<IUserOrg>;
 }
 
+export interface IStateUser {
+  name: string;
+  accountColor?: string;
+  email: string;
+  username: string;
+}
+
 export enum EUserPermissions {
   CAN_POST = 'canPost',
   CAN_COMMENT = 'canComment',
@@ -30,5 +37,5 @@ export enum EUserPermissions {
   UPDATE_GROUPS = 'canUpdateGroup',
   CREATE_GROUPS = 'canCreateGroup',
   CAN_VIEW_POST = 'canViewPost',
-  CAN_VIEW_LIKERS = 'canViewLikers'
+  CAN_VIEW_LIKERS = 'canViewLikers',
 }
