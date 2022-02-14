@@ -34,10 +34,14 @@ export const resolvers = {
         const idList = args.orgIDs.map(
           (id: string) => new mongoose.Types.ObjectId(id),
         );
+        console.log(idList);
         await dbConnect();
         const groups = await GroupModel.find({
-          orgID: idList,
+          orgID: {
+            $in: idList,
+          },
         });
+        console.log(groups);
         return groups.map((group) => {
           return group.toJSON();
         });
