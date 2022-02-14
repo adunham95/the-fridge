@@ -2,14 +2,12 @@ export const GET_GROUPS_BY_ORG_QUERY = `
 getGroupsByOrg(orgIDs:$orgIDs){
     name
     id
+    permissions
   }
 `;
 
 export const GET_GROUPS_BY_ORG = `
 query GetGroupsByOrg($orgIDs:[String!]){
-    getGroupsByOrg(orgIDs:$orgIDs){
-      name
-      id
-    }
+    ${GET_GROUPS_BY_ORG_QUERY}
   }
 `;
