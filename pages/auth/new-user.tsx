@@ -4,10 +4,9 @@ import { useMutation } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
-import { Avatar } from '../../components/Avatar/Avatar';
+import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
-import accountColors from '../../theme/accountColors.json';
 
 const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
     createUser(input:$newUser) {
@@ -137,24 +136,12 @@ export default function NewUser() {
                 containerClass="pt-2"
               />
 
-              <div className="pt-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  Account Color
-                </label>
-                <div className="flex overflow-y-auto p-1">
-                  {accountColors.map((c: string) => (
-                    <button
-                      key={c}
-                      type="button"
-                      style={{ backgroundColor: c }}
-                      onClick={() => setAccountColor(c)}
-                      className={`min-h-[2rem] min-w-[2rem] block mr-1 aspect-square rounded-full ring-2 ring-transparent ${
-                        accountColor === c ? 'ring-gray-400' : ''
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
+              <ColorPicker
+                id="Account Color"
+                value={accountColor}
+                onChange={(color) => setAccountColor(color)}
+                containerClass="pt-2"
+              />
             </div>
 
             <div>
