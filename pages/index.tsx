@@ -1,11 +1,7 @@
 import { useManualQuery } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import {
-  GET_POSTS_BY_GROUP,
-  GET_POSTS_BY_GROUP_LIMIT_SKIP,
-} from '../graphql/query/getPostsByGroup';
-import Layout from '../components/Layout/Layout';
+import { GET_POSTS_BY_GROUP_LIMIT_SKIP } from '../graphql/query/getPostsByGroup';
 import { Loader } from '../components/Loader/Loader';
 import { NewPost } from '../components/Post/NewPost';
 import PostCard from '../components/Post/PostCard';
