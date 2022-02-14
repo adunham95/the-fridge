@@ -83,99 +83,97 @@ const AdminGroup = () => {
   }
 
   return (
-    <Layout>
-      <>
-        <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900 inline-block">
-              Create Group
-            </h1>
+    <>
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-gray-900 inline-block">
+            Create Group
+          </h1>
+        </div>
+      </header>
+      <main className="pt-2 px-3">
+        <BreadCrumb />
+        <form onSubmit={makeGroup}>
+          <Select
+            label="Group Belongs To"
+            id="org"
+            defaultOption="Select a Group"
+            onChange={setSelectedOrg}
+            value={selectedOrg}
+            options={orgs.map((o) => {
+              return {
+                value: o.orgID,
+                label: o.name,
+              };
+            })}
+          />
+          <div className="pt-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Group Name
+            </label>
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <input
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Admin"
+                value={groupName}
+                onChange={(e) => setGroupName(e.target.value)}
+                className="focus:ring-brand-500 block w-full sm:text-sm border-gray-300 rounded-md"
+              />
+            </div>
           </div>
-        </header>
-        <main className="pt-2 px-3">
-          <BreadCrumb />
-          <form onSubmit={makeGroup}>
-            <Select
-              label="Group Belongs To"
-              id="org"
-              defaultOption="Select a Group"
-              onChange={setSelectedOrg}
-              value={selectedOrg}
-              options={orgs.map((o) => {
-                return {
-                  value: o.orgID,
-                  label: o.name,
-                };
+          <div className="pt-2">
+            <h2 className="text-sm font-medium text-gray-700">
+              Group Permissions
+            </h2>
+            <div className="flex flex-wrap">
+              {Object.keys(UserPermissionDetails).map((key) => {
+                const isChecked = selectedPermission.includes(key);
+                return (
+                  <span key={key} className="w-1/2 sm:w-1/3 md:w-1/4 p-1">
+                    <input
+                      className="sr-only"
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => updatePermission(key)}
+                      id={key}
+                    />
+                    <label
+                      htmlFor={key}
+                      className={`p-2 block border bg-white h-full rounded transition cursor-pointer hover:border-brand-400 ${
+                        isChecked
+                          ? ' border-brand-300 shadow-md shadow-brand-200'
+                          : 'border-gray-200'
+                      }`}
+                    >
+                      <span className=" text-base border-b block w-full border-grey-200">
+                        {UserPermissionDetails[key].title}
+                      </span>
+                      <p className="text-sm">
+                        {UserPermissionDetails[key].description}
+                      </p>
+                    </label>
+                  </span>
+                );
               })}
-            />
-            <div className="pt-2">
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Group Name
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  placeholder="Admin"
-                  value={groupName}
-                  onChange={(e) => setGroupName(e.target.value)}
-                  className="focus:ring-brand-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                />
-              </div>
             </div>
-            <div className="pt-2">
-              <h2 className="text-sm font-medium text-gray-700">
-                Group Permissions
-              </h2>
-              <div className="flex flex-wrap">
-                {Object.keys(UserPermissionDetails).map((key) => {
-                  const isChecked = selectedPermission.includes(key);
-                  return (
-                    <span key={key} className="w-1/2 sm:w-1/3 md:w-1/4 p-1">
-                      <input
-                        className="sr-only"
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => updatePermission(key)}
-                        id={key}
-                      />
-                      <label
-                        htmlFor={key}
-                        className={`p-2 block border bg-white h-full rounded transition cursor-pointer hover:border-brand-400 ${
-                          isChecked
-                            ? ' border-brand-300 shadow-md shadow-brand-200'
-                            : 'border-gray-200'
-                        }`}
-                      >
-                        <span className=" text-base border-b block w-full border-grey-200">
-                          {UserPermissionDetails[key].title}
-                        </span>
-                        <p className="text-sm">
-                          {UserPermissionDetails[key].description}
-                        </p>
-                      </label>
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="flex justify-end pt-2">
-              <Button
-                disabled={!canSave()}
-                className="text-white bg-brand-400 hover:bg-brand-600"
-                type="submit"
-              >
-                Save
-              </Button>
-            </div>
-          </form>
-        </main>
-      </>
-    </Layout>
+          </div>
+          <div className="flex justify-end pt-2">
+            <Button
+              disabled={!canSave()}
+              className="text-white bg-brand-400 hover:bg-brand-600"
+              type="submit"
+            >
+              Save
+            </Button>
+          </div>
+        </form>
+      </main>
+    </>
   );
 };
 

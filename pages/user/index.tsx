@@ -49,26 +49,24 @@ function UserProfile() {
   }
 
   return (
-    <Layout>
-      <>
-        <PageBanner title="Profile" />
-        <div className="py-2 px-3 md:px-3">
-          <Input id="name" value={name} onChange={setName} label="Name" />
-          <Input id="email" value={email} onChange={setEmail} label="Email" />
-          {/* <ColorPicker
-            id="accountColor"
-            value={accountColor}
-            label="Account Color"
-            onChange={setAccountColor}
-          /> */}
-          <div className="mt-1 flex justify-end">
-            <Button className="bg-brand-400 text-white" onClick={updateMyUser}>
-              Update Profile
-            </Button>
-          </div>
+    <>
+      <PageBanner title="Profile" />
+      <div className="py-2 px-3 md:px-3">
+        <Input id="name" value={name} onChange={setName} label="Name" />
+        <Input id="email" value={email} onChange={setEmail} label="Email" />
+        <ColorPicker
+          id="accountColor"
+          value={accountColor}
+          label="Account Color"
+          onChange={setAccountColor}
+        />
+        <div className="mt-1 flex justify-end">
+          <Button className="bg-brand-400 text-white" onClick={updateMyUser}>
+            Update Profile
+          </Button>
         </div>
-      </>
-    </Layout>
+      </div>
+    </>
   );
 }
 

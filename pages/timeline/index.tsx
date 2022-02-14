@@ -8,9 +8,9 @@ const Wall = () => {
   const myUser = session?.user;
 
   return (
-    <Layout>
+    <div>
       <PageBanner title="Timeline" />
-    </Layout>
+    </div>
   );
 };
 

@@ -48,43 +48,41 @@ function SinglePost() {
   };
 
   return (
-    <Layout>
-      <div className="p-2 flex items-center flex-col">
-        {loading && (
-          <div className="pt-2">
-            <Loader />
-          </div>
-        )}
-        {!loading && (
-          <div className="bg-white w-[500px] flex flex-col items-center shadow-sm rounded-lg px-4 py-3">
-            {post === null ? (
-              <p>Error Loading Post</p>
-            ) : (
-              <>
-                <div className="flex w-full items-center">
-                  <Avatar name={post?.postedBy.name} />
-                  <div className="text-sm pl-1">
-                    <p>{post?.postedBy.name}</p>
-                    <p>{formatDate(post?.dateTime)}</p>
-                  </div>
+    <div className="p-2 flex items-center flex-col">
+      {loading && (
+        <div className="pt-2">
+          <Loader />
+        </div>
+      )}
+      {!loading && (
+        <div className="bg-white w-[500px] flex flex-col items-center shadow-sm rounded-lg px-4 py-3">
+          {post === null ? (
+            <p>Error Loading Post</p>
+          ) : (
+            <>
+              <div className="flex w-full items-center">
+                <Avatar name={post?.postedBy.name} />
+                <div className="text-sm pl-1">
+                  <p>{post?.postedBy.name}</p>
+                  <p>{formatDate(post?.dateTime)}</p>
                 </div>
-                {post?.description && (
-                  <p className="text-lg text-left w-full m-2 text-slate-700">
-                    {post?.description}
-                  </p>
-                )}
-                {post?.image && <ImageCarousel images={post.image} />}
-              </>
-            )}
-          </div>
-        )}
-        {post?.comments && (
-          <div>
-            <div>New COmment</div>
-          </div>
-        )}
-      </div>
-    </Layout>
+              </div>
+              {post?.description && (
+                <p className="text-lg text-left w-full m-2 text-slate-700">
+                  {post?.description}
+                </p>
+              )}
+              {post?.image && <ImageCarousel images={post.image} />}
+            </>
+          )}
+        </div>
+      )}
+      {post?.comments && (
+        <div>
+          <div>New COmment</div>
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -105,75 +105,73 @@ export function EditOrg() {
   }
 
   return (
-    <Layout>
-      <>
-        <header className="bg-white shadow">
-          <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900 inline-block">
-              Update Org
-            </h1>
-            <Select
-              containerClass="ml-auto"
-              id="orgs"
-              value={selectedOrg}
-              options={orgs}
-              onChange={setSelectedOrg}
+    <>
+      <header className="bg-white shadow">
+        <div className="max-w-7xl mx-auto py-6 px-4 flex items-center sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold text-gray-900 inline-block">
+            Update Org
+          </h1>
+          <Select
+            containerClass="ml-auto"
+            id="orgs"
+            value={selectedOrg}
+            options={orgs}
+            onChange={setSelectedOrg}
+          />
+        </div>
+      </header>
+      <main className="pt-2 px-2">
+        <BreadCrumb />
+        {loading && <h1>Loading...</h1>}
+        {selectedOrgData && (
+          <div>
+            <h2 className=" text-xl">{selectedOrgData.name}</h2>
+            <CreateInviteLink
+              orgID={selectedOrg}
+              groups={selectedOrgData?.groups || []}
             />
-          </div>
-        </header>
-        <main className="pt-2 px-2">
-          <BreadCrumb />
-          {loading && <h1>Loading...</h1>}
-          {selectedOrgData && (
+            <h3 className="block text-sm font-medium text-gray-700 pb-1">
+              Set default post groups
+            </h3>
             <div>
-              <h2 className=" text-xl">{selectedOrgData.name}</h2>
-              <CreateInviteLink
-                orgID={selectedOrg}
-                groups={selectedOrgData?.groups || []}
-              />
-              <h3 className="block text-sm font-medium text-gray-700 pb-1">
-                Set default post groups
-              </h3>
-              <div>
+              <button
+                onClick={() => setDefaultPostGroups(null, true)}
+                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-emerald-400 "
+              >
+                All
+              </button>
+              <button
+                onClick={() => setDefaultPostGroups(null, false, true)}
+                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-rose-400 "
+              >
+                None
+              </button>
+              {(selectedOrgData?.groups || []).map((g) => (
                 <button
-                  onClick={() => setDefaultPostGroups(null, true)}
-                  className="text-white py-1 px-2 mr-1 mb-1 rounded bg-emerald-400 "
+                  key={g.id}
+                  onClick={() => setDefaultPostGroups(g.id)}
+                  className={`bg-brand-400 text-white py-1 px-2 mr-1 mb-1 rounded ${
+                    selectedOrgData.defaultPostGroups?.includes(g.id)
+                      ? 'opacity-100'
+                      : 'opacity-70'
+                  }`}
                 >
-                  All
+                  {g.name}
                 </button>
-                <button
-                  onClick={() => setDefaultPostGroups(null, false, true)}
-                  className="text-white py-1 px-2 mr-1 mb-1 rounded bg-rose-400 "
-                >
-                  None
-                </button>
-                {(selectedOrgData?.groups || []).map((g) => (
-                  <button
-                    key={g.id}
-                    onClick={() => setDefaultPostGroups(g.id)}
-                    className={`bg-brand-400 text-white py-1 px-2 mr-1 mb-1 rounded ${
-                      selectedOrgData.defaultPostGroups?.includes(g.id)
-                        ? 'opacity-100'
-                        : 'opacity-70'
-                    }`}
-                  >
-                    {g.name}
-                  </button>
-                ))}
-              </div>
-              <div className="flex justify-end">
-                <Button
-                  onClick={updateOrgData}
-                  className="bg-teal-600 text-white"
-                >
-                  Update Org Data
-                </Button>
-              </div>
+              ))}
             </div>
-          )}
-        </main>
-      </>
-    </Layout>
+            <div className="flex justify-end">
+              <Button
+                onClick={updateOrgData}
+                className="bg-teal-600 text-white"
+              >
+                Update Org Data
+              </Button>
+            </div>
+          </div>
+        )}
+      </main>
+    </>
   );
 }
 

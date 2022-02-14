@@ -78,35 +78,33 @@ const Wall = () => {
   }
 
   return (
-    <Layout>
-      <div className=" max-w-md mx-auto py-5">
-        <NewPost onCreate={newPost} />
-        {state.posts.map((p: IPost) => (
-          <PostCard key={p.id} {...p} />
-        ))}
-        {loading && (
-          <div className="flex justify-center pt-1 pb-2">
-            <Loader />
-          </div>
-        )}
-        {!loading && state.posts.length === 0 && <h1>No Posts</h1>}
-        {!hitLimit && !loading && (
-          <div className=" flex justify-center">
-            <Button
-              className="bg-brand-400 hover:bg-brand-400 text-white"
-              onClick={loadMorePosts}
-            >
-              Load More Posts
-            </Button>
-          </div>
-        )}
-        {hitLimit && (
-          <p className="text-center border-t-2 border-brand-500 pt-2">
-            All Posts Loaded
-          </p>
-        )}
-      </div>
-    </Layout>
+    <div className=" max-w-md mx-auto py-5">
+      <NewPost onCreate={newPost} />
+      {state.posts.map((p: IPost) => (
+        <PostCard key={p.id} {...p} />
+      ))}
+      {loading && (
+        <div className="flex justify-center pt-1 pb-2">
+          <Loader />
+        </div>
+      )}
+      {!loading && state.posts.length === 0 && <h1>No Posts</h1>}
+      {!hitLimit && !loading && (
+        <div className=" flex justify-center">
+          <Button
+            className="bg-brand-400 hover:bg-brand-400 text-white"
+            onClick={loadMorePosts}
+          >
+            Load More Posts
+          </Button>
+        </div>
+      )}
+      {hitLimit && (
+        <p className="text-center border-t-2 border-brand-500 pt-2">
+          All Posts Loaded
+        </p>
+      )}
+    </div>
   );
 };
 
