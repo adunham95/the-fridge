@@ -11,6 +11,7 @@ import { ERoutes } from '../../models/Routes';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
 import { Button } from '../../components/StatelessInput/Button';
 import { UPDATE_ORG_MUTATION } from '../../graphql/mutation/updateOrg';
+import Link from 'next/link';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -125,6 +126,17 @@ export function EditOrg() {
         {selectedOrgData && (
           <div>
             <h2 className=" text-xl">{selectedOrgData.name}</h2>
+            <Link
+              href={{
+                pathname: ERoutes.ADMIN_EDIT_USER_GROUPS,
+                query: { orgID: selectedOrg },
+              }}
+              passHref
+            >
+              <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
+                <span>Edit User Groups</span>
+              </a>
+            </Link>
             <CreateInviteLink
               orgID={selectedOrg}
               groups={selectedOrgData?.groups || []}
