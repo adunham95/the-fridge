@@ -25,9 +25,6 @@ export function BreadCrumb() {
     console.log(query);
     const data = pathname.split('/').filter((p) => p !== '');
     const allRoutes = data.map((d, i) => {
-      if (d === '[groupID]') {
-        console.log('thisIsTheGroupID', d);
-      }
       const path = `/${data.slice(0, i + 1).join('/')}`;
       const generatedPathName = `/${[
         ...data.slice(0, i),
