@@ -1,7 +1,6 @@
 // @flow
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import path from 'path/posix';
 import React, { useEffect, useState } from 'react';
 import { RouteNames } from '../../models/Routes';
 
@@ -12,15 +11,36 @@ interface ICrumb {
 }
 
 export function BreadCrumb() {
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
   const [crumbs, setCrumbs] = useState<Array<ICrumb>>([]);
 
+  function getQueryParams(d: string) {
+    if (d === 'groupID') {
+      return query.groupID;
+    }
+    return d;
+  }
+
   useEffect(() => {
+    console.log(query);
     const data = pathname.split('/').filter((p) => p !== '');
     const allRoutes = data.map((d, i) => {
+      if (d === '[groupID]') {
+        console.log('thisIsTheGroupID', d);
+      }
       const path = `/${data.slice(0, i + 1).join('/')}`;
-      return { path, title: RouteNames[path], current: path === pathname };
+      const generatedPathName = `/${[
+        ...data.slice(0, i),
+        getQueryParams(d),
+      ].join('/')}`;
+      console.log(path);
+      return {
+        path: generatedPathName,
+        title: RouteNames[path],
+        current: path === pathname,
+      };
     });
+    console.log(allRoutes);
     setCrumbs(allRoutes);
   }, [pathname]);
 
