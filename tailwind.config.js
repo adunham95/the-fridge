@@ -13,6 +13,9 @@ module.exports = {
       maxHeight: {
         'half-screen': '50vh',
       },
+      fontSize: {
+        tiny: '.65rem',
+      },
     },
   },
   plugins: [require('@tailwindcss/forms')],
