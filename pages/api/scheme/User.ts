@@ -52,6 +52,7 @@ export const typeDef = gql`
 
   extend type Query {
     getUser(id: String!): User!
+    getUsersByOrg(orgIDs: [String!]): [User!]
   }
 
   extend type Mutation {
@@ -84,6 +85,27 @@ export const resolvers = {
         };
         console.log(returnUser);
         return returnUser;
+      } catch (error) {
+        throw error;
+      }
+    },
+    getUsersByOrg: async (_: any, args: any) => {
+      try {
+        const idList = args.orgIDs.map((id: string) => new Types.ObjectId(id));
+        console.log(idList);
+        await dbConnect();
+
+        const users = await UserModel.find({
+          'orgs.org': {
+            $in: idList,
+          },
+        }).populate({
+          path: 'orgs', // 1st level subdoc (get comments)
+          populate: ['group', 'org'],
+        });
+        return users.map((user) => {
+          return user.toJSON();
+        });
       } catch (error) {
         throw error;
       }
