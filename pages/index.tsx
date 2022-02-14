@@ -38,6 +38,9 @@ const Wall = () => {
   }, [myUser]);
 
   const fetchPostData = async (groupList: Array<string>) => {
+    if (hitLimit) {
+      return;
+    }
     const data = await fetchPosts({
       variables: {
         ids: groupList,
