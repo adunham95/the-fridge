@@ -14,6 +14,7 @@ import { IPost } from '../models/PostModel';
 import { POST_ACTION } from '../reducers/postReducer';
 import { EToastType, useToast } from '../components/Toast/ToastContext';
 import { Button } from '../components/StatelessInput/Button';
+import IconArrow from '../components/Icons/Icon-arrow';
 
 const Wall = () => {
   const { data: session } = useSession();
@@ -80,8 +81,25 @@ const Wall = () => {
     fetchPostData(myGroups || []);
   }
 
+  function scrollToTop() {
+    const container = document.getElementById('scrollable-container');
+    container?.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
+
   return (
     <div className=" max-w-md mx-auto py-5">
+      <Button
+        className="fixed bottom-1 right-5 color-white bg-brand-blue-400 h-[2.5em] w-[2.5em] flex justify-center items-center"
+        onClick={scrollToTop}
+      >
+        <span className=" rotate-[270deg] text-white">
+          <IconArrow height={20} width={20} />
+        </span>
+      </Button>
       <NewPost onCreate={newPost} />
       {state.posts.map((p: IPost) => (
         <PostCard key={p.id} {...p} />
