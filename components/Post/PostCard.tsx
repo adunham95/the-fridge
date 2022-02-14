@@ -65,14 +65,14 @@ function PostCard({
           <PostLikes likes={likedBy} postID={id} />
           <button
             onClick={() => setModalID(`${id}-comments`)}
-            className="flex items-center pl-3"
+            className="flex items-center pl-3 text-xl h-[1em] md:text-sm"
           >
             <IconComment
-              width={15}
-              height={15}
+              width={'100%'}
+              height={'auto'}
               fill={theme.COLORS.brand[400]}
             />
-            <span className=" ml-1 text-sm">{comments.length}</span>
+            <span className=" ml-1">{comments.length}</span>
           </button>
         </div>
       </div>
@@ -171,13 +171,16 @@ function PostLikes({ likes, postID }: IPostLikeProps) {
   }
 
   return (
-    <button className="flex items-center" onClick={updateLike}>
+    <button
+      className="flex items-center h-[1em] text-xl md:text-sm"
+      onClick={updateLike}
+    >
       <IconHeart
-        width={15}
-        height={15}
+        width={'100%'}
+        height={'auto'}
         fill={likes.includes(myUser?.id || '') ? 'red' : 'pink'}
       />
-      <span className=" ml-1 text-sm">{likes.length}</span>
+      <span className=" ml-1">{likes.length}</span>
     </button>
   );
 }

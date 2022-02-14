@@ -7,8 +7,8 @@ import IconUser from './Icon-User';
 
 export interface IIconProps {
   name?: string;
-  height?: number;
-  width?: number;
+  height?: number | '100%' | 'auto';
+  width?: number | '100%' | 'auto';
   fill?: string;
 }
 
