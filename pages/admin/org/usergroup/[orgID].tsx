@@ -10,6 +10,7 @@ import IconGrab from '../../../../components/Icons/Icon-Grab';
 import { Loader } from '../../../../components/Loader/Loader';
 import { BreadCrumb } from '../../../../components/nav/BreadCrumb';
 import { PageBanner } from '../../../../components/Page/PageBanner';
+import { Button } from '../../../../components/StatelessInput/Button';
 import { useToast } from '../../../../components/Toast/ToastContext';
 import { GET_GROUPS_BY_ORG_QUERY } from '../../../../graphql/query/getGroupsByOrg';
 import { GET_USERS_BY_ORG_QUERY } from '../../../../graphql/query/getUsersByOrg';
@@ -164,6 +165,9 @@ export function EditUserGroups() {
                 />
               ))}
             </div>
+          </div>
+          <div className="flex justify-end">
+            <Button className="bg-emerald-400 text-white">Save Changes</Button>
           </div>
         </DndProvider>
       </main>
