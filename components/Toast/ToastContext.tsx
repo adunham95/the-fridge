@@ -8,7 +8,7 @@ import {
 import ToastContainer from './Toast';
 
 interface IToastContext {
-  addToast: (content: any, type?: EToastType) => void;
+  addToast: (content: any, color?: string, icon?: string) => void;
   removeToast: (id: any) => void;
 }
 
@@ -33,6 +33,8 @@ export interface IToast {
   id: number;
   content: string;
   type?: EToastType;
+  color?: string;
+  icon?: string;
 }
 
 interface IProps {
@@ -43,10 +45,10 @@ const ToastProvider = ({ children }: IProps) => {
   const [toasts, setToasts] = useState<Array<IToast>>([]);
 
   const addToast = useCallback(
-    (content: string, type: EToastType = EToastType.DEFAULT) => {
+    (content: string, color = '#475569', icon = '') => {
       setToasts((toasts: Array<IToast>) => [
         ...toasts,
-        { id: id++, content, type },
+        { id: id++, content, color, icon },
       ]);
     },
     [setToasts],
