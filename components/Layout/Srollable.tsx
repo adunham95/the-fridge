@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const bannerData = {
-  id: 'test',
+  id: 'test_1',
   link: 'google.com',
   linkText: 'Test',
   copy: 'Banner Data',
