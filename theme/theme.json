@@ -1,4 +1,11 @@
 {
+  "BASE_COLOR": {
+    "brand-blue": "#00abd5",
+    "brand": "#5b4b81",
+    "warning": "#eed202",
+    "success": "#339900",
+    "error": "#af0606"
+  },
   "COLORS": {
     "brand-blue": {
       "50": "#f2fbfd",
