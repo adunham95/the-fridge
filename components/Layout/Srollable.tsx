@@ -1,5 +1,6 @@
 import React, { ReactChild } from 'react';
-import Banner, { EBannerStyleType } from './Banner';
+import { EIcons } from '../Icons';
+import Banner from './Banner';
 
 interface IProps {
   children: ReactChild;
@@ -8,18 +9,12 @@ interface IProps {
 }
 
 const bannerData = {
-  id: 'adrian',
+  id: 'test',
   link: 'google.com',
   linkText: 'Test',
   copy: 'Banner Data',
-  bannerType: EBannerStyleType.CUSTOM,
-  customStyles: {
-    background: 'bg-fuchsia-600',
-    iconColor: 'bg-fuchsia-800',
-    text: 'text-white',
-    button: 'text-fuchsia-600 bg-white hover:bg-fuchsia-50',
-    close: 'hover:bg-fuchsia-500 focus:ring-white',
-  },
+  color: '#af0606',
+  icon: EIcons.BELL,
 };
 
 function Scrollable({ children, isMobile, className = '' }: IProps) {
