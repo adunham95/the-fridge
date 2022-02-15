@@ -9,6 +9,8 @@ import { Avatar } from '../Avatar/Avatar';
 import { Button } from '../StatelessInput/Button';
 import { Input } from '../StatelessInput/Input';
 import { useToast } from '../Toast/ToastContext';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../Icons';
 
 interface IProps {
   postID: string;
@@ -97,10 +99,14 @@ function NewComment({ postID, onSave }: INewCommentProps) {
     };
     const data = await createComment({ variables: newCommentData });
     if (data?.error) {
-      addToast('Error posting comment');
+      addToast(
+        'Error posting comment',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
     }
     if (data?.data.createComment) {
-      addToast('Created comment');
+      addToast('Created comment', theme.BASE_COLOR.success, EIcons.BELL);
       onSave(data.data.createComment);
       setComment('');
       dispatch({

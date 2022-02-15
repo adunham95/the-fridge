@@ -4,9 +4,11 @@ import { useMutation } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
+import { EIcons } from '../../components/Icons';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
+import theme from '../../theme/theme.json';
 
 const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
     createUser(input:$newUser) {
@@ -84,10 +86,10 @@ export default function NewUser() {
 
     const { data, error } = await createUser({ variables: newUser });
     if (error) {
-      addToast('Error Creating User');
+      addToast('Error Creating User', theme.BASE_COLOR.error);
     }
     if (data) {
-      addToast('User Created');
+      addToast('User Created', theme.BASE_COLOR.success, EIcons.USER);
     }
   }
 

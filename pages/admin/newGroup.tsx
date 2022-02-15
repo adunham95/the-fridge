@@ -2,13 +2,13 @@ import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { CREATE_GROUP_MUTATION } from '../../graphql/mutation/createOrgs';
-import Layout from '../../components/Layout/Layout';
 import { Select } from '../../components/StatelessInput/Select';
 import { EUserPermissions } from '../../models/UserModel';
 import { UserPermissionDetails } from '../../models/UserPermission';
 import { EToastType, useToast } from '../../components/Toast/ToastContext';
 import { Button } from '../../components/StatelessInput/Button';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
+import theme from '../../theme/theme.json';
 
 const AdminGroup = () => {
   const [createGroup] = useMutation(CREATE_GROUP_MUTATION);
@@ -74,11 +74,14 @@ const AdminGroup = () => {
     console.log(data);
 
     if (data) {
-      addToast(`Group ${data.createGroup.name} created`);
+      addToast(
+        `Group ${data.createGroup.name} created`,
+        theme.BASE_COLOR.success,
+      );
     }
     if (error) {
       console.log('Create Group Error', error);
-      addToast(`There was an issue creating the group`, EToastType.ERROR);
+      addToast(`There was an issue creating the group`, theme.BASE_COLOR.error);
     }
   }
 

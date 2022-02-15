@@ -12,6 +12,8 @@ import { BreadCrumb } from '../../components/nav/BreadCrumb';
 import { Button } from '../../components/StatelessInput/Button';
 import { UPDATE_ORG_MUTATION } from '../../graphql/mutation/updateOrg';
 import Link from 'next/link';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../../components/Icons';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -96,11 +98,15 @@ export function EditOrg() {
     console.log(data);
 
     if (data) {
-      addToast(`Updated Org`);
+      addToast(`Updated Org`, theme.BASE_COLOR.success, EIcons.USER);
     }
     if (error) {
       console.log('Update Org Error', error);
-      addToast(`There was an issue updating the group`, EToastType.ERROR);
+      addToast(
+        `There was an issue updating the group`,
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
     }
   }
 
@@ -214,7 +220,7 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
 
   async function copyText() {
     await navigator.clipboard.writeText(inviteLink);
-    addToast('Link Copied');
+    addToast('Link Copied', theme.BASE_COLOR['brand-blue']);
   }
 
   async function shareLink() {
@@ -229,11 +235,15 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
       try {
         await navigator.share(shareData);
         console.log('shared link');
-        addToast('Link Shared');
+        addToast('Link Shared', theme.BASE_COLOR['brand-blue']);
         // resultPara.textContent = 'MDN shared successfully'
       } catch (err) {
         console.log('Could not share');
-        addToast('Failed to share link', EToastType.ERROR);
+        addToast(
+          'Failed to share link',
+          theme.BASE_COLOR.error,
+          EIcons.EXCLAMATION,
+        );
         // resultPara.textContent = 'Error: ' + err
       }
     } else {

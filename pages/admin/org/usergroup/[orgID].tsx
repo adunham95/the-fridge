@@ -1,5 +1,4 @@
 // @flow
-import { group } from 'console';
 import { useManualQuery } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +15,7 @@ import { GET_GROUPS_BY_ORG_QUERY } from '../../../../graphql/query/getGroupsByOr
 import { GET_USERS_BY_ORG_QUERY } from '../../../../graphql/query/getUsersByOrg';
 import { EUserPermissions } from '../../../../models/UserModel';
 import { UserPermissionDetails } from '../../../../models/UserPermission';
+import theme from '../../../../theme/theme.json';
 
 const Admin_Query = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -75,7 +75,7 @@ export function EditUserGroups() {
     console.log(adminData);
     if (adminData.error) {
       console.error(adminData.error);
-      addToast('Error Loading Data');
+      addToast('Error Loading Data', theme.BASE_COLOR.error);
     }
     if (adminData.data?.getGroupsByOrg && adminData.data?.getUsersByOrg) {
       setUsers(adminData.data?.getUsersByOrg);

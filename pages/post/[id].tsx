@@ -11,6 +11,8 @@ import { IPost } from '../../models/PostModel';
 import { formatDate } from '../../util/formatData';
 import { ImageCarousel } from '../../components/Image/ImageCarousel';
 import { Input } from '../../components/StatelessInput/Input';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../../components/Icons';
 
 function SinglePost() {
   const router = useRouter();
@@ -39,7 +41,11 @@ function SinglePost() {
     });
     console.log(data.data);
     if (data.data.getSinglePost === null) {
-      addToast('Could not find Post');
+      addToast(
+        'Could not find Post',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
       setPost(null);
     }
     if (data.data.getSinglePost !== null) {

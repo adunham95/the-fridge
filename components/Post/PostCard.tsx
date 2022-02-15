@@ -17,6 +17,7 @@ import { Loader } from '../Loader/Loader';
 import { usePost } from '../../context/PostContext';
 import { POST_ACTION } from '../../reducers/postReducer';
 import { UPDATE_LIKE } from '../../graphql/mutation/updateLike';
+import { EIcons } from '../Icons';
 
 function PostCard({
   id,
@@ -103,7 +104,11 @@ function PostComments({ postID }: { postID: string }) {
   useEffect(() => {
     console.log(data);
     if (error) {
-      addToast('Could not load comments');
+      addToast(
+        'Could not load comments',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
       setComments([]);
     }
     if (data?.getCommentsByPost !== null) {
@@ -156,10 +161,14 @@ function PostLikes({ likes, postID }: IPostLikeProps) {
       },
     });
     if (data.error || data?.data?.updateLike?.success === false) {
-      addToast('Error updating like', EToastType.ERROR);
+      addToast(
+        'Error updating like',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
     }
     if (data?.data?.updateLike?.success) {
-      addToast('Updated LIke', EToastType.INFO);
+      addToast('Updated Like', theme.BASE_COLOR.success, EIcons.THUMB_UP);
       dispatch({
         type: POST_ACTION.UPDATE_LIKE,
         payload: {

@@ -3,12 +3,13 @@ import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { UPDATE_USER_MUTATION } from '../../graphql/mutation/updateUser';
-import Layout from '../../components/Layout/Layout';
 import { PageBanner } from '../../components/Page/PageBanner';
 import { Button } from '../../components/StatelessInput/Button';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../../components/Icons';
 
 function UserProfile() {
   const [updateUser] = useMutation(UPDATE_USER_MUTATION);
@@ -40,11 +41,15 @@ function UserProfile() {
       },
     });
     if (data) {
-      addToast(`User Updated`);
+      addToast(`User Updated`, theme.BASE_COLOR.success, EIcons.USER);
     }
     if (error) {
       console.log('Create Group Error', error);
-      addToast(`There was an issue updating the user`);
+      addToast(
+        `There was an issue updating the user`,
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
     }
   }
 

@@ -11,6 +11,8 @@ import { POST_ACTION } from '../reducers/postReducer';
 import { EToastType, useToast } from '../components/Toast/ToastContext';
 import { Button } from '../components/StatelessInput/Button';
 import IconArrow from '../components/Icons/Icon-arrow';
+import theme from '../theme/theme.json';
+import { EIcons } from '../components/Icons';
 
 const Wall = () => {
   const { data: session } = useSession();
@@ -59,7 +61,11 @@ const Wall = () => {
       });
     }
     if (data.error) {
-      addToast('Error Fetching Posts', EToastType.ERROR);
+      addToast(
+        'Error Fetching Posts',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION,
+      );
     }
   };
 
