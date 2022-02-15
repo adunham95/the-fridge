@@ -2,6 +2,7 @@ import IconBell from './Icon-Bell';
 import IconBellAlert from './Icon-Bell-Alert';
 import IconBook from './Icon-book';
 import IconCalender from './Icon-Calender';
+import IconCheckCircle from './Icon-Check-Circle';
 import IconCowbell from './Icon-Cowbwll';
 import IconExclamation from './Icon-Exclamation';
 import IconExclamationTriangle from './Icon-ExlamationTriangle';
@@ -9,6 +10,7 @@ import IconGear from './Icon-gear';
 import IconHouse from './Icon-house';
 import IconInfo from './Icon-Info';
 import IconLock from './Icon-lock';
+import IconThumbUp from './Icon-Thumb-Up';
 import IconUser from './Icon-User';
 import IconWarning from './Icon-Warning';
 
@@ -33,6 +35,8 @@ export enum EIcons {
   COWBELL = 'Cowbell',
   WARNING = 'Warning',
   INFO = 'Info',
+  CHECK_CIRCLE = 'CheckCircle',
+  THUMB_UP = 'ThumbUp',
 }
 
 export const IconList = Object.values(EIcons);
@@ -66,6 +70,10 @@ const Icon = (props: IIconProps) => {
       return <IconWarning {...props} />;
     case EIcons.INFO:
       return <IconInfo {...props} />;
+    case EIcons.CHECK_CIRCLE:
+      return <IconCheckCircle {...props} />;
+    case EIcons.THUMB_UP:
+      return <IconThumbUp {...props} />;
     default:
       return <></>;
   }
