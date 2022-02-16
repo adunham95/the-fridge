@@ -3,34 +3,18 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { ClientContext } from 'graphql-hooks';
 import { useGraphQLClient } from '../lib/graphql-client';
-import { SessionProvider, useSession } from 'next-auth/react';
-import { ReactChild } from 'react';
+import { SessionProvider } from 'next-auth/react';
 import { NextComponentType } from 'next';
 import { PostProvider } from '../context/PostContext';
 import ToastProvider from '../components/Toast/ToastContext';
 import { ModalProvider } from '../components/Modal/ModalContext';
 import { UserProvider } from '../context/UserContext';
 import Layout from '../components/Layout/Layout';
-
-interface IAuth {
-  children: ReactChild;
-}
-
-function Auth({ children }: IAuth): JSX.Element {
-  const { data: session, status } = useSession({ required: true });
-  const isUser = !!session?.user;
-
-  if (isUser) {
-    return <>{children}</>;
-  }
-
-  // Session is being fetched, or no user.
-  // If no user, useEffect() will redirect.
-  return <div>Loading...</div>;
-}
+import AuthWrapper from '../components/Auth/AuthWrapper';
 
 type AuthComponent = NextComponentType & {
   auth?: boolean,
+  permissions?: Array<string>,
 };
 
 type MyAppProps = AppProps & {
@@ -76,9 +60,9 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
                 <ClientContext.Provider value={graphQLClient}>
                   <Layout>
                     {Component.auth ? (
-                      <Auth>
+                      <AuthWrapper permissions={Component.permissions || []}>
                         <Component {...pageProps} />
-                      </Auth>
+                      </AuthWrapper>
                     ) : (
                       <Component {...pageProps} />
                     )}
