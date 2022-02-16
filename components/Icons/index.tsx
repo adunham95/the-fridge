@@ -10,6 +10,7 @@ import IconGear from './Icon-gear';
 import IconHouse from './Icon-house';
 import IconInfo from './Icon-Info';
 import IconLock from './Icon-lock';
+import IconPalette from './Icon-Palette';
 import IconThumbUp from './Icon-Thumb-Up';
 import IconUser from './Icon-User';
 import IconWarning from './Icon-Warning';
@@ -37,6 +38,7 @@ export enum EIcons {
   INFO = 'Info',
   CHECK_CIRCLE = 'CheckCircle',
   THUMB_UP = 'ThumbUp',
+  PALETTE = 'Palette',
 }
 
 export const IconList = Object.values(EIcons);
@@ -74,6 +76,8 @@ const Icon = (props: IIconProps) => {
       return <IconCheckCircle {...props} />;
     case EIcons.THUMB_UP:
       return <IconThumbUp {...props} />;
+    case EIcons.PALETTE:
+      return <IconPalette {...props} />;
     default:
       return <></>;
   }

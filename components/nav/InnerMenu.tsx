@@ -43,6 +43,15 @@ const navMenu: Array<INavMenuItem> = [
     },
   },
   {
+    path: ERoutes.THEME,
+    title: 'Theme',
+    icon: EIcons.PALETTE,
+    showIf: {
+      loggedIn: true,
+    },
+    permissions: [EUserPermissions.IS_ADMIN],
+  },
+  {
     path: ERoutes.AUTH_SIGN_IN,
     title: 'Log In',
     icon: EIcons.LOCK,

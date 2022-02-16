@@ -12,6 +12,7 @@ export enum ERoutes {
   AUTH_SIGN_UP = '/auth/new-user',
   USER = '/account',
   TIMELINE = '/timeline',
+  THEME = '/theme',
 }
 
 interface IRouteName {
