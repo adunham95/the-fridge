@@ -3,7 +3,7 @@ import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../graphql/mutation/createPost';
-import { IPost } from '../../models/PostModel';
+import { EPostPermission, IPost } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
@@ -14,6 +14,7 @@ query GetGroupsByOrg($orgIDs:[String!]){
   getGroupsByOrg(orgIDs:$orgIDs){
     id
     name
+    permissions
     orgID
   }
   getOrgsByIDs(orgIDs:$orgIDs){
@@ -136,6 +137,16 @@ export const NewPost = ({ onCreate }: IProps) => {
     setSelectedGroups(newGroup);
   }
 
+  function setSettings(setting: string) {
+    let newSettings = [...selectedSettings];
+    if (newSettings.includes(setting)) {
+      newSettings = newSettings.filter((g) => g !== setting);
+    } else if (!newSettings.includes(setting)) {
+      newSettings = [...newSettings, setting];
+    }
+    setSelectedSettings(newSettings);
+  }
+
   if (approvedOrgs.length === 0) {
     return null;
   }
@@ -171,8 +182,9 @@ export const NewPost = ({ onCreate }: IProps) => {
       </div>
       {canPost() && (
         <>
+          {console.log({ orgGroups })}
           <h2>Share With Groups:</h2>
-          <div className="overflow-x-auto whitespace-nowrap">
+          <div className="overflow-x-auto whitespace-nowrap pt-1">
             <span className="mr-1">
               <button
                 className="bg-red-400 text-white p-1 rounded text-sm"
@@ -181,20 +193,52 @@ export const NewPost = ({ onCreate }: IProps) => {
                 Clear
               </button>
             </span>
-            {orgGroups.map((g) => (
-              <span key={g.id} className="inline-flex mr-1">
+            {orgGroups
+              .filter((g) =>
+                g.permissions.includes(EUserPermissions.CAN_VIEW_POST),
+              )
+              .map((g) => (
+                <span key={g.id} className="inline-flex mr-1">
+                  <input
+                    type="checkbox"
+                    id={`${g.id}-value`}
+                    checked={selectedGroups.includes(g.id)}
+                    onChange={() => setOrgGroup(g.id)}
+                    className="hidden peer"
+                  />
+                  <label
+                    className="peer-checked:bg-brand-500 peer-checked:bg-opacity-100 bg-brand-400 bg-opacity-50 text-white p-1 rounded text-sm"
+                    htmlFor={`${g.id}-value`}
+                  >
+                    {g.name}
+                  </label>
+                </span>
+              ))}
+          </div>
+          <h2 className="pt-1">Share Settings:</h2>
+          <div className="overflow-x-auto whitespace-nowrap pt-1">
+            <span className="mr-1">
+              <button
+                className="bg-red-400 text-white p-1 rounded text-sm"
+                onClick={() => setSelectedSettings([])}
+              >
+                Clear
+              </button>
+            </span>
+            {Object.values(EPostPermission).map((s) => (
+              <span key={s} className="inline-flex mr-1">
                 <input
                   type="checkbox"
-                  id={`${g.id}-value`}
-                  checked={selectedGroups.includes(g.id)}
-                  onChange={() => setOrgGroup(g.id)}
+                  id={`${s}-value`}
+                  checked={selectedSettings.includes(s)}
+                  onChange={() => setSettings(s)}
                   className="hidden peer"
                 />
                 <label
                   className="peer-checked:bg-brand-500 peer-checked:bg-opacity-100 bg-brand-400 bg-opacity-50 text-white p-1 rounded text-sm"
-                  htmlFor={`${g.id}-value`}
+                  htmlFor={`${s}-value`}
                 >
-                  {g.name}
+                  {s}
                 </label>
               </span>
             ))}
