@@ -16,6 +16,7 @@ const navMenu: Array<INavMenuItem> = [
     showIf: {
       loggedIn: true,
     },
+    permissions: [EUserPermissions.CAN_VIEW_POST],
   },
   {
     path: ERoutes.ADMIN,
@@ -41,6 +42,7 @@ const navMenu: Array<INavMenuItem> = [
     showIf: {
       loggedIn: true,
     },
+    permissions: [EUserPermissions.CAN_VIEW_POST],
   },
   {
     path: ERoutes.THEME,
