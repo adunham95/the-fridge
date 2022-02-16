@@ -15,6 +15,7 @@ import Link from 'next/link';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
 import { EUserPermissions } from '../../models/UserModel';
+import { EPostPermission } from '../../models/PostModel';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -85,11 +86,41 @@ export function EditOrg() {
     setSelectedOrgData(newOrg);
   }
 
+  function setDefaultPostSettings(
+    setting: null | string = null,
+    all = false,
+    none = false,
+  ) {
+    let newSettings = [...(selectedOrgData?.defaultPostSettings || [])];
+    if (setting !== null) {
+      if (newSettings.includes(setting)) {
+        newSettings = newSettings.filter((g) => g !== setting);
+      } else if (!newSettings.includes(setting)) {
+        newSettings = [...newSettings, setting];
+      }
+    }
+    if (all) {
+      newSettings = Object.values(EPostPermission);
+    }
+    if (none) {
+      newSettings = [];
+    }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const newOrg: IOrg | undefined = {
+      ...selectedOrgData,
+      defaultPostSettings: newSettings,
+    };
+
+    setSelectedOrgData(newOrg);
+  }
+
   async function updateOrgData() {
     console.log(selectedOrgData);
     const update = {
       id: selectedOrgData?.id,
       defaultPostGroups: selectedOrgData?.defaultPostGroups,
+      defaultPostSettings: selectedOrgData?.defaultPostSettings,
     };
 
     const { data, error } = await updateOrg({
@@ -175,6 +206,36 @@ export function EditOrg() {
                   }`}
                 >
                   {g.name}
+                </button>
+              ))}
+            </div>
+            <h3 className="block text-sm font-medium text-gray-700 pb-1">
+              Set default post settings
+            </h3>
+            <div>
+              <button
+                onClick={() => setDefaultPostSettings(null, true)}
+                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-emerald-400 "
+              >
+                All
+              </button>
+              <button
+                onClick={() => setDefaultPostSettings(null, false, true)}
+                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-rose-400 "
+              >
+                None
+              </button>
+              {Object.values(EPostPermission).map((g) => (
+                <button
+                  key={g}
+                  onClick={() => setDefaultPostSettings(g)}
+                  className={`bg-brand-400 text-white py-1 px-2 mr-1 mb-1 rounded ${
+                    selectedOrgData.defaultPostSettings?.includes(g)
+                      ? 'opacity-100'
+                      : 'opacity-70'
+                  }`}
+                >
+                  {g}
                 </button>
               ))}
             </div>
