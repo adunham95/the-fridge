@@ -31,6 +31,11 @@ const AdminHome = () => {
               <span>Edit Org</span>
             </a>
           </Link>
+          <Link href={ERoutes.ADMIN_GROUPS} passHref>
+            <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
+              <span>Groups</span>
+            </a>
+          </Link>
         </div>
       </main>
     </>
