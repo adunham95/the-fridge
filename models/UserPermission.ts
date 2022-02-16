@@ -22,8 +22,12 @@ export const UserPermissionDetails: IUserPermissionDetails = {
       'This group has permission to the admin panel, create groups, orgs',
   },
   [EUserPermissions.REQUIRES_POST_APPROVAL]: {
-    title: 'Can Set Post Permission',
-    description: 'The can post, but if the posts require approval ',
+    title: 'Can Post w/ Permission',
+    description: 'They can post, but if the posts require approval ',
+  },
+  [EUserPermissions.CAN_APPROVE_POSTS]: {
+    title: 'Can Approve Posts',
+    description: 'They can approve posts that require approval',
   },
   [EUserPermissions.CAN_COMMENT]: {
     title: 'Can Comment',
