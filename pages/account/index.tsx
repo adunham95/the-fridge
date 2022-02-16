@@ -10,6 +10,7 @@ import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
+import { reloadSession } from '../../util/auth';
 
 function UserProfile() {
   const [updateUser] = useMutation(UPDATE_USER_MUTATION);
@@ -31,6 +32,7 @@ function UserProfile() {
     const updatedUser = {
       name,
       email,
+      accountColor,
     };
     const { data, error } = await updateUser({
       variables: {
@@ -42,6 +44,7 @@ function UserProfile() {
     });
     if (data) {
       addToast(`User Updated`, theme.BASE_COLOR.success, EIcons.USER);
+      reloadSession();
     }
     if (error) {
       console.log('Create Group Error', error);

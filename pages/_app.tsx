@@ -52,7 +52,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"></link>
         <meta name="theme-color" content="#5b4b81" />
       </Head>
-      <SessionProvider session={pageProps.session}>
+      <SessionProvider session={pageProps.session} refetchInterval={86400}>
         <UserProvider>
           <ToastProvider>
             <ModalProvider>

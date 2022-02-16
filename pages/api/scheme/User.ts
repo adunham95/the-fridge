@@ -49,6 +49,7 @@ export const typeDef = gql`
     name: String
     email: String
     password: String
+    accountColor: String
   }
 
   input UpdateUserGroup {
@@ -160,6 +161,9 @@ export const resolvers = {
         }
         if (args.input?.email) {
           update.email = args.input.email;
+        }
+        if (args.input?.accountColor) {
+          update.accountColor = args.input.accountColor;
         }
         if (args.input?.password) {
           update.password = bcrypt.hashSync(args.input.password, 10);

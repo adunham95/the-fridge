@@ -1,4 +1,5 @@
 import { useSession } from 'next-auth/react';
+import { reloadSession } from '../../util/auth';
 import IconLock from '../Icons/Icon-lock';
 
 interface IAuth {

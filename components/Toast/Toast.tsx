@@ -40,7 +40,7 @@ export function Toast({ children, id, icon, color = '#475569' }: Props) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      // removeToast(id);
+      removeToast(id);
     }, 3000);
 
     return () => {

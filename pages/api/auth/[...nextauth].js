@@ -51,6 +51,31 @@ async function getUser(credentials) {
   }
 }
 
+async function getUserEmail(email) {
+  console.log('getUserEmail');
+  try {
+    // eslint-disable-next-line prettier/prettier
+    await dbConnect();
+    const post = await UserModel.findOne({
+      email: email,
+    }).populate({
+      path: 'orgs', // 1st level subdoc (get comments)
+      populate: [
+        { path: 'group', model: GroupModel },
+        { path: 'org', model: OrgModel },
+      ],
+    });
+    console.log(post);
+    const user = { ...post.toJSON() };
+    console.log(user);
+    delete user.password;
+    return user;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
 const maxAgeDays = 7;
 
 export default NextAuth({
@@ -105,9 +130,12 @@ export default NextAuth({
     },
     async session({ session, token, user }) {
       console.log({ token, user });
+      const userData = await getUserEmail(token.email);
+
       session.user = {
         ...session.user,
         ...token.user,
+        ...userData,
       };
       session.accessToken = token.accessToken;
       return session;
