@@ -5,10 +5,11 @@ import {
   useState,
   createContext,
 } from 'react';
+import { EIcons } from '../Icons';
 import ToastContainer from './Toast';
 
 interface IToastContext {
-  addToast: (content: any, color?: string, icon?: string) => void;
+  addToast: (content: any, color?: string, icon?: EIcons) => void;
   removeToast: (id: any) => void;
 }
 
@@ -34,7 +35,7 @@ export interface IToast {
   content: string;
   type?: EToastType;
   color?: string;
-  icon?: string;
+  icon?: EIcons;
 }
 
 interface IProps {
@@ -46,6 +47,7 @@ const ToastProvider = ({ children }: IProps) => {
 
   const addToast = useCallback(
     (content: string, color = '#475569', icon = '') => {
+      console.log({ content, color, icon });
       setToasts((toasts: Array<IToast>) => [
         ...toasts,
         { id: id++, content, color, icon },

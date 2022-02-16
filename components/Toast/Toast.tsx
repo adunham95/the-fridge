@@ -40,7 +40,7 @@ export function Toast({ children, id, icon, color = '#475569' }: Props) {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      removeToast(id);
+      // removeToast(id);
     }, 3000);
 
     return () => {
@@ -49,15 +49,20 @@ export function Toast({ children, id, icon, color = '#475569' }: Props) {
   }, [id, removeToast]);
 
   return (
-    <div
+    <button
+      onClick={() => {
+        removeToast(id);
+      }}
       style={{ background: colorPalette[600] }}
-      className={` shadow-lg text-sm text-white px-3 py-2 m-1 rounded-md flex items-center`}
+      className={`text-center w-full shadow-lg text-sm text-white px-3 py-2 m-1 rounded-md flex items-center`}
     >
-      <span className="h-6 w-6 mr-2">
-        <Icon name={icon} height="auto" width="100%" />
-      </span>
+      {icon && (
+        <span className="h-6 w-6 mr-2">
+          <Icon name={icon} height="auto" width="100%" />
+        </span>
+      )}
       {children}
-    </div>
+    </button>
   );
 }
 
@@ -74,6 +79,7 @@ const ToastContainer = ({ toasts }: IProps) => {
             key={item.id}
             id={item.id}
             color={item.color ? item.color : '#475569'}
+            icon={item.icon ? item.icon : undefined}
           >
             {item.content}
           </Toast>
