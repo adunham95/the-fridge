@@ -18,6 +18,9 @@ export function BreadCrumb() {
     if (d === 'orgID') {
       return query.orgID;
     }
+    if (d === 'groupID') {
+      return query.groupID;
+    }
     return d;
   }
 
