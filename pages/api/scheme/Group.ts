@@ -18,12 +18,19 @@ export const typeDef = gql`
     permissions: [String!]
   }
 
+  input UpdateGroupInput {
+    id: String!
+    name: String
+    permissions: [String]
+  }
+
   extend type Query {
     getGroupsByOrg(orgIDs: [String!]): [Group!]
   }
 
   extend type Mutation {
     createGroup(input: GroupInput!): Group!
+    updateGroup(input: UpdateGroupInput!): Group!
   }
 `;
 
@@ -65,6 +72,26 @@ export const resolvers = {
         );
 
         return newGroupFromDB;
+      } catch (error) {
+        throw error;
+      }
+    },
+    updateGroup: async (_: any, args: any) => {
+      const update: any = {};
+      if (args.input?.name) {
+        update.name = args.input.name;
+      }
+      if (args.input?.permissions) {
+        update.permissions = args.input.permissions;
+      }
+      try {
+        await dbConnect();
+        const updatedGroup = GroupModel.findByIdAndUpdate(
+          new mongoose.Types.ObjectId(args.input.id),
+          update,
+          { upsert: true, returnDocument: 'after' },
+        );
+        return updatedGroup;
       } catch (error) {
         throw error;
       }
