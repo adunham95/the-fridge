@@ -14,6 +14,7 @@ import { UPDATE_ORG_MUTATION } from '../../graphql/mutation/updateOrg';
 import Link from 'next/link';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
+import { EUserPermissions } from '../../models/UserModel';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -297,5 +298,6 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
 }
 
 EditOrg.auth = true;
+EditOrg.permissions = [EUserPermissions.IS_ADMIN];
 
 export default EditOrg;

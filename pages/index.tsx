@@ -13,6 +13,7 @@ import { Button } from '../components/StatelessInput/Button';
 import IconArrow from '../components/Icons/Icon-arrow';
 import theme from '../theme/theme.json';
 import { EIcons } from '../components/Icons';
+import { EUserPermissions } from '../models/UserModel';
 
 const Wall = () => {
   const { data: session } = useSession();
@@ -32,7 +33,6 @@ const Wall = () => {
   useEffect(() => {
     setSkip(0);
     const myGroups = myUser?.orgs.map((o) => o.group.id);
-    console.log('myGroups', myGroups);
     fetchPostData(myGroups || []);
   }, [myUser]);
 
@@ -132,5 +132,6 @@ const Wall = () => {
 };
 
 Wall.auth = true;
+Wall.permissions = [EUserPermissions.CAN_VIEW_POST];
 
 export default Wall;

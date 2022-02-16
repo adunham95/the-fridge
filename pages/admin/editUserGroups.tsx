@@ -2,6 +2,7 @@
 import React from 'react';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
 import { PageBanner } from '../../components/Page/PageBanner';
+import { EUserPermissions } from '../../models/UserModel';
 export function EditUserGroups() {
   return (
     <div>
@@ -14,5 +15,6 @@ export function EditUserGroups() {
 }
 
 EditUserGroups.Auth = true;
+EditUserGroups.permissions = [EUserPermissions.IS_ADMIN];
 
 export default EditUserGroups;

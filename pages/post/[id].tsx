@@ -13,6 +13,7 @@ import { ImageCarousel } from '../../components/Image/ImageCarousel';
 import { Input } from '../../components/StatelessInput/Input';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
+import { EUserPermissions } from '../../models/UserModel';
 
 function SinglePost() {
   const router = useRouter();
@@ -93,5 +94,6 @@ function SinglePost() {
 }
 
 SinglePost.Auth = true;
+SinglePost.permissions = [EUserPermissions.CAN_VIEW_POST];
 
 export default SinglePost;

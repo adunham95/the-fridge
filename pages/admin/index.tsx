@@ -1,11 +1,9 @@
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { Avatar } from '../../components/Avatar/Avatar';
-import Layout from '../../components/Layout/Layout';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
 import { ERoutes } from '../../models/Routes';
-
-const states = [];
+import { EUserPermissions } from '../../models/UserModel';
 
 const AdminHome = () => {
   const { data: session } = useSession();
@@ -40,5 +38,6 @@ const AdminHome = () => {
 };
 
 AdminHome.auth = true;
+AdminHome.permissions = [EUserPermissions.IS_ADMIN];
 
 export default AdminHome;

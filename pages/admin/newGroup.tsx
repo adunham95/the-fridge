@@ -181,5 +181,6 @@ const AdminGroup = () => {
 };
 
 AdminGroup.auth = true;
+AdminGroup.permissions = [EUserPermissions.IS_ADMIN];
 
 export default AdminGroup;

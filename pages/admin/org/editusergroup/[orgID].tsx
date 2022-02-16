@@ -313,5 +313,6 @@ function UserCard(usr: IUser) {
 }
 
 EditUserGroups.Auth = true;
+EditUserGroups.permissions = [EUserPermissions.IS_ADMIN];
 
 export default EditUserGroups;
