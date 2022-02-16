@@ -3,6 +3,7 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
+import { result } from 'lodash';
 
 export const typeDef = gql`
   type User {
@@ -50,6 +51,16 @@ export const typeDef = gql`
     password: String
   }
 
+  input UpdateUserGroup {
+    userID: String
+    groupID: String
+    orgID: String
+  }
+
+  type Success {
+    success: Boolean
+  }
+
   extend type Query {
     getUser(id: String!): User!
     getUsersByOrg(orgIDs: [String!]): [User!]
@@ -58,8 +69,15 @@ export const typeDef = gql`
   extend type Mutation {
     createUser(input: NewUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
+    updateUsersGroup(input: [UpdateUserGroup!]): Success!
   }
 `;
+
+interface IUpdateUserGroup {
+  userID: string;
+  groupID: string;
+  orgID: string;
+}
 
 export const resolvers = {
   Query: {
@@ -153,6 +171,38 @@ export const resolvers = {
           { upsert: true, returnDocument: 'after' },
         );
         return updatedUser;
+      } catch (error) {
+        throw error;
+      }
+    },
+    updateUsersGroup: async (_: any, args: any) => {
+      console.log(args.input);
+      try {
+        await dbConnect();
+        //eslint-disable-next-ling prettier/prettier
+        const results = await Promise.all(
+          args.input.map(async (item: IUpdateUserGroup) => {
+            console.log(item);
+            await UserModel.updateOne(
+              {
+                _id: new Types.ObjectId(item.userID),
+                'orgs.org': new Types.ObjectId(item.orgID),
+              },
+              {
+                $set: {
+                  orgs: {
+                    group: item.groupID,
+                    org: item.orgID,
+                  },
+                },
+              },
+            );
+            return;
+          }),
+        );
+        return {
+          success: true,
+        };
       } catch (error) {
         throw error;
       }
