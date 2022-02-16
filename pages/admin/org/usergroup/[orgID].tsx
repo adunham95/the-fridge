@@ -1,16 +1,18 @@
 // @flow
-import { useManualQuery } from 'graphql-hooks';
+import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Avatar } from '../../../../components/Avatar/Avatar';
+import { EIcons } from '../../../../components/Icons';
 import IconGrab from '../../../../components/Icons/Icon-Grab';
 import { Loader } from '../../../../components/Loader/Loader';
 import { BreadCrumb } from '../../../../components/nav/BreadCrumb';
 import { PageBanner } from '../../../../components/Page/PageBanner';
 import { Button } from '../../../../components/StatelessInput/Button';
 import { useToast } from '../../../../components/Toast/ToastContext';
+import { UPDATE_USER_GROUPS_MUTATION } from '../../../../graphql/mutation/updateUserGroup';
 import { GET_GROUPS_BY_ORG_QUERY } from '../../../../graphql/query/getGroupsByOrg';
 import { GET_USERS_BY_ORG_QUERY } from '../../../../graphql/query/getUsersByOrg';
 import { EUserPermissions } from '../../../../models/UserModel';
@@ -55,6 +57,7 @@ interface IGroup {
 export function EditUserGroups() {
   const { query } = useRouter();
   const [fetchAdminData, { loading }] = useManualQuery(Admin_Query);
+  const [updateUserGroups] = useMutation(UPDATE_USER_GROUPS_MUTATION);
   const { addToast } = useToast();
   const [groups, setGroups] = useState<Array<IGroup>>([]);
   const [users, setUsers] = useState<Array<IUser>>([]);
@@ -85,11 +88,11 @@ export function EditUserGroups() {
 
   function setUserGroup(userID: string, groupID: string) {
     const currentUsers = [...users];
-    console.log(currentUsers);
-    console.log({
-      userID,
-      groupID,
-    });
+    // console.log(currentUsers);
+    // console.log({
+    //   userID,
+    //   groupID,
+    // });
     const selectedUser = currentUsers.find((usr) => usr.id === userID);
 
     //No orgs throw error
@@ -121,6 +124,37 @@ export function EditUserGroups() {
     selectedUser.orgs[currentOrgIndex] = updatedGroup;
 
     setUsers(currentUsers);
+  }
+
+  async function saveChanges() {
+    const userData = users
+      .map((u) => {
+        if (query.orgID === undefined && Array.isArray(query.orgID)) {
+          return null;
+        }
+        const selectedOrgData = u.orgs.find((o) => o.org.id === query.orgID);
+        if (selectedOrgData?.group === null) {
+          return null;
+        }
+        console.log(selectedOrgData?.group);
+        return {
+          userID: u.id,
+          groupID: selectedOrgData?.group.id,
+          orgID: query.orgID,
+        };
+      })
+      .filter((u) => u !== null);
+
+    console.log(userData);
+    const { data, error } = await updateUserGroups({
+      variables: { users: userData },
+    });
+    if (data) {
+      addToast('User Groups Updated', theme.BASE_COLOR.success, EIcons.BELL);
+    }
+    if (error) {
+      addToast('Error updating groups', theme.BASE_COLOR.error, EIcons.WARNING);
+    }
   }
 
   return (
@@ -167,7 +201,9 @@ export function EditUserGroups() {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button className="bg-emerald-400 text-white">Save Changes</Button>
+            <Button onClick={saveChanges} className="bg-emerald-400 text-white">
+              Save Changes
+            </Button>
           </div>
         </DndProvider>
       </main>
@@ -211,7 +247,6 @@ function GroupCard({
       <p className="text-tiny">
         Permissions:
         {permissions.map((p: string) => {
-          console.log(UserPermissionDetails[p]);
           return UserPermissionDetails[p] !== undefined ? (
             <span
               className={`px-1 border-r border-black last-of-type:border-0 ${

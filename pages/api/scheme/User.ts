@@ -52,9 +52,9 @@ export const typeDef = gql`
   }
 
   input UpdateUserGroup {
-    userID: String
-    groupID: String
-    orgID: String
+    userID: String!
+    groupID: String!
+    orgID: String!
   }
 
   type Success {
