@@ -1,5 +1,6 @@
 // @flow
 import { useManualQuery, useMutation } from 'graphql-hooks';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -15,6 +16,7 @@ import { useToast } from '../../../../components/Toast/ToastContext';
 import { UPDATE_USER_GROUPS_MUTATION } from '../../../../graphql/mutation/updateUserGroup';
 import { GET_GROUPS_BY_ORG_QUERY } from '../../../../graphql/query/getGroupsByOrg';
 import { GET_USERS_BY_ORG_QUERY } from '../../../../graphql/query/getUsersByOrg';
+import { ERoutes } from '../../../../models/Routes';
 import { EUserPermissions } from '../../../../models/UserModel';
 import { UserPermissionDetails } from '../../../../models/UserPermission';
 import theme from '../../../../theme/theme.json';
@@ -243,7 +245,17 @@ function GroupCard({
       ref={drop}
       className={`rounded-md p-3 mb-1 group border bg-white border-gray-400 relative`}
     >
-      <p className="text-lg">{name}</p>
+      <p className="text-lg">
+        <Link
+          href={{
+            pathname: ERoutes.ADMIN_EDIT_GROUPS,
+            query: { groupID: id },
+          }}
+          passHref
+        >
+          <a>{name}</a>
+        </Link>
+      </p>
       <p className="text-tiny">
         Permissions:
         {permissions.map((p: string) => {
