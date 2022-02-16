@@ -26,6 +26,7 @@ export const typeDef = gql`
 
   extend type Query {
     getGroupsByOrg(orgIDs: [String!]): [Group!]
+    getGroupByID(id: String): Group!
   }
 
   extend type Mutation {
@@ -52,6 +53,18 @@ export const resolvers = {
         return groups.map((group) => {
           return group.toJSON();
         });
+      } catch (error) {
+        throw error;
+      }
+    },
+    getGroupByID: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const group = await GroupModel.findById({
+          _id: new mongoose.Types.ObjectId(args.id),
+        });
+        console.log(group);
+        return { ...group.toJSON() };
       } catch (error) {
         throw error;
       }
