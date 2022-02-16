@@ -65,7 +65,6 @@ const Banner = ({
 
   useEffect(() => {
     const palette = generatePalette(color);
-    console.log(palette);
     setColorPalette(palette.colors);
   }, [color]);
 
