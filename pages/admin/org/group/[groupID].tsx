@@ -3,6 +3,7 @@ import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { Loader } from '../../../../components/Loader/Loader';
+import { BreadCrumb } from '../../../../components/nav/BreadCrumb';
 import { PageBanner } from '../../../../components/Page/PageBanner';
 import { Button } from '../../../../components/StatelessInput/Button';
 import { GroupPermissions } from '../../../../components/StatelessInput/GroupPermissions';
@@ -95,7 +96,7 @@ function SingleGroupPage() {
         title={`Edit ${groupData?.name ? `${groupData?.name} Group` : 'Group'}`}
       />
       <main className="pb-2 px-2 relative">
-        <div className="pt-2" />
+        <BreadCrumb />
         {loading && (
           <div className="flex justify-center w-full absolute top-3 left-0 z-10">
             <Loader />
