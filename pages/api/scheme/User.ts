@@ -176,13 +176,11 @@ export const resolvers = {
       }
     },
     updateUsersGroup: async (_: any, args: any) => {
-      console.log(args.input);
       try {
         await dbConnect();
         //eslint-disable-next-ling prettier/prettier
         const results = await Promise.all(
           args.input.map(async (item: IUpdateUserGroup) => {
-            console.log(item);
             await UserModel.updateOne(
               {
                 _id: new Types.ObjectId(item.userID),
