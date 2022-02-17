@@ -4,7 +4,7 @@ const CommentSchema = new Schema(
   {
     dateTime: { type: 'String' },
     message: { type: 'String', required: true },
-    postID: { type: 'String' },
+    postID: { type: 'String', index: true },
     parentComment: { type: 'String' },
     author: { type: Schema.Types.ObjectId, ref: 'User' },
   },
