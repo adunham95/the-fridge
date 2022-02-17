@@ -8,6 +8,7 @@ import { PostActionButton } from './PostAction';
 import { PostLikes } from './PostLikes';
 import { PostShare } from './PostShare';
 import { PostComments } from './PostComments';
+import { formatDate } from '../../util/formatData';
 
 function PostCard({
   id,
@@ -20,15 +21,6 @@ function PostCard({
   dateTime,
 }: IPost) {
   const { setModalID } = useModal();
-  function formatDate(date: string) {
-    const d = new Date(date);
-    const datestring = `${
-      d.getMonth() + 1
-    }/${d.getDate()}/${d.getFullYear()} ${d.getHours()}:${(
-      '0' + d.getMinutes()
-    ).slice(-2)}`;
-    return datestring;
-  }
 
   console.log({ id, permissions });
 

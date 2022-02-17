@@ -5,6 +5,7 @@ import { EIcons } from '../../components/Icons';
 import { Loader } from '../../components/Loader/Loader';
 import { PageBanner } from '../../components/Page/PageBanner';
 import PostCard from '../../components/Post/PostCard';
+import { PostCardSmall } from '../../components/Post/PostCardSmall';
 import { Select } from '../../components/StatelessInput/Select';
 import { useToast } from '../../components/Toast/ToastContext';
 import { GET_POSTS_BY_MONTH } from '../../graphql/query/getPostMonths';
@@ -115,14 +116,15 @@ const Timeline = () => {
           onChange={setCurrentDate}
         />
       </PageBanner>
-      <main className=" max-w-md mx-auto py-5">
+      <main className="flex flex-wrap mx-auto py-5 px-1">
         {loading && (
           <div className="flex justify-center pt-1 pb-2">
             <Loader />
           </div>
         )}
         {posts.map((post) => (
-          <PostCard key={post.id} {...post} />
+          // <PostCard key={post.id} {...post} />
+          <PostCardSmall key={post.id} {...post} />
         ))}
       </main>
     </div>
