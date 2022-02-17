@@ -21,6 +21,7 @@ interface IPostAuthor {
 }
 
 export enum EPostPermission {
-  ALLOW_SHARE = 'allowShare',
-  ALLOW_COMMENT = 'allowComment',
+  DISALLOW_SHARE = 'isallowShare',
+  DISALLOW_COMMENT = 'disallowComment',
+  IS_PUBLIC = 'PublicPost',
 }

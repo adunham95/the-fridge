@@ -1,8 +1,6 @@
-import IconComment from '../Icons/Icon-Comment';
-import IconHeart from '../Icons/Icon-Heart';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
-import { IPost } from '../../models/PostModel';
+import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
 import { useSession } from 'next-auth/react';
 import { ImageCarousel } from '../Image/ImageCarousel';
@@ -12,12 +10,13 @@ import { IComment } from '../../models/CommentModel';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'graphql-hooks';
 import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
-import { EToastType, useToast } from '../Toast/ToastContext';
+import { useToast } from '../Toast/ToastContext';
 import { Loader } from '../Loader/Loader';
 import { usePost } from '../../context/PostContext';
 import { POST_ACTION } from '../../reducers/postReducer';
 import { UPDATE_LIKE } from '../../graphql/mutation/updateLike';
 import { EIcons } from '../Icons';
+import { PostActionButton } from './PostAction';
 
 function PostCard({
   id,
@@ -39,6 +38,8 @@ function PostCard({
     ).slice(-2)}`;
     return datestring;
   }
+
+  console.log({ id, permissions });
 
   return (
     <div className="mb-3 pb-1" id={id}>
@@ -62,19 +63,22 @@ function PostCard({
             <ImageCarousel images={image} />
           </div>
         )}
-        <div className="p-2 flex w-full justify-start">
+        <div className="p-2 flex w-full justify-start items-center">
           <PostLikes likes={likedBy} postID={id} />
-          <button
-            onClick={() => setModalID(`${id}-comments`)}
-            className="flex items-center pl-3 text-xl h-[1em] md:text-sm"
-          >
-            <IconComment
-              width={'100%'}
-              height={'auto'}
-              fill={theme.COLORS.brand[400]}
-            />
-            <span className=" ml-1">{comments.length}</span>
-          </button>
+          {!permissions.includes(EPostPermission.DISALLOW_COMMENT) && (
+            <PostActionButton
+              onClick={() => setModalID(`${id}-comments`)}
+              icon={EIcons.COMMENT}
+              className="text-brand-400"
+              actionName="Comment"
+            >
+              <span className=" ml-1">{comments.length}</span>
+            </PostActionButton>
+          )}
+          {!permissions.includes(EPostPermission.DISALLOW_SHARE) &&
+            permissions.includes(EPostPermission.IS_PUBLIC) && (
+              <PostShare postID={id} />
+            )}
         </div>
       </div>
       <Modal
@@ -180,17 +184,69 @@ function PostLikes({ likes, postID }: IPostLikeProps) {
   }
 
   return (
-    <button
-      className="flex items-center h-[1em] text-xl md:text-sm"
+    <PostActionButton
+      actionName="Like"
       onClick={updateLike}
+      icon={EIcons.HEART}
+      className={`${
+        likes.includes(myUser?.id || '') ? 'text-red-500' : 'text-pink-300'
+      }`}
     >
-      <IconHeart
-        width={'100%'}
-        height={'auto'}
-        fill={likes.includes(myUser?.id || '') ? 'red' : 'pink'}
-      />
       <span className=" ml-1">{likes.length}</span>
-    </button>
+    </PostActionButton>
+  );
+}
+
+interface IPostShare {
+  postID: string;
+}
+
+function PostShare({ postID }: IPostShare) {
+  const { addToast } = useToast();
+
+  async function sharePost() {
+    const url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/post/${postID}`;
+    const shareData = {
+      title: 'Share Link',
+      text: 'You have been invited to a group on The Fridge',
+      url,
+    };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    if (navigator?.canShare) {
+      try {
+        await navigator.share(shareData);
+        console.log('shared link');
+        addToast('Link Shared', theme.BASE_COLOR['brand-blue']);
+        // resultPara.textContent = 'MDN shared successfully'
+      } catch (err) {
+        console.log('Could not share');
+        addToast(
+          'Failed to share link',
+          theme.BASE_COLOR.error,
+          EIcons.EXCLAMATION,
+        );
+        // resultPara.textContent = 'Error: ' + err
+      }
+    } else if (navigator?.clipboard) {
+      await navigator.clipboard.writeText(url);
+      addToast('Link Copied', theme.BASE_COLOR['brand-blue']);
+    } else {
+      console.log(`Your system doesn't support sharing`);
+    }
+  }
+
+  if (!navigator?.canShare && !navigator?.clipboard) {
+    return null;
+  }
+
+  return (
+    <PostActionButton
+      actionName="Share"
+      onClick={sharePost}
+      className="text-brand-blue-600"
+      icon={EIcons.EXTERNAL}
+    />
   );
 }
 export default PostCard;
