@@ -26,6 +26,7 @@ query GetPostsByGroup($ids:[String!],$limit:Float,$skip:Float){
       description
       image
       dateTime
+      permissions
       org{
         id
         name

@@ -35,6 +35,7 @@ export const typeDef = gql`
     org: String
     postedBy: String
     viewByGroups: [String]
+    permissions: [String]
   }
 
   type Comment {
@@ -91,9 +92,9 @@ interface IPagination {
 export const resolvers = {
   Query: {
     getPostsByGroup: async (_: any, args: any) => {
-      console.log(args);
+      // console.log(args);
       const groupList = args.groupIDs;
-      console.log(groupList);
+      // console.log(groupList);
       try {
         await dbConnect();
         let pagination: IPagination = { sort: '-dateTime' };
@@ -116,7 +117,7 @@ export const resolvers = {
           pagination,
         ).populate(['org', 'postedBy']);
 
-        // console.log('posts', posts);
+        console.log('posts', posts);
 
         return posts
           .sort((a, b) => {
@@ -165,7 +166,7 @@ export const resolvers = {
           'org',
           'postedBy',
         ]);
-        console.log(returnPost);
+        // console.log(returnPost);
         return returnPost.toJSON();
       } catch (error) {
         throw error;

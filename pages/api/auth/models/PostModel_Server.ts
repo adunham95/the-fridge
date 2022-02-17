@@ -10,7 +10,7 @@ const PostSchema = new Schema(
     postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
     viewByGroups: [{ type: 'String' }],
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
-    permissions: { type: 'Array' },
+    permissions: [{ type: 'String' }],
     likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   },
   {

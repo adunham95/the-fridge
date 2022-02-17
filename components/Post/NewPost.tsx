@@ -110,8 +110,10 @@ export const NewPost = ({ onCreate }: IProps) => {
         org: selectedOrg,
         postedBy: myUser?.id,
         viewByGroups: selectedGroups,
+        permissions: selectedSettings,
       },
     };
+
     console.log(newPostData);
     const data = await createPost({ variables: newPostData });
     if (data?.error) {
