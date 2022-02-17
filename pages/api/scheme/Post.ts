@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { CommentModel } from '../auth/models/CommentMode_Server';
+import { getMonths } from '../utils/date';
 
 export const typeDef = gql`
   type WallPost {
@@ -70,10 +71,16 @@ export const typeDef = gql`
     success: Boolean!
   }
 
+  type MonthResponse {
+    month: String!
+    year: String!
+  }
+
   extend type Query {
     getPostsByGroup(groupIDs: [String!], skip: Float, limit: Float): [WallPost!]
     getSinglePost(id: String!): AdvancedWallPost
     getCommentsByPost(id: String!): [Comment]
+    getPostTimeline(groupIDs: [String!]): [MonthResponse]
   }
 
   extend type Mutation {
@@ -148,6 +155,30 @@ export const resolvers = {
           postID: args.id,
         }).populate(['author']);
         return comments;
+      } catch (error) {
+        throw error;
+      }
+    },
+    getPostTimeline: async (_: any, args: any) => {
+      const groupList = args.groupIDs;
+      let months: Array<{ month: number, year: number }> = [];
+      try {
+        await dbConnect();
+        const posts = await PostModel.find({
+          viewByGroups: {
+            $in: groupList,
+          },
+        })
+          .sort({ date_time: 1 })
+          .limit(1);
+        // console.log(posts);
+        if (posts.length > 0) {
+          console.log(posts[0]);
+          const postDate = new Date(posts[0].dateTime);
+          const currentDate = new Date();
+          months = getMonths(postDate, currentDate);
+        }
+        return months;
       } catch (error) {
         throw error;
       }
