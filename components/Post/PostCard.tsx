@@ -2,22 +2,19 @@ import Comments from './Comments';
 import theme from '../../theme/theme.json';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
-import { useSession } from 'next-auth/react';
 import { ImageCarousel } from '../Image/ImageCarousel';
 import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { IComment } from '../../models/CommentModel';
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'graphql-hooks';
+import { useQuery } from 'graphql-hooks';
 import { GET_COMMENT_BY_POST } from '../../graphql/query/getCommentsByPost';
 import { useToast } from '../Toast/ToastContext';
 import { Loader } from '../Loader/Loader';
-import { usePost } from '../../context/PostContext';
-import { POST_ACTION } from '../../reducers/postReducer';
-import { UPDATE_LIKE } from '../../graphql/mutation/updateLike';
 import { EIcons } from '../Icons';
 import { PostActionButton } from './PostAction';
-import { generateURLOrigin } from '../../util/url';
+import { PostLikes } from './PostLikes';
+import { PostShare } from './PostShare';
 
 function PostCard({
   id,
@@ -140,114 +137,6 @@ function PostComments({ postID }: { postID: string }) {
         onCommentUpdate={onCommentUpdate}
       />
     </div>
-  );
-}
-
-interface IPostLikeProps {
-  likes: Array<string>;
-  postID: string;
-}
-
-function PostLikes({ likes, postID }: IPostLikeProps) {
-  const [createLike, { loading }] = useMutation(UPDATE_LIKE);
-  const { addToast } = useToast();
-  const { data: session } = useSession();
-  const myUser = session?.user;
-  const { dispatch } = usePost();
-
-  async function updateLike() {
-    const data = await createLike({
-      variables: {
-        likeInput: {
-          userID: myUser?.id || '',
-          postID,
-          action: likes.includes(myUser?.id || '') ? 'remove' : 'add',
-        },
-      },
-    });
-    if (data.error || data?.data?.updateLike?.success === false) {
-      addToast(
-        'Error updating like',
-        theme.BASE_COLOR.error,
-        EIcons.EXCLAMATION,
-      );
-    }
-    if (data?.data?.updateLike?.success) {
-      addToast('Updated Like', theme.BASE_COLOR.success, EIcons.THUMB_UP);
-      dispatch({
-        type: POST_ACTION.UPDATE_LIKE,
-        payload: {
-          userID: myUser?.id || '',
-          postID,
-        },
-      });
-    }
-  }
-
-  return (
-    <PostActionButton
-      actionName="Like"
-      onClick={updateLike}
-      icon={EIcons.HEART}
-      className={`${
-        likes.includes(myUser?.id || '') ? 'text-red-500' : 'text-pink-300'
-      }`}
-    >
-      <span className=" ml-1">{likes.length}</span>
-    </PostActionButton>
-  );
-}
-
-interface IPostShare {
-  postID: string;
-}
-
-function PostShare({ postID }: IPostShare) {
-  const { addToast } = useToast();
-
-  async function sharePost() {
-    const url = `${generateURLOrigin()}/post/${postID}`;
-    const shareData = {
-      title: 'View Post',
-      text: 'View Post on the fridge',
-      url,
-    };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    if (navigator?.canShare) {
-      try {
-        await navigator.share(shareData);
-        console.log('shared link');
-        addToast('Link Shared', theme.BASE_COLOR['brand-blue']);
-        // resultPara.textContent = 'MDN shared successfully'
-      } catch (err) {
-        console.log('Could not share');
-        addToast(
-          'Failed to share link',
-          theme.BASE_COLOR.error,
-          EIcons.EXCLAMATION,
-        );
-        // resultPara.textContent = 'Error: ' + err
-      }
-    } else if (navigator?.clipboard) {
-      await navigator.clipboard.writeText(url);
-      addToast('Link Copied', theme.BASE_COLOR['brand-blue']);
-    } else {
-      console.log(`Your system doesn't support sharing`);
-    }
-  }
-
-  if (!navigator?.canShare && !navigator?.clipboard) {
-    return null;
-  }
-
-  return (
-    <PostActionButton
-      actionName="Share"
-      onClick={sharePost}
-      className="text-brand-blue-600"
-      icon={EIcons.EXTERNAL}
-    />
   );
 }
 export default PostCard;
