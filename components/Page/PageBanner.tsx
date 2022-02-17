@@ -11,7 +11,8 @@ export function PageBanner({ children, title }: Props) {
         <h1 className="text-3xl font-bold text-gray-900 inline-block">
           {title}
         </h1>
-        {children}
+        <div className="w-full" />
+        <div className=" flex-shrink-0">{children}</div>
       </div>
     </header>
   );
