@@ -2,7 +2,7 @@ import { Schema, model, models } from 'mongoose';
 
 const PostSchema = new Schema(
   {
-    dateTime: { type: 'String', index: true },
+    dateTime: { type: 'Date', index: true },
     description: { type: 'String' },
     image: [{ type: 'String' }],
     org: { type: Schema.Types.ObjectId, ref: 'Org' },

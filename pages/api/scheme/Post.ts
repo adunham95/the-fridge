@@ -77,7 +77,13 @@ export const typeDef = gql`
   }
 
   extend type Query {
-    getPostsByGroup(groupIDs: [String!], skip: Float, limit: Float): [WallPost!]
+    getPostsByGroup(
+      groupIDs: [String!]
+      skip: Float
+      limit: Float
+      startDate: String
+      endDate: String
+    ): [WallPost!]
     getSinglePost(id: String!): AdvancedWallPost
     getCommentsByPost(id: String!): [Comment]
     getPostTimeline(groupIDs: [String!]): [MonthResponse]
@@ -96,6 +102,11 @@ interface IPagination {
   limit?: number;
 }
 
+interface IQuery {
+  viewByGroups: object;
+  dateTime?: object;
+}
+
 export const resolvers = {
   Query: {
     getPostsByGroup: async (_: any, args: any) => {
@@ -105,6 +116,11 @@ export const resolvers = {
       try {
         await dbConnect();
         let pagination: IPagination = { sort: '-dateTime' };
+        let query: IQuery = {
+          viewByGroups: {
+            $in: groupList,
+          },
+        };
         if (args?.limit > 0) {
           console.log({ skip: args.skip || 0, limit: args.limit });
           pagination = {
@@ -113,16 +129,21 @@ export const resolvers = {
             limit: args.limit,
           };
         }
-        console.log(pagination);
-        const posts = await PostModel.find(
-          {
-            viewByGroups: {
-              $in: groupList,
+        if (args.startDate && args.endDate) {
+          query = {
+            ...query,
+            dateTime: {
+              $gte: new Date(args.startDate).toISOString(),
+              $lt: new Date(args.endDate).toISOString(),
             },
-          },
-          null,
-          pagination,
-        ).populate(['org', 'postedBy']);
+          };
+        }
+        console.log(query);
+        console.log(pagination);
+        const posts = await PostModel.find(query, null, pagination).populate([
+          'org',
+          'postedBy',
+        ]);
 
         console.log('posts', posts);
 
@@ -130,7 +151,12 @@ export const resolvers = {
           .sort((a, b) => {
             return Date.parse(b.dateTime) - Date.parse(a.dateTime);
           })
-          .map((post) => post.toJSON());
+          .map((post) => {
+            return {
+              ...post.toJSON(),
+              dateTime: new Date(post.dateTime).toUTCString(),
+            };
+          });
       } catch (error) {
         throw error;
       }

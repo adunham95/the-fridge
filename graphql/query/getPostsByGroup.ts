@@ -39,4 +39,26 @@ query GetPostsByGroup($ids:[String!],$limit:Float,$skip:Float){
       likedBy
       comments
     }
+}`;
+
+export const GET_POSTS_BY_GROUP_DATE = `
+query GetPostsByGroup($ids:[String!],$startDate:String,$endDate:String){
+    getPostsByGroup(groupIDs:$ids,startDate:$startDate,endDate:$endDate){
+      id
+      description
+      image
+      dateTime
+      permissions
+      org{
+        id
+        name
+      }
+      postedBy{
+        name
+        id
+        accountColor
+      }
+      likedBy
+      comments
+    }
   }`;
