@@ -75,7 +75,7 @@ function PostCard({
               <span className=" ml-1">{comments.length}</span>
             </PostActionButton>
           )}
-          {!permissions.includes(EPostPermission.DISALLOW_SHARE) &&
+          {permissions.includes(EPostPermission.ALLOW_SHARE) &&
             permissions.includes(EPostPermission.IS_PUBLIC) && (
               <PostShare postID={id} />
             )}
@@ -207,8 +207,8 @@ function PostShare({ postID }: IPostShare) {
   async function sharePost() {
     const url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/post/${postID}`;
     const shareData = {
-      title: 'Share Link',
-      text: 'You have been invited to a group on The Fridge',
+      title: 'View Post',
+      text: 'View Post on the fridge',
       url,
     };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
