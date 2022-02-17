@@ -17,6 +17,7 @@ import { POST_ACTION } from '../../reducers/postReducer';
 import { UPDATE_LIKE } from '../../graphql/mutation/updateLike';
 import { EIcons } from '../Icons';
 import { PostActionButton } from './PostAction';
+import { generateURLOrigin } from '../../util/url';
 
 function PostCard({
   id,
@@ -205,7 +206,7 @@ function PostShare({ postID }: IPostShare) {
   const { addToast } = useToast();
 
   async function sharePost() {
-    const url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/post/${postID}`;
+    const url = `${generateURLOrigin()}/post/${postID}`;
     const shareData = {
       title: 'View Post',
       text: 'View Post on the fridge',

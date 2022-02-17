@@ -16,6 +16,7 @@ import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
 import { EUserPermissions } from '../../models/UserModel';
 import { EPostPermission } from '../../models/PostModel';
+import { generateURLOrigin } from '../../util/url';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -273,7 +274,9 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
   }, []);
 
   useEffect(() => {
-    let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}${ERoutes.AUTH_SIGN_UP}?invitecode=${orgID}-${selectedGroup}`;
+    let url = `${generateURLOrigin()}${
+      ERoutes.AUTH_SIGN_UP
+    }?invitecode=${orgID}-${selectedGroup}`;
     if (newUserName !== '') {
       url += `&name=${newUserName}`;
     }
