@@ -34,7 +34,6 @@ export enum EUserPermissions {
   IS_ADMIN = 'isAdmin',
   REQUIRES_POST_APPROVAL = 'requiresPostApproval',
   CAN_APPROVE_POSTS = 'canApprovePosts',
-  APPROVE_POST = 'canApprovePost',
   UPDATE_GROUPS = 'canUpdateGroup',
   CREATE_GROUPS = 'canCreateGroup',
   CAN_VIEW_POST = 'canViewPost',
