@@ -1,13 +1,19 @@
 // @flow
 import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../graphql/mutation/createPost';
+import { useOutsideAlerter } from '../../hooks/useOutsideClick';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImage from '../Icons/Icon-Image';
 import { Select } from '../StatelessInput/Select';
+import { useToast } from '../Toast/ToastContext';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../Icons';
+import { ImageUploader, IUploadedImage } from './ImageUploader';
+import { ImageOrderer } from './ImageOrderer';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -33,8 +39,11 @@ export const NewPost = ({ onCreate }: IProps) => {
   const [createPost] = useMutation(CREATE_POST_MUTATION);
   const [fetchUser] = useManualQuery(ALL_GROUPS_QUERY);
   const [newPostText, setNewPostText] = useState('');
-  const [postMessage, setPostMessage] = useState('');
+  const { addToast } = useToast();
   const [postSubmitting, setPostSubmitting] = useState(false);
+  const [isExpanded, setExpanded] = useState(false);
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef, () => setExpanded(false));
   const { data: session } = useSession();
   const myUser = session?.user;
   // eslint-disable-next-line prettier/prettier
@@ -46,6 +55,7 @@ export const NewPost = ({ onCreate }: IProps) => {
   const [selectedGroups, setSelectedGroups] = useState<Array<any>>([])
   // eslint-disable-next-line prettier/prettier
   const [selectedSettings, setSelectedSettings] = useState<Array<any>>([])
+  const [images, setImages] = useState<Array<IUploadedImage>>([]);
 
   useEffect(() => {
     const orgs =
@@ -103,7 +113,6 @@ export const NewPost = ({ onCreate }: IProps) => {
       return;
     }
     setPostSubmitting(true);
-    setPostMessage('Saving...');
     const newPostData = {
       newPost: {
         description: newPostText,
@@ -117,14 +126,17 @@ export const NewPost = ({ onCreate }: IProps) => {
     console.log(newPostData);
     const data = await createPost({ variables: newPostData });
     if (data?.error) {
-      setNewPostText('');
-      setPostMessage('Post Failed to save');
+      addToast(
+        'Post Failed to save',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION_TRIANGLE,
+      );
       setPostSubmitting(false);
     }
     if (data?.data) {
       onCreate(data.data.createPost);
       setNewPostText('');
-      setPostMessage('Post Submitted');
+      addToast('Post Saved', theme.BASE_COLOR.error, EIcons.BELL);
       setPostSubmitting(false);
     }
   }
@@ -154,7 +166,16 @@ export const NewPost = ({ onCreate }: IProps) => {
   }
 
   return (
-    <div className="px-3 py-2 bg-white mb-4 shadow-sm rounded-md">
+    <div
+      className="px-3 py-2 bg-white mb-4 shadow-sm rounded-md relative"
+      ref={wrapperRef}
+    >
+      {!isExpanded && (
+        <button
+          className=" absolute inset-0 bg-transparent z-10"
+          onClick={() => setExpanded(true)}
+        ></button>
+      )}
       <div className="flex justify-between items-center">
         <Avatar name={myUser?.name} />
         <Select
@@ -172,19 +193,21 @@ export const NewPost = ({ onCreate }: IProps) => {
       <textarea
         value={newPostText}
         onChange={(e) => setNewPostText(e.target.value)}
-        className="w-full p-1 border border-slate-200  my-2 rounded focus:ring-brand-500"
+        rows={isExpanded ? 3 : 1}
+        className={`w-full p-1 border border-slate-200  my-2 rounded focus:ring-brand-500 ${
+          isExpanded ? 'text-gray-800' : 'text-gray-500'
+        }`}
       />
       <div className="flex justify-between">
         <div>
-          <button className="flex rounded-md bg-slate-500 text-white px-2 py-1 ">
-            <IconImage height={20} width={20} />
-            <span className="pl-2 text-sm">Images</span>
-          </button>
+          <ImageUploader id="imageUploader" onUpload={setImages} />
         </div>
       </div>
-      {canPost() && (
+      <div>
+        <ImageOrderer images={images} />
+      </div>
+      {isExpanded && (
         <>
-          {console.log({ orgGroups })}
           <h2>Share With Groups:</h2>
           <div className="overflow-x-auto whitespace-nowrap pt-1">
             <span className="mr-1">
@@ -245,24 +268,17 @@ export const NewPost = ({ onCreate }: IProps) => {
               </span>
             ))}
           </div>
+          <div className="flex justify-end">
+            <button
+              onClick={createNewPost}
+              disabled={!canPost()}
+              className={`bg-emerald-400 hover:bg-emerald-500 px-2 py-1 text-white rounded disabled:cursor-not-allowed disabled:opacity-50`}
+            >
+              Post
+            </button>
+          </div>
         </>
       )}
-      <div>
-        <div className="flex justify-between">
-          <div>
-            <p className="text-sm text-slate-500">{postMessage}</p>
-          </div>
-        </div>
-        <div className="flex justify-end">
-          <button
-            onClick={createNewPost}
-            disabled={!canPost()}
-            className={`bg-emerald-400 hover:bg-emerald-500 px-2 py-1 text-white rounded disabled:cursor-not-allowed disabled:opacity-50`}
-          >
-            Post
-          </button>
-        </div>
-      </div>
     </div>
   );
 };
