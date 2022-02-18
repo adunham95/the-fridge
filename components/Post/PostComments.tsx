@@ -7,6 +7,32 @@ import { Loader } from '../Loader/Loader';
 import { useToast } from '../Toast/ToastContext';
 import Comments from './Comments';
 import theme from '../../theme/theme.json';
+import { PostActionButton } from './PostAction';
+import { useModal } from '../Modal/ModalContext';
+
+interface IPostCommentButton {
+  comments: Array<IComment>;
+  id: string;
+  className?: string;
+}
+
+export function PostCommentsButton({
+  comments,
+  id,
+  className = '',
+}: IPostCommentButton) {
+  const { setModalID } = useModal();
+  return (
+    <PostActionButton
+      onClick={() => setModalID(`${id}-comments`)}
+      icon={EIcons.COMMENT}
+      className={`${className} text-brand-400`}
+      actionName="Comment"
+    >
+      <span className=" ml-1">{comments.length}</span>
+    </PostActionButton>
+  );
+}
 
 export function PostComments({ postID }: { postID: string }) {
   const [comments, setComments] = useState<Array<IComment>>([]);

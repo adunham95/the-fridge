@@ -11,9 +11,10 @@ import theme from '../../theme/theme.json';
 interface IPostLikeProps {
   likes: Array<string>;
   postID: string;
+  className?: string;
 }
 
-export function PostLikes({ likes, postID }: IPostLikeProps) {
+export function PostLikes({ likes, postID, className = '' }: IPostLikeProps) {
   const [createLike, { loading }] = useMutation(UPDATE_LIKE);
   const { addToast } = useToast();
   const { data: session } = useSession();
@@ -54,7 +55,7 @@ export function PostLikes({ likes, postID }: IPostLikeProps) {
       actionName="Like"
       onClick={updateLike}
       icon={EIcons.HEART}
-      className={`${
+      className={`${className} ${
         likes.includes(myUser?.id || '') ? 'text-red-500' : 'text-pink-300'
       }`}
     >
