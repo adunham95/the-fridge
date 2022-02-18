@@ -29,7 +29,7 @@ export function PostCardSmall({
 
   return (
     <>
-      <div id={id} className=" aspect-square w-1/3 p-1">
+      <div id={id} className="aspect-square w-1/2  md:w-1/3 p-1">
         <div
           style={{ backgroundImage: `url(${selectedImage})` }}
           className="bg-green-200 rounded-md bg-no-repeat bg-cover w-full h-full relative"
