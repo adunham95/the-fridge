@@ -34,7 +34,13 @@ export function PostCommentsButton({
   );
 }
 
-export function PostComments({ postID }: { postID: string }) {
+export function PostComments({
+  postID,
+  permissions,
+}: {
+  postID: string,
+  permissions: Array<string>,
+}) {
   const [comments, setComments] = useState<Array<IComment>>([]);
   const { loading, data, error, refetch } = useQuery(GET_COMMENT_BY_POST, {
     variables: { id: postID },
@@ -74,8 +80,8 @@ export function PostComments({ postID }: { postID: string }) {
       )}
       <Comments
         comments={comments}
-        allowComment
         postID={postID}
+        permissions={permissions}
         onCommentUpdate={onCommentUpdate}
       />
     </div>

@@ -11,9 +11,13 @@ import { Input } from '../StatelessInput/Input';
 import { useToast } from '../Toast/ToastContext';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../Icons';
+import { usePermissions } from '../../hooks/usePermissions';
+import { EUserPermissions } from '../../models/UserModel';
+import { EPostPermission } from '../../models/PostModel';
 
 interface IProps {
   postID: string;
+  permissions: Array<string>;
   comments: Array<IComment>;
   limit?: number | null;
   allowComment?: boolean;
@@ -24,12 +28,14 @@ interface IProps {
 const Comments = ({
   postID,
   comments = [],
+  permissions = [],
   limit,
   allowComment = false,
   individual = false,
   onCommentUpdate = () => {},
 }: IProps) => {
   const [filteredComments, setFilteredComments] = useState<Array<IComment>>([]);
+  const { userHasPermissions } = usePermissions();
 
   useEffect(() => {
     setFilteredComments(limit ? comments.slice(0, limit) : comments);
@@ -65,7 +71,12 @@ const Comments = ({
           </div>
         </div>
       ))}
-      {allowComment && (
+      {userHasPermissions(
+        '',
+        [EUserPermissions.CAN_COMMENT],
+        [EPostPermission.DISALLOW_COMMENT],
+        permissions,
+      ) && (
         <NewComment
           postID={postID}
           onSave={(newComment) => addComment(newComment)}

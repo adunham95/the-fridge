@@ -12,6 +12,9 @@ export interface IPost {
   likedBy: Array<string>;
   comments: Array<IComment>;
   permissions: Array<EPostPermission>;
+  org: {
+    id: string,
+  };
 }
 
 interface IPostAuthor {

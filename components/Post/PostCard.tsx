@@ -9,6 +9,7 @@ import { PostLikes } from './PostLikes';
 import { PostShare } from './PostShare';
 import { PostComments } from './PostComments';
 import { formatDate } from '../../util/formatData';
+import { usePermissions } from '../../hooks/usePermissions';
 
 function PostCard({
   id,
@@ -19,10 +20,12 @@ function PostCard({
   postedBy,
   image = [],
   dateTime,
+  org,
 }: IPost) {
   const { setModalID } = useModal();
+  const { userHasPermissions } = usePermissions();
 
-  console.log({ id, permissions });
+  // console.log({ id, permissions });
 
   return (
     <div className="mb-3 pb-1" id={id}>
@@ -48,7 +51,12 @@ function PostCard({
         )}
         <div className="p-2 flex w-full justify-start items-center">
           <PostLikes likes={likedBy} postID={id} />
-          {!permissions.includes(EPostPermission.DISALLOW_COMMENT) && (
+          {userHasPermissions(
+            org.id,
+            [],
+            [EPostPermission.DISALLOW_COMMENT],
+            permissions,
+          ) && (
             <PostActionButton
               onClick={() => setModalID(`${id}-comments`)}
               icon={EIcons.COMMENT}
@@ -71,7 +79,7 @@ function PostCard({
         className="w-full sm:max-w-[500px] rounded-t-md"
         closeClassName="bg-rose-400 text-white hover:text-rose-700 rounded-full h-[1em] w-[1em] shadow-sm flex justify-center items-center right-1"
       >
-        <PostComments postID={id} />
+        <PostComments postID={id} permissions={permissions} />
       </Modal>
     </div>
   );
