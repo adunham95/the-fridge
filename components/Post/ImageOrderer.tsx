@@ -40,8 +40,8 @@ export function ImageOrderer({ images }: Props) {
 
           return (
             <SingleImage
-              key={img.src}
-              id={img.src}
+              key={img.url}
+              id={img.url}
               {...img}
               index={index}
               moveCard={moveCard}
@@ -74,7 +74,7 @@ interface IDragItem {
   type: string;
 }
 
-function SingleImage({ id, src, index, moveCard }: SingleImageProps) {
+function SingleImage({ id, url, index, moveCard }: SingleImageProps) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [{ handlerId }, drop] = useDrop<
     IDragItem,
@@ -145,7 +145,7 @@ function SingleImage({ id, src, index, moveCard }: SingleImageProps) {
       {/* // eslint-disable-next-line react/jsx-key */}
       <img
         className="h-full object-cover rounded border border-gray-600"
-        src={src}
+        src={url}
       />
     </div>
   );
