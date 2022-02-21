@@ -1,10 +1,11 @@
 // @flow
-import { RedirectableProviderType } from 'next-auth/providers';
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import IconLogo from '../../components/Icons/Icon-Logo';
 import { Button } from '../../components/StatelessInput/Button';
 import { Input } from '../../components/StatelessInput/Input';
+import { ERoutes } from '../../models/Routes';
 import theme from '../../theme/theme.json';
 
 interface ILoginResponse {
@@ -15,6 +16,7 @@ interface ILoginResponse {
 }
 
 function Login() {
+  const router = useRouter();
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
@@ -22,6 +24,7 @@ function Login() {
 
   async function login(e: React.FormEvent<EventTarget>) {
     e.preventDefault();
+    setLoading(true);
     if (email === '' && password === '') {
       setEmail('Credentials Not Provided');
     }
@@ -36,8 +39,11 @@ function Login() {
     //@ts-expect-error
     if (res.error) {
       setError('Could Not Login');
+      setLoading(false);
+    } else {
+      setLoading(true);
+      router.push(ERoutes.WALL);
     }
-    setLoading(true);
   }
 
   return (

@@ -82,6 +82,7 @@ export default NextAuth({
   secret: process.env.JWT_SECRET,
   pages: {
     newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
+    signIn: '/auth/login',
   },
   // Configure one or more authentication providers
   providers: [
