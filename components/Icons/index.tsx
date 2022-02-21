@@ -20,6 +20,7 @@ import IconPalette from './Icon-Palette';
 import IconPlane from './Icon-Plane';
 import IconThumbUp from './Icon-Thumb-Up';
 import IconUser from './Icon-User';
+import IconUserShield from './Icon-User-Shield';
 import IconWarning from './Icon-Warning';
 
 export interface IIconProps {
@@ -53,6 +54,7 @@ export enum EIcons {
   EXTERNAL = 'External',
   HEART = 'Heart',
   PLANE = 'Plane',
+  USER_SHIELD = 'UserShield',
 }
 
 export const IconList = Object.values(EIcons);
@@ -106,6 +108,8 @@ const Icon = (props: IIconProps) => {
       return <IconHeart {...props} />;
     case EIcons.PLANE:
       return <IconPlane {...props} />;
+    case EIcons.USER_SHIELD:
+      return <IconUserShield {...props} />;
     default:
       return <></>;
   }
