@@ -38,11 +38,10 @@ export function usePermissions() {
       myPermissions =
         myUser?.orgs.find((o) => o.org.id === orgID)?.group.permissions || [];
     }
-    const allUserPermissions: Array<string | EUserPermissions> =
-      myPermissions || [];
+
     const totalPermissions: Array<string> = [
       ...additionalPermissions,
-      ...allUserPermissions,
+      ...myPermissions,
     ];
     const hasRequired =
       hasPermissions.length > 0

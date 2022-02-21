@@ -14,6 +14,7 @@ import theme from '../../theme/theme.json';
 import { EIcons } from '../Icons';
 import { ImageUploader, IUploadedImage } from './ImageUploader';
 import { ImageOrderer } from './ImageOrderer';
+import { usePermissions } from '../../hooks/usePermissions';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -56,6 +57,7 @@ export const NewPost = ({ onCreate }: IProps) => {
   // eslint-disable-next-line prettier/prettier
   const [selectedSettings, setSelectedSettings] = useState<Array<any>>([])
   const [images, setImages] = useState<Array<IUploadedImage>>([]);
+  const { userHasPermissions } = usePermissions();
 
   useEffect(() => {
     const orgs =
@@ -161,7 +163,11 @@ export const NewPost = ({ onCreate }: IProps) => {
     setSelectedSettings(newSettings);
   }
 
-  if (approvedOrgs.length === 0) {
+  if (
+    userHasPermissions({
+      hasNotPermissions: [EUserPermissions.CAN_POST],
+    })
+  ) {
     return null;
   }
 
