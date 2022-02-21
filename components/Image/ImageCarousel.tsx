@@ -60,7 +60,7 @@ export function ImageCarousel({ images }: Props) {
         <img
           loading="lazy"
           src={activeImg}
-          className="w-full rounded-md aspect-square object-contain border border-gray-200"
+          className="w-full rounded-md object-contain border border-gray-200"
         />
       </div>
       {images.length > 1 && (
@@ -90,7 +90,7 @@ export function ImageCarousel({ images }: Props) {
                   <img
                     loading="lazy"
                     src={img}
-                    className={`rounded-md h-[60px] min-w-[60px] object-cover inline-block border-2  ${
+                    className={`rounded-md h-[60px] w-[60px] aspect-square object-cover inline-block border-2  ${
                       activeThumb === i && 'border-brand-400'
                     }`}
                   />
