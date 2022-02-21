@@ -14,6 +14,7 @@ import { EIcons } from '../Icons';
 import { CameraUploader, ImageUploader, IUploadedImage } from './ImageUploader';
 import { ImageOrderer } from './ImageOrderer';
 import { usePermissions } from '../../hooks/usePermissions';
+import { SingleImage } from './SingleImage';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -211,7 +212,11 @@ export const NewPost = ({ onCreate }: IProps) => {
         {/* <CameraUploader id="cameraUploader" onUpload={setImages} /> */}
       </div>
       <div>
-        <ImageOrderer images={images} />
+        <div className="flex overflow-x-auto pt-2">
+          {images.map((img, i) => (
+            <SingleImage key={img.src} index={i} {...img} />
+          ))}
+        </div>
       </div>
       {isExpanded && (
         <>
