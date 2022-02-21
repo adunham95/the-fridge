@@ -10,6 +10,7 @@ type Props = {
   id: string,
   type?: React.HTMLInputTypeAttribute | 'textarea',
   required?: boolean,
+  disabled?: boolean,
 };
 export const Input = ({
   label,
@@ -18,6 +19,7 @@ export const Input = ({
   id,
   onChange,
   required = false,
+  disabled = false,
   containerClass = '',
   className = '',
   type = 'text',
@@ -37,8 +39,9 @@ export const Input = ({
             placeholder={placeholder}
             value={value}
             required={required}
+            disabled={disabled}
             onChange={(e) => onChange(e.target.value)}
-            className={`focus:ring-brand-500 block w-full sm:text-sm border-gray-300 rounded-md ${className}`}
+            className={`focus:ring-brand-500 disabled:text-opacity-50 invalid:ring-rose-400 ring-transparent ring-2 block w-full sm:text-sm border-gray-300 rounded-md ${className}`}
           />
         ) : (
           <input
@@ -46,10 +49,11 @@ export const Input = ({
             name={id}
             id={id}
             required={required}
+            disabled={disabled}
             placeholder={placeholder}
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className={`focus:ring-brand-500 block w-full sm:text-sm border-gray-300 rounded-md ${className}`}
+            className={`focus:ring-brand-500 disabled:text-opacity-50 invalid:ring-rose-400 ring-transparent ring-2 block w-full sm:text-sm border-gray-300 rounded-md ${className}`}
           />
         )}
       </div>

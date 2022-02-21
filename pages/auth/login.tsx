@@ -1,16 +1,43 @@
 // @flow
+import { RedirectableProviderType } from 'next-auth/providers';
+import { signIn } from 'next-auth/react';
 import * as React from 'react';
 import IconLogo from '../../components/Icons/Icon-Logo';
 import { Button } from '../../components/StatelessInput/Button';
 import { Input } from '../../components/StatelessInput/Input';
 import theme from '../../theme/theme.json';
 
+interface ILoginResponse {
+  error: string | undefined;
+  status: number;
+  ok: boolean;
+  url: string | null;
+}
+
 function Login() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
-  function login(e: React.FormEvent<EventTarget>) {
+  async function login(e: React.FormEvent<EventTarget>) {
     e.preventDefault();
+    if (email === '' && password === '') {
+      setEmail('Credentials Not Provided');
+    }
+    const res = await signIn('credentials', {
+      redirect: false,
+      username: email,
+      password: password,
+      callbackUrl: `${window.location.origin}`,
+    });
+    console.log(res);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-expect-error
+    if (res.error) {
+      setError('Could Not Login');
+    }
+    setLoading(true);
   }
 
   return (
@@ -26,24 +53,34 @@ function Login() {
             id="email-address"
             label="Email"
             required
+            disabled={loading}
             value={email}
+            type="email"
             onChange={(e) => setEmail(e)}
             containerClass="pt-2"
+            className="text-black"
           />
 
           <Input
             id="password"
             label="Password"
             required
+            disabled={loading}
             value={password}
             onChange={(e) => setPassword(e)}
             containerClass="pt-2"
             type="password"
+            className="text-black"
           />
           <div className="pt-2">
             <Button type="submit" className="text-white w-full bg-brand-400">
               Login
             </Button>
+          </div>
+          <div className="pt-1">
+            {error !== '' && (
+              <p className="pt-1 text-sm text-rose-500">{error}</p>
+            )}
           </div>
         </div>
       </form>
