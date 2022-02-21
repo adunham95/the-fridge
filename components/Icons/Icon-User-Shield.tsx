@@ -2,7 +2,6 @@ import React from 'react';
 import { IIconProps } from '.';
 
 const IconUserShield = (props: IIconProps) => {
-  console.log('User Shield');
   return (
     <svg
       height={props.height}
