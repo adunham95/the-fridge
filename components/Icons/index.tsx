@@ -25,8 +25,8 @@ import IconWarning from './Icon-Warning';
 
 export interface IIconProps {
   name?: string;
-  height?: number | '100%' | 'auto';
-  width?: number | '100%' | 'auto';
+  height?: number | '100%' | 'auto' | '1em';
+  width?: number | '100%' | 'auto' | '1em';
   fill?: string;
 }
 
