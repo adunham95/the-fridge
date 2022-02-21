@@ -2,6 +2,9 @@
 import * as React from 'react';
 import IconCamera from '../Icons/Icon-Camera';
 import IconImage from '../Icons/Icon-Image';
+import { useToast } from '../Toast/ToastContext';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../Icons';
 
 interface IImageUploadProps {
   id: string;
@@ -45,9 +48,11 @@ export function ImageUploader({
   multiple = true,
   onUpload,
 }: IImageUploadProps) {
+  const { addToast } = useToast();
   async function onLoad(event: React.ChangeEvent<HTMLInputElement>) {
     console.log(event.target);
     console.log(event.target.files);
+    const maxFileSize = 10485760;
 
     const files = event?.target?.files || [];
     const src: Array<IUploadedImage> = [];
@@ -55,6 +60,19 @@ export function ImageUploader({
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       console.log(file);
+      if (file.size > maxFileSize) {
+        addToast(
+          `${file.name} is too large`,
+          theme.BASE_COLOR.error,
+          EIcons.EXCLAMATION_TRIANGLE,
+        );
+        return;
+      }
+      addToast(
+        `Uploading ${file.name}`,
+        theme.BASE_COLOR['brand-blue'],
+        EIcons.INFO,
+      );
       // src.push({ src: URL.createObjectURL(file) });
       const data = new FormData();
       data.append('file', file);
@@ -72,7 +90,21 @@ export function ImageUploader({
         },
       );
       const img = await response.json();
-      src.push(img);
+      if (img.error) {
+        addToast(
+          'Error Uploading image',
+          theme.BASE_COLOR.error,
+          EIcons.EXCLAMATION_TRIANGLE,
+        );
+      }
+      if (img.url) {
+        addToast(
+          `Success uploading ${file.name}`,
+          theme.BASE_COLOR.success,
+          EIcons.CHECK_CIRCLE,
+        );
+        src.push(img);
+      }
     }
 
     console.log({ src });
