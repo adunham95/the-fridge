@@ -7,6 +7,8 @@ import NavItem, { INavMenuItem } from './NavItem';
 import theme from '../../theme/theme.json';
 import { ERoutes } from '../../models/Routes';
 import { usePermissions } from '../../hooks/usePermissions';
+import { useModal } from '../Modal/ModalContext';
+import UserPermissionsModal from '../Dev/UserPermissionModal';
 
 const navMenu: Array<INavMenuItem> = [
   {
@@ -86,6 +88,7 @@ function InnerMenu({
   const isomorphicEffect = useIsomorphicEffect();
   const { data: session } = useSession();
   const { userHasPermissions } = usePermissions();
+  const { setModalID } = useModal();
 
   isomorphicEffect(() => {
     const root = document.documentElement;
@@ -146,6 +149,18 @@ function InnerMenu({
       {navMenu.filter(showNavItem).map((n) => (
         <NavItem isCollapsed={isCollapsed} key={n.path} {...n} />
       ))}
+      {process.env.NODE_ENV === 'development' && (
+        <NavItem
+          isCollapsed={isCollapsed}
+          title="User Permissions"
+          icon={EIcons.USER_SHIELD}
+          path="/"
+          onClick={() => {
+            console.log('Show Modal');
+            setModalID('userPermissions');
+          }}
+        />
+      )}
     </div>
   );
 }

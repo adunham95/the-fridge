@@ -11,6 +11,7 @@ import { ModalProvider } from '../components/Modal/ModalContext';
 import { UserProvider } from '../context/UserContext';
 import Layout from '../components/Layout/Layout';
 import AuthWrapper from '../components/Auth/AuthWrapper';
+import UserPermissionsModal from '../components/Dev/UserPermissionModal';
 
 type AuthComponent = NextComponentType & {
   auth?: boolean,
@@ -59,13 +60,16 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
               <PostProvider>
                 <ClientContext.Provider value={graphQLClient}>
                   <Layout>
-                    {Component.auth ? (
-                      <AuthWrapper permissions={Component.permissions || []}>
+                    <>
+                      {Component.auth ? (
+                        <AuthWrapper permissions={Component.permissions || []}>
+                          <Component {...pageProps} />
+                        </AuthWrapper>
+                      ) : (
                         <Component {...pageProps} />
-                      </AuthWrapper>
-                    ) : (
-                      <Component {...pageProps} />
-                    )}
+                      )}
+                      <UserPermissionsModal id="userPermissions" />
+                    </>
                   </Layout>
                 </ClientContext.Provider>
               </PostProvider>

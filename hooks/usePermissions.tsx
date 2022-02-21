@@ -19,7 +19,19 @@ export function usePermissions() {
     additionalPermissions = [],
   }: IUsePermissions): boolean {
     let myPermissions: Array<string | EUserPermissions> = [];
-    if (orgID === '') {
+    let localPermissions = null;
+    if (typeof window !== 'undefined') {
+      localPermissions =
+        localStorage !== undefined
+          ? localStorage.getItem('devPermissions')
+          : '';
+      console.log(localPermissions);
+    }
+
+    if (localPermissions !== null) {
+      console.log(localPermissions);
+      myPermissions = JSON.parse(localPermissions);
+    } else if (orgID === '') {
       myPermissions =
         session?.user.orgs.map((o) => o.group.permissions).flat() || [];
     } else {
