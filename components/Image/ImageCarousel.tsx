@@ -81,7 +81,7 @@ export function ImageCarousel({ images }: Props) {
           >
             {images.map((img, i) => (
               <button
-                key="img"
+                key={`thumb-${img}`}
                 onClick={() => setSlide('Slide', i)}
                 className="p-2 w-full"
               >

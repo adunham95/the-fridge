@@ -10,8 +10,9 @@ interface IImageUploadProps {
 }
 
 export interface IUploadedImage {
-  src: string;
+  url: string;
   name?: string;
+  id?: string;
 }
 
 export function CameraUploader({ id, onUpload }: IImageUploadProps) {
@@ -44,7 +45,7 @@ export function ImageUploader({
   multiple = true,
   onUpload,
 }: IImageUploadProps) {
-  function onLoad(event: React.ChangeEvent<HTMLInputElement>) {
+  async function onLoad(event: React.ChangeEvent<HTMLInputElement>) {
     console.log(event.target);
     console.log(event.target.files);
 
@@ -54,10 +55,27 @@ export function ImageUploader({
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       console.log(file);
-      src.push({ src: URL.createObjectURL(file) });
+      // src.push({ src: URL.createObjectURL(file) });
+      const data = new FormData();
+      data.append('file', file);
+      data.append('upload_preset', 'fridge-images');
+
+      // @ts-ignore
+      data.append('cloud_name', process.env.NEXT_PUBLIC_CLOUDINARY_NAME);
+
+      // @ts-ignore
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/upload`,
+        {
+          method: 'post',
+          body: data,
+        },
+      );
+      const img = await response.json();
+      src.push(img);
     }
 
-    console.log(src);
+    console.log({ src });
     onUpload(src);
   }
 

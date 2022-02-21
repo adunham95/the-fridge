@@ -12,7 +12,9 @@ export function PostCardSmall({
   image = [],
   comments = [],
   likedBy = [],
+  permissions = [],
   postedBy,
+  org,
 }: IPost) {
   const [selectedImage, setSelectedImage] = useState(image[0]);
 
@@ -38,7 +40,7 @@ export function PostCardSmall({
             <Avatar name={postedBy.name} color={postedBy.accountColor} />
           </div>
           {description !== '' && (
-            <div className="p-1 absolute bottom-0 bg-white bg-opacity-40 w-full border-t border-white text-sm">
+            <div className="p-1 absolute bottom-0 bg-white bg-opacity-80 w-full border-t border-white text-sm">
               <p className=" text-slate-700">{description}</p>
             </div>
           )}
@@ -75,7 +77,7 @@ export function PostCardSmall({
         className="w-full sm:max-w-[500px] rounded-t-md"
         closeClassName="bg-rose-400 text-white hover:text-rose-700 rounded-full h-[1em] w-[1em] shadow-sm flex justify-center items-center right-1"
       >
-        <PostComments postID={id} />
+        <PostComments postID={id} orgID={org.id} permissions={permissions} />
       </Modal>
     </>
   );

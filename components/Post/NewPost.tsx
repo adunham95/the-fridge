@@ -125,6 +125,7 @@ export const NewPost = ({ onCreate }: IProps) => {
         postedBy: myUser?.id,
         viewByGroups: selectedGroups,
         permissions: selectedSettings,
+        image: images.map((img) => img.url),
       },
     };
 
@@ -141,7 +142,8 @@ export const NewPost = ({ onCreate }: IProps) => {
     if (data?.data) {
       onCreate(data.data.createPost);
       setNewPostText('');
-      addToast('Post Saved', theme.BASE_COLOR.error, EIcons.BELL);
+      setImages([]);
+      addToast('Post Saved', theme.BASE_COLOR.success, EIcons.BELL);
       setPostSubmitting(false);
     }
   }
@@ -208,13 +210,16 @@ export const NewPost = ({ onCreate }: IProps) => {
         }`}
       />
       <div className="flex justify-start">
-        <ImageUploader id="imageUploader" onUpload={setImages} />
+        <ImageUploader
+          id="imageUploader"
+          onUpload={(imgs) => setImages([...images, ...imgs])}
+        />
         {/* <CameraUploader id="cameraUploader" onUpload={setImages} /> */}
       </div>
       <div>
         <div className="flex overflow-x-auto pt-2">
           {images.map((img, i) => (
-            <SingleImage key={img.src} index={i} {...img} />
+            <SingleImage key={img.id} index={i} {...img} />
           ))}
         </div>
       </div>
