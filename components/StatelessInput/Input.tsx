@@ -42,7 +42,7 @@ export const Input = ({
           />
         ) : (
           <input
-            type="text"
+            type={type}
             name={id}
             id={id}
             required={required}
