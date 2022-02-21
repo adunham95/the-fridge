@@ -8,7 +8,7 @@ type Props = {
   placeholder?: string,
   onChange: (value: string) => void,
   id: string,
-  type?: 'textarea' | 'text' | 'password',
+  type?: React.HTMLInputTypeAttribute | 'textarea',
   required?: boolean,
 };
 export const Input = ({
