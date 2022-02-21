@@ -50,7 +50,7 @@ const Modal = ({
     <ClientOnlyPortal>
       <div
         id={id}
-        className={`fixed top-0 left-0 h-screen w-full flex  ${setBackground()} ${setPosition()} bg-black`}
+        className={`fixed z-20 top-0 left-0 h-screen w-full flex  ${setBackground()} ${setPosition()} bg-black`}
       >
         <div
           className={`relative flex flex-col items-start text-lg ${className}`}
