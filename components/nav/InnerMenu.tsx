@@ -148,7 +148,7 @@ function InnerMenu({
       {navMenu.filter(showNavItem).map((n) => (
         <NavItem isCollapsed={isCollapsed} key={n.path} {...n} />
       ))}
-      {process.env.NODE_ENV === 'development' && (
+      {process.env.NEXT_PUBLIC_SHOW_SUPER_ADMIN_TOOLS && (
         <NavItem
           isCollapsed={isCollapsed}
           title="User Permissions"
