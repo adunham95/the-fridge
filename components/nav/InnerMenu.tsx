@@ -8,7 +8,6 @@ import theme from '../../theme/theme.json';
 import { ERoutes } from '../../models/Routes';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useModal } from '../Modal/ModalContext';
-import UserPermissionsModal from '../Dev/UserPermissionModal';
 
 const navMenu: Array<INavMenuItem> = [
   {
