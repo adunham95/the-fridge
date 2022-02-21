@@ -219,7 +219,7 @@ export const NewPost = ({ onCreate }: IProps) => {
       <div>
         <div className="flex overflow-x-auto pt-2">
           {images.map((img, i) => (
-            <SingleImage key={img.id} index={i} {...img} />
+            <SingleImage key={img.id} index={i + 1} {...img} />
           ))}
         </div>
       </div>
