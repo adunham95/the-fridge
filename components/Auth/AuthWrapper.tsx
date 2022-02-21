@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 import { usePermissions } from '../../hooks/usePermissions';
 import { reloadSession } from '../../util/auth';
 import IconLock from '../Icons/Icon-lock';
+import { Loader } from '../Loader/Loader';
 
 interface IAuth {
   children: React.ReactNode;
@@ -47,7 +48,11 @@ function AuthWrapper({ children, permissions = [] }: IAuth) {
 
   // Session is being fetched, or no user.
   // If no user, useEffect() will redirect.
-  return <div>Loading...</div>;
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <Loader />
+    </div>
+  );
 }
 
 export default AuthWrapper;

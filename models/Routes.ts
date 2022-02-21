@@ -9,7 +9,7 @@ export enum ERoutes {
   ADMIN_GROUPS = '/admin/org/group',
   ADMIN_EDIT_GROUPS = '/admin/org/group/[groupID]',
   AUTH = '/auth',
-  AUTH_SIGN_IN = '/api/auth/signin',
+  AUTH_SIGN_IN = '/auth/login',
   AUTH_SIGN_OUT = '/api/auth/signout',
   AUTH_SIGN_UP = '/auth/new-user',
   USER = '/account',
