@@ -36,9 +36,11 @@ export function PostCommentsButton({
 
 export function PostComments({
   postID,
+  orgID,
   permissions,
 }: {
   postID: string,
+  orgID: string,
   permissions: Array<string>,
 }) {
   const [comments, setComments] = useState<Array<IComment>>([]);
@@ -81,6 +83,7 @@ export function PostComments({
       <Comments
         comments={comments}
         postID={postID}
+        orgID={orgID}
         permissions={permissions}
         onCommentUpdate={onCommentUpdate}
       />

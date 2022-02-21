@@ -17,6 +17,7 @@ import { EPostPermission } from '../../models/PostModel';
 
 interface IProps {
   postID: string;
+  orgID: string;
   permissions: Array<string>;
   comments: Array<IComment>;
   limit?: number | null;
@@ -27,6 +28,7 @@ interface IProps {
 
 const Comments = ({
   postID,
+  orgID = '',
   comments = [],
   permissions = [],
   limit,
@@ -71,12 +73,12 @@ const Comments = ({
           </div>
         </div>
       ))}
-      {userHasPermissions(
-        '',
-        [EUserPermissions.CAN_COMMENT],
-        [EPostPermission.DISALLOW_COMMENT],
-        permissions,
-      ) && (
+      {userHasPermissions({
+        orgID,
+        hasPermissions: [EUserPermissions.CAN_COMMENT],
+        hasNotPermissions: [EPostPermission.DISALLOW_COMMENT],
+        additionalPermissions: permissions,
+      }) && (
         <NewComment
           postID={postID}
           onSave={(newComment) => addComment(newComment)}

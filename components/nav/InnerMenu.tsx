@@ -6,6 +6,7 @@ import IconLogo from '../Icons/Icon-Logo';
 import NavItem, { INavMenuItem } from './NavItem';
 import theme from '../../theme/theme.json';
 import { ERoutes } from '../../models/Routes';
+import { usePermissions } from '../../hooks/usePermissions';
 
 const navMenu: Array<INavMenuItem> = [
   {
@@ -84,6 +85,7 @@ function InnerMenu({
 }: IProps) {
   const isomorphicEffect = useIsomorphicEffect();
   const { data: session } = useSession();
+  const { userHasPermissions } = usePermissions();
 
   isomorphicEffect(() => {
     const root = document.documentElement;
@@ -102,12 +104,15 @@ function InnerMenu({
       return false;
     }
     if (navItem?.permissions) {
-      const myPermissions =
-        session?.user.orgs.map((o) => o.group.permissions).flat() || [];
-      const found = myPermissions.some((r) =>
-        (navItem?.permissions || []).includes(r),
-      );
-      return found;
+      // const myPermissions =
+      //   session?.user.orgs.map((o) => o.group.permissions).flat() || [];
+      // const found = myPermissions.some((r) =>
+      //   (navItem?.permissions || []).includes(r),
+      // );
+      // return found;
+      return userHasPermissions({
+        hasPermissions: navItem.permissions || [],
+      });
     }
     return true;
   }

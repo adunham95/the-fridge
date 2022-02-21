@@ -25,7 +25,7 @@ function PostCard({
   const { setModalID } = useModal();
   const { userHasPermissions } = usePermissions();
 
-  // console.log({ id, permissions });
+  console.log(org.id);
 
   return (
     <div className="mb-3 pb-1" id={id}>
@@ -51,12 +51,11 @@ function PostCard({
         )}
         <div className="p-2 flex w-full justify-start items-center">
           <PostLikes likes={likedBy} postID={id} />
-          {userHasPermissions(
-            org.id,
-            [],
-            [EPostPermission.DISALLOW_COMMENT],
-            permissions,
-          ) && (
+          {userHasPermissions({
+            orgID: org.id,
+            hasNotPermissions: [EPostPermission.DISALLOW_COMMENT],
+            additionalPermissions: permissions,
+          }) && (
             <PostActionButton
               onClick={() => setModalID(`${id}-comments`)}
               icon={EIcons.COMMENT}
@@ -79,7 +78,7 @@ function PostCard({
         className="w-full sm:max-w-[500px] rounded-t-md"
         closeClassName="bg-rose-400 text-white hover:text-rose-700 rounded-full h-[1em] w-[1em] shadow-sm flex justify-center items-center right-1"
       >
-        <PostComments postID={id} permissions={permissions} />
+        <PostComments postID={id} permissions={permissions} orgID={org.id} />
       </Modal>
     </div>
   );
