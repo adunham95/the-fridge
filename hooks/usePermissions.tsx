@@ -25,11 +25,9 @@ export function usePermissions() {
         localStorage !== undefined
           ? localStorage.getItem('devPermissions')
           : '';
-      console.log(localPermissions);
     }
 
     if (localPermissions !== null) {
-      console.log(localPermissions);
       myPermissions = JSON.parse(localPermissions);
     } else if (orgID === '') {
       myPermissions =
