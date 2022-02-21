@@ -7,12 +7,11 @@ import { useOutsideAlerter } from '../../hooks/useOutsideClick';
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
-import IconImage from '../Icons/Icon-Image';
 import { Select } from '../StatelessInput/Select';
 import { useToast } from '../Toast/ToastContext';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../Icons';
-import { ImageUploader, IUploadedImage } from './ImageUploader';
+import { CameraUploader, ImageUploader, IUploadedImage } from './ImageUploader';
 import { ImageOrderer } from './ImageOrderer';
 import { usePermissions } from '../../hooks/usePermissions';
 
@@ -106,6 +105,9 @@ export const NewPost = ({ onCreate }: IProps) => {
 
   function canPost() {
     if (newPostText !== '') {
+      return true;
+    }
+    if (images.length > 0) {
       return true;
     }
   }
@@ -204,10 +206,9 @@ export const NewPost = ({ onCreate }: IProps) => {
           isExpanded ? 'text-gray-800' : 'text-gray-500'
         }`}
       />
-      <div className="flex justify-between">
-        <div>
-          <ImageUploader id="imageUploader" onUpload={setImages} />
-        </div>
+      <div className="flex justify-start">
+        <ImageUploader id="imageUploader" onUpload={setImages} />
+        {/* <CameraUploader id="cameraUploader" onUpload={setImages} /> */}
       </div>
       <div>
         <ImageOrderer images={images} />

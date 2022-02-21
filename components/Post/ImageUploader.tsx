@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import IconCamera from '../Icons/Icon-Camera';
 import IconImage from '../Icons/Icon-Image';
 
 interface IImageUploadProps {
@@ -11,6 +12,31 @@ interface IImageUploadProps {
 export interface IUploadedImage {
   src: string;
   name?: string;
+}
+
+export function CameraUploader({ id, onUpload }: IImageUploadProps) {
+  function onLoad() {
+    onUpload([]);
+  }
+
+  return (
+    <>
+      <input
+        id={id}
+        type="file"
+        className=" hidden"
+        accept="image/*"
+        onChange={onLoad}
+      />
+      <label
+        htmlFor={id}
+        className="flex rounded-md bg-slate-500 text-white px-2 py-1 mr-1 mb-1"
+      >
+        <IconCamera height={20} width={20} />
+        <span className="pl-2 text-sm">Images</span>
+      </label>
+    </>
+  );
 }
 
 export function ImageUploader({
@@ -35,6 +61,10 @@ export function ImageUploader({
     onUpload(src);
   }
 
+  if (!('mediaDevices' in navigator)) {
+    return null;
+  }
+
   return (
     <>
       <input
@@ -47,7 +77,7 @@ export function ImageUploader({
       />
       <label
         htmlFor={id}
-        className="flex rounded-md bg-slate-500 text-white px-2 py-1 "
+        className="flex rounded-md bg-slate-500 text-white px-2 py-1 py-1 mr-1 mb-1"
       >
         <IconImage height={20} width={20} />
         <span className="pl-2 text-sm">Images</span>
