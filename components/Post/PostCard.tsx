@@ -11,6 +11,7 @@ import { PostComments } from './PostComments';
 import { formatDate } from '../../util/formatData';
 import { usePermissions } from '../../hooks/usePermissions';
 import Link from 'next/link';
+import { EUserPermissions } from '../../models/UserModel';
 
 function PostCard({
   id,
@@ -74,10 +75,15 @@ function PostCard({
               <span className=" ml-1">{comments.length}</span>
             </PostActionButton>
           )}
-          {permissions.includes(EPostPermission.ALLOW_SHARE) &&
-            permissions.includes(EPostPermission.IS_PUBLIC) && (
-              <PostShare postID={id} />
-            )}
+          {userHasPermissions({
+            orgID: org.id,
+            additionalPermissions: permissions,
+            hasPermissions: [
+              EUserPermissions.CAN_SHARE,
+              EPostPermission.ALLOW_SHARE,
+              EPostPermission.IS_PUBLIC,
+            ],
+          }) && <PostShare postID={id} />}
         </div>
       </div>
       <Modal
