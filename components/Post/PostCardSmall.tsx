@@ -1,6 +1,8 @@
 // @flow
 import React, { useState } from 'react';
-import { IPost } from '../../models/PostModel';
+import { usePermissions } from '../../hooks/usePermissions';
+import { EPostPermission, IPost } from '../../models/PostModel';
+import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import Modal from '../Modal/Modal';
 import { PostComments, PostCommentsButton } from './PostComments';
@@ -17,6 +19,7 @@ export function PostCardSmall({
   org,
 }: IPost) {
   const [selectedImage, setSelectedImage] = useState(image[0]);
+  const { userHasPermissions } = usePermissions();
 
   function changeImage() {
     if (image.length > 1) {
@@ -64,9 +67,19 @@ export function PostCardSmall({
               ))}
             </div>
           )}
-          <div className="absolute flex flex-col right-1 top-1">
-            <PostCommentsButton id={id} comments={comments} />
-            <PostLikes likes={likedBy} postID={id} className="pt-1" />
+          <div className="absolute flex flex-col right-0 top-0 p-1 bg-white bg-opacity-60 rounded-bl border-b border-l">
+            <PostLikes likes={likedBy} postID={id} />
+            {userHasPermissions({
+              orgID: org.id,
+              hasNotPermissions: [EPostPermission.DISALLOW_COMMENT],
+              additionalPermissions: permissions,
+            }) && (
+              <PostCommentsButton
+                id={id}
+                comments={comments}
+                className="pt-1"
+              />
+            )}
           </div>
         </div>
       </div>
