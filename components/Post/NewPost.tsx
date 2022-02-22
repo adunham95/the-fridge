@@ -176,6 +176,11 @@ export const NewPost = ({ onCreate }: IProps) => {
     return null;
   }
 
+  function removeImg(url: string) {
+    const imgs = [...images].filter((img) => img.url !== url);
+    setImages(imgs);
+  }
+
   return (
     <div
       className="px-3 py-2 bg-white mb-4 shadow-sm rounded-md relative"
@@ -219,7 +224,12 @@ export const NewPost = ({ onCreate }: IProps) => {
       <div>
         <div className="flex overflow-x-auto pt-2">
           {images.map((img, i) => (
-            <SingleImage key={img.id} index={i + 1} {...img} />
+            <SingleImage
+              key={img.id}
+              index={i + 1}
+              {...img}
+              onRemove={removeImg}
+            />
           ))}
         </div>
       </div>
