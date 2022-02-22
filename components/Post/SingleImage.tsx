@@ -19,7 +19,7 @@ export function SingleImage({ index, url, onRemove = () => {} }: Props) {
       </span>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        className="h-full object-cover rounded border border-gray-600"
+        className="h-full object-cover rounded border border-gray-600 aspect-square"
         src={url}
       />
       {showRemove && (
