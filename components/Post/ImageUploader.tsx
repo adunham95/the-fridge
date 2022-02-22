@@ -76,26 +76,36 @@ export function ImageUploader({
       // @ts-ignore
       data.append('images', resizedImage);
 
-      const response = await fetch(`/api/upload-images`, {
-        method: 'post',
-        body: data,
-      });
-      const img = await response.json();
-      console.log(img);
-      if (img.error) {
+      try {
+        const response = await fetch(`/api/upload-images`, {
+          method: 'post',
+          body: data,
+        });
+
+        const img = await response.json();
+        console.log(img);
+        if (img.error) {
+          addToast(
+            'Error Uploading image',
+            theme.BASE_COLOR.error,
+            EIcons.EXCLAMATION_TRIANGLE,
+          );
+        }
+        if (img.url) {
+          addToast(
+            `Success uploading ${file.name}`,
+            theme.BASE_COLOR.success,
+            EIcons.CHECK_CIRCLE,
+          );
+          src.push(img);
+        }
+      } catch (error) {
+        console.log(error);
         addToast(
           'Error Uploading image',
           theme.BASE_COLOR.error,
           EIcons.EXCLAMATION_TRIANGLE,
         );
-      }
-      if (img.url) {
-        addToast(
-          `Success uploading ${file.name}`,
-          theme.BASE_COLOR.success,
-          EIcons.CHECK_CIRCLE,
-        );
-        src.push(img);
       }
     }
 
