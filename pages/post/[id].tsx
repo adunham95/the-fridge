@@ -13,6 +13,7 @@ import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
 import { EUserPermissions } from '../../models/UserModel';
 import Comments from '../../components/Post/Comments';
+import { PostLikers, PostLikes } from '../../components/Post/PostLikes';
 
 function SinglePost() {
   const router = useRouter();
@@ -59,7 +60,7 @@ function SinglePost() {
         </div>
       )}
       {!loading && (
-        <div className=" w-[500px] flex flex-col items-center px-4 py-3">
+        <div className=" max-w-[500px] flex flex-col items-center px-4 py-3">
           {post === null ? (
             <p>Error Loading Post</p>
           ) : (
@@ -79,12 +80,22 @@ function SinglePost() {
               <div className="bg-white shadow-sm rounded-lg">
                 {post?.image && <ImageCarousel images={post.image} />}
               </div>
+              <div className="pt-2 px-2 flex w-full">
+                <PostLikes
+                  likes={post?.likedBy || []}
+                  postID={post?.id || ''}
+                />
+              </div>
+              <PostLikers
+                orgID={post?.org?.id || ''}
+                likers={post?.likedBy || []}
+              />
             </>
           )}
         </div>
       )}
       {post?.comments && (
-        <div className="w-[500px]">
+        <div className="max-w-[500px]">
           <Comments
             comments={post.comments}
             postID={post.id}

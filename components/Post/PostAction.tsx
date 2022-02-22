@@ -27,7 +27,7 @@ export function PostActionButton({
         <Icon width={'100%'} height={'1em'} name={icon} />
         {children}
         {showTooltip && (
-          <span className="absolute p-[0.5em] leading-[1] rounded bottom-[-150%] left-[50%] translate-x-[-50%] bg-gray-700 text-white text-[10px]">
+          <span className="absolute z-10 p-[0.5em] leading-[1] rounded bottom-[-150%] left-[50%] translate-x-[-50%] bg-gray-700 text-white text-[10px]">
             {actionName}
           </span>
         )}
