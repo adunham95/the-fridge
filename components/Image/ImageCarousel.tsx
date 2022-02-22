@@ -6,9 +6,9 @@ type Props = {
   images: Array<string>,
 };
 export function ImageCarousel({ images }: Props) {
-  const slideWidth = 76;
+  const slideWidth = 81;
   const slideElm = useRef<HTMLDivElement>(null);
-  const [visibleSlides, setVisibleSlides] = useState(4);
+  const [visibleSlides, setVisibleSlides] = useState(images.length);
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeImg, setActiveImg] = useState(images[0]);
@@ -24,7 +24,9 @@ export function ImageCarousel({ images }: Props) {
   }, [activeThumb]);
 
   useEffect(() => {
-    width > 370 ? setVisibleSlides(4) : setVisibleSlides(3);
+    if (images.length > 3) {
+      width > 370 ? setVisibleSlides(4) : setVisibleSlides(3);
+    }
   }, [width]);
 
   function setSlide(action: 'Next' | 'Back' | 'Slide', slideNub = 0) {
@@ -60,7 +62,9 @@ export function ImageCarousel({ images }: Props) {
         <img
           loading="lazy"
           src={activeImg}
-          className="w-full rounded-md object-contain border border-gray-200"
+          className={`w-full rounded-md ${
+            images.length > 1 ? 'aspect-[4/3]' : 'aspect-auto'
+          } object-contain border border-gray-100`}
         />
       </div>
       {images.length > 1 && (
@@ -83,14 +87,14 @@ export function ImageCarousel({ images }: Props) {
               <button
                 key={`thumb-${img}`}
                 onClick={() => setSlide('Slide', i)}
-                className="p-2 w-full"
+                className="p-2 w-full max-w-[100px]"
               >
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     loading="lazy"
                     src={img}
-                    className={`rounded-md h-[60px] w-[60px] aspect-square object-cover inline-block border-2  ${
+                    className={`rounded-md h-[65px] min-w-[65px] aspect-square object-cover inline-block border-2  ${
                       activeThumb === i && 'border-brand-400'
                     }`}
                   />
