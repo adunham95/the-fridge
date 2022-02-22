@@ -64,6 +64,7 @@ export const typeDef = gql`
 
   extend type Query {
     getUser(id: String!): User!
+    getUsersByList(ids: [String!]): [User!]
     getUsersByOrg(orgIDs: [String!]): [User!]
   }
 
@@ -104,6 +105,27 @@ export const resolvers = {
         };
         console.log(returnUser);
         return returnUser;
+      } catch (error) {
+        throw error;
+      }
+    },
+    getUsersByList: async (_: any, args: any) => {
+      try {
+        const idList = args.ids.map((id: string) => new Types.ObjectId(id));
+        console.log(idList);
+        await dbConnect();
+        const users = await UserModel.find({
+          _id: {
+            $in: idList,
+          },
+        }).populate({
+          path: 'orgs', // 1st level subdoc (get comments)
+          populate: ['group', 'org'],
+        });
+        console.log(users);
+        return users.map((user) => {
+          return user.toJSON();
+        });
       } catch (error) {
         throw error;
       }
