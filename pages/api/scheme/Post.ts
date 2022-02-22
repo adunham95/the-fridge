@@ -168,7 +168,10 @@ export const resolvers = {
         const post = await PostModel.findById(
           new Types.ObjectId(args.id),
         ).populate(['org', 'postedBy', 'comments']);
-        return post.toJSON();
+        return {
+          ...post.toJSON(),
+          dateTime: new Date(post.dateTime).toUTCString(),
+        };
       } catch (error) {
         throw error;
       }
