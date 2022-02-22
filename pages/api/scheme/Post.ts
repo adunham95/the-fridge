@@ -165,9 +165,12 @@ export const resolvers = {
       try {
         console.log(args.id);
         await dbConnect();
-        const post = await PostModel.findById(
-          new Types.ObjectId(args.id),
-        ).populate(['org', 'postedBy', 'comments']);
+        const post = await PostModel.findById(new Types.ObjectId(args.id))
+          .populate({
+            path: 'comments', // 1st level subdoc (get comments)
+            populate: ['author'],
+          })
+          .populate(['org', 'postedBy']);
         return {
           ...post.toJSON(),
           dateTime: new Date(post.dateTime).toUTCString(),

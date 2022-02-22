@@ -10,6 +10,7 @@ import { PostShare } from './PostShare';
 import { PostComments } from './PostComments';
 import { formatDate } from '../../util/formatData';
 import { usePermissions } from '../../hooks/usePermissions';
+import Link from 'next/link';
 
 function PostCard({
   id,
@@ -31,13 +32,21 @@ function PostCard({
     <div className="mb-3 pb-1" id={id}>
       <div className="bg-white rounded-md shadow-sm">
         <div className="p-2">
-          <div className="flex items-center">
-            <Avatar name={postedBy.name} color={postedBy.accountColor} />
-            <div className="flex flex-col justify-start pl-1">
-              <p>{postedBy.name}</p>
-              <p className="text-slate-600 text-xs">{formatDate(dateTime)}</p>
-            </div>
-          </div>
+          <Link
+            passHref
+            href={{
+              pathname: '/post/[id]',
+              query: { id },
+            }}
+          >
+            <a className="flex items-center">
+              <Avatar name={postedBy.name} color={postedBy.accountColor} />
+              <div className="flex flex-col justify-start pl-1">
+                <p>{postedBy.name}</p>
+                <p className="text-slate-600 text-xs">{formatDate(dateTime)}</p>
+              </div>
+            </a>
+          </Link>
         </div>
         {description !== '' && (
           <div className="px-2 pb-1">

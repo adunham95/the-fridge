@@ -14,6 +14,11 @@ query GetSinglePost($id:String!){
           id
           parentComment
           message
+          author{
+            name
+            accountColor
+            id
+          }
         }
     }
   }

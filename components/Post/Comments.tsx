@@ -64,7 +64,7 @@ const Comments = ({
       {filteredComments.map((c) => (
         <div
           key={c.id}
-          className={`text-sm p-1 bg-white w-full flex ${setStyleType()}`}
+          className={`text-sm p-1  w-full flex ${setStyleType()}`}
         >
           <Avatar name={c.author.name} />
           <div className=" bg-slate-400 text-white w-full rounded-md p-2">
@@ -133,7 +133,7 @@ function NewComment({ postID, onSave }: INewCommentProps) {
   }
 
   return (
-    <div className="sticky bottom-0 bg-white py-1 px-1">
+    <div className="sticky bottom-0 py-1 px-1">
       <form className="flex" onSubmit={createNewComment}>
         <Input
           id="new-comment"

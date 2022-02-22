@@ -4,16 +4,15 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { GET_SINGLE_POST_BY_ID } from '../../graphql/query/getSingePostById';
 import { Avatar } from '../../components/Avatar/Avatar';
-import Layout from '../../components/Layout/Layout';
 import { Loader } from '../../components/Loader/Loader';
 import { useToast } from '../../components/Toast/ToastContext';
 import { IPost } from '../../models/PostModel';
 import { formatDate } from '../../util/formatData';
 import { ImageCarousel } from '../../components/Image/ImageCarousel';
-import { Input } from '../../components/StatelessInput/Input';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../../components/Icons';
 import { EUserPermissions } from '../../models/UserModel';
+import Comments from '../../components/Post/Comments';
 
 function SinglePost() {
   const router = useRouter();
@@ -21,11 +20,6 @@ function SinglePost() {
   const [fetchPost, { loading }] = useManualQuery(GET_SINGLE_POST_BY_ID);
   const { addToast } = useToast();
   const [post, setPost] = React.useState<IPost | null>();
-
-  const testComments = [
-    { message: 'Test Comment', author: 'Adrian' },
-    { message: 'Emelies Comment', author: 'Emelie' },
-  ];
 
   React.useEffect(() => {
     console.log(id);
@@ -50,9 +44,12 @@ function SinglePost() {
       setPost(null);
     }
     if (data.data.getSinglePost !== null) {
+      console.log(data.data.getSingePostById);
       setPost(data.data.getSinglePost);
     }
   };
+
+  console.log(post?.dateTime);
 
   return (
     <div className="p-2 flex items-center flex-col">
@@ -62,7 +59,7 @@ function SinglePost() {
         </div>
       )}
       {!loading && (
-        <div className="bg-white w-[500px] flex flex-col items-center shadow-sm rounded-lg px-4 py-3">
+        <div className=" w-[500px] flex flex-col items-center px-4 py-3">
           {post === null ? (
             <p>Error Loading Post</p>
           ) : (
@@ -79,14 +76,21 @@ function SinglePost() {
                   {post?.description}
                 </p>
               )}
-              {post?.image && <ImageCarousel images={post.image} />}
+              <div className="bg-white shadow-sm rounded-lg">
+                {post?.image && <ImageCarousel images={post.image} />}
+              </div>
             </>
           )}
         </div>
       )}
       {post?.comments && (
-        <div>
-          <div>New COmment</div>
+        <div className="w-[500px]">
+          <Comments
+            comments={post.comments}
+            postID={post.id}
+            orgID={post?.org?.id}
+            permissions={post.permissions}
+          />
         </div>
       )}
     </div>
