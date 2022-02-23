@@ -2,9 +2,11 @@
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { EIcons } from '../../components/Icons';
 import IconLogo from '../../components/Icons/Icon-Logo';
 import { Button } from '../../components/StatelessInput/Button';
 import { Input } from '../../components/StatelessInput/Input';
+import { useToast } from '../../components/Toast/ToastContext';
 import { ERoutes } from '../../models/Routes';
 import theme from '../../theme/theme.json';
 
@@ -21,6 +23,7 @@ function Login() {
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
+  const { addToast } = useToast();
 
   async function login(e: React.FormEvent<EventTarget>) {
     e.preventDefault();
@@ -39,6 +42,7 @@ function Login() {
     //@ts-expect-error
     if (res.error) {
       setError('Could Not Login');
+      addToast('Error Logging In', theme.BASE_COLOR.error, EIcons.USER);
       setLoading(false);
     } else {
       setLoading(true);

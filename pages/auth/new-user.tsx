@@ -1,6 +1,7 @@
 // @flow
 import { LockClosedIcon } from '@heroicons/react/outline';
 import { useMutation } from 'graphql-hooks';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import { EIcons } from '../../components/Icons';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
+import { ERoutes } from '../../models/Routes';
 import theme from '../../theme/theme.json';
 
 const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
@@ -33,6 +35,7 @@ export default function NewUser() {
   const [inviteCode, setInviteCode] = useState<string>('');
   const { query } = useRouter();
   const { addToast } = useToast();
+  const router = useRouter();
 
   useEffect(() => {
     if (query?.invitecode && !Array.isArray(query.invitecode)) {
@@ -90,6 +93,23 @@ export default function NewUser() {
     }
     if (data) {
       addToast('User Created', theme.BASE_COLOR.success, EIcons.USER);
+      const res = await signIn('credentials', {
+        redirect: false,
+        username: email,
+        password: password,
+        callbackUrl: `${window.location.origin}`,
+      });
+      //@ts-ignore
+      if (res.error) {
+        addToast('Error Logging In', theme.BASE_COLOR.error, EIcons.USER);
+      } else {
+        addToast(
+          'Account Created Logging In',
+          theme.BASE_COLOR.success,
+          EIcons.USER,
+        );
+        router.push(ERoutes.WALL);
+      }
     }
   }
 
