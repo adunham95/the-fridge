@@ -35,6 +35,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         />
         <meta name="description" content="Description" />
         <meta name="keywords" content="Keywords" />
+        {console.log('env', process.env.NEXT_PUBLIC_VERCEL_ENV}
         {process.env.NEXT_PUBLIC_VERCEL_ENV ===
         ('development' || 'staging' || 'preview') ? (
           <>
