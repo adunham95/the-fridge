@@ -35,7 +35,8 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         />
         <meta name="description" content="Description" />
         <meta name="keywords" content="Keywords" />
-        {process.env.NEXT_PUBLIC_VERCEL_ENV === ('development' || 'staging') ? (
+        {process.env.NEXT_PUBLIC_VERCEL_ENV ===
+        ('development' || 'staging' || 'preview') ? (
           <>
             <title>The Fridge Dev</title>
             <link rel="manifest" href="/manifest_dogfood.json" />
