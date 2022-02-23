@@ -53,7 +53,7 @@ export function Toast({ children, id, icon, color = '#475569' }: Props) {
       onClick={() => {
         removeToast(id);
       }}
-      style={{ background: colorPalette[600] }}
+      style={{ background: colorPalette[100], color: colorPalette[700] }}
       className={`text-center w-full shadow-lg text-sm text-white px-3 py-2 m-1 rounded-md flex items-center`}
     >
       {icon && (
