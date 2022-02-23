@@ -2,7 +2,7 @@
   "BASE_COLOR": {
     "brand-blue": "#00abd5",
     "brand": "#5b4b81",
-    "warning": "#eed202",
+    "warning": "#C27803",
     "success": "#339900",
     "error": "#af0606"
   },
