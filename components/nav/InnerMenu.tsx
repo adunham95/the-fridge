@@ -77,12 +77,14 @@ interface IProps {
   isCollapsed?: boolean;
   className?: string;
   showLogo?: boolean;
+  onClick?: () => void;
 }
 
 function InnerMenu({
   isCollapsed = false,
   showLogo = true,
   className = '',
+  onClick = () => {},
 }: IProps) {
   const isomorphicEffect = useIsomorphicEffect();
   const { data: session } = useSession();
@@ -146,7 +148,12 @@ function InnerMenu({
         </div>
       )}
       {navMenu.filter(showNavItem).map((n) => (
-        <NavItem isCollapsed={isCollapsed} key={n.path} {...n} />
+        <NavItem
+          isCollapsed={isCollapsed}
+          key={n.path}
+          {...n}
+          linkClick={onClick}
+        />
       ))}
       {process.env.NEXT_PUBLIC_SHOW_SUPER_ADMIN_TOOLS && (
         <NavItem
@@ -155,8 +162,8 @@ function InnerMenu({
           icon={EIcons.USER_SHIELD}
           path="/"
           onClick={() => {
-            console.log('Show Modal');
             setModalID('userPermissions');
+            onClick();
           }}
         />
       )}

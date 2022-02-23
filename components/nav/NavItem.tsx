@@ -15,6 +15,7 @@ export interface INavMenuItem {
   };
   permissions?: Array<string>;
   onClick?: () => void;
+  linkClick?: () => void;
 }
 
 interface IProps extends INavMenuItem {
@@ -29,6 +30,7 @@ const NavItem = ({
   badgeCount,
   exact = false,
   onClick,
+  linkClick = () => {},
 }: IProps) => {
   const [showToolTip, setShowToolTip] = useState(false);
   const router = useRouter();
@@ -76,6 +78,7 @@ const NavItem = ({
       <a
         onMouseEnter={() => setShowToolTip(true)}
         onMouseLeave={() => setShowToolTip(false)}
+        onClick={linkClick}
         className={`flex group w-full relative items-center justify-start mt-[0.75em] border border-transparent hover:bg-brand-200 hover:bg-opacity-70 p-1 rounded hover:text-brand-500 ${getWrapperStyles()} ${getActiveClassStyles()}`}
       >
         <NavItemInner

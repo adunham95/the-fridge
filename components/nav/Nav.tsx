@@ -28,7 +28,7 @@ const Nav = ({}) => {
         <div className="fixed inset-0 flex z-50">
           <div className="bg-white w-[var(--sidebar-width)] h-full">
             {/* <button onClick={() => setIsMenuOpen(false)}>Close</button> */}
-            <InnerMenu showLogo={false} />
+            <InnerMenu showLogo={false} onClick={() => setIsMenuOpen(false)} />
           </div>
           <button
             className="w-full h-full bg-black bg-opacity-30 relative"
