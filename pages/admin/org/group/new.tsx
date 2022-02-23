@@ -1,6 +1,6 @@
 import { useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
+import { FormEvent, ReactEventHandler, useEffect, useState } from 'react';
 import { CREATE_GROUP_MUTATION } from '../../../../graphql/mutation/createOrgs';
 import { Select } from '../../../../components/StatelessInput/Select';
 import { EUserPermissions } from '../../../../models/UserModel';
@@ -64,7 +64,8 @@ const AdminGroup = () => {
     setSelectedPermission(newPermissions);
   }
 
-  async function makeGroup() {
+  async function makeGroup(e: FormEvent) {
+    e.preventDefault();
     const newGroup = {
       name: groupName,
       orgID: selectedOrg,
@@ -82,6 +83,8 @@ const AdminGroup = () => {
         `Group ${data.createGroup.name} created`,
         theme.BASE_COLOR.success,
       );
+      setGroupName('');
+      setSelectedOrg('');
     }
     if (error) {
       console.log('Create Group Error', error);

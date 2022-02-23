@@ -10,6 +10,7 @@ interface IProps {
   position?: 'center' | 'center bottom' | 'center top';
   className?: string;
   closeClassName?: string;
+  showClose?: boolean;
 }
 
 const Modal = ({
@@ -19,6 +20,7 @@ const Modal = ({
   position,
   className = '',
   closeClassName = '',
+  showClose = true,
 }: IProps) => {
   const { modalID, setModalID } = useModal();
 
@@ -59,17 +61,19 @@ const Modal = ({
           tabIndex={-1}
           role="dialog"
         >
-          <button
-            type="button"
-            className={`absolute right-2 -top-6 text-5xl ${closeClassName}`}
-            data-dismiss="modal"
-            aria-label="Close"
-            onClick={() => setModalID('')}
-          >
-            <span aria-hidden="true">
-              <IconClose height={25} width={25} />
-            </span>
-          </button>
+          {showClose && (
+            <button
+              type="button"
+              className={`absolute right-2 -top-6 text-5xl ${closeClassName}`}
+              data-dismiss="modal"
+              aria-label="Close"
+              onClick={() => setModalID('')}
+            >
+              <span aria-hidden="true">
+                <IconClose height={25} width={25} />
+              </span>
+            </button>
+          )}
           {children}
         </div>
       </div>

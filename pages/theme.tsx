@@ -10,7 +10,11 @@ export function ThemePage() {
   return (
     <div>
       <PageBanner title="Theme" />
-      <Button onClick={() => addToast('Test Toast', theme.BASE_COLOR.success)}>
+      <Button
+        onClick={() =>
+          addToast('Test Toast', theme.BASE_COLOR['brand-blue'], EIcons.BELL)
+        }
+      >
         Open Toast
       </Button>
     </div>

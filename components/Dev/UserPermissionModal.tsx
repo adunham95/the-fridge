@@ -1,11 +1,14 @@
 // @flow
 import React, { useEffect, useState } from 'react';
 import Modal from '../Modal/Modal';
+import { ModalContainer } from '../Modal/ModalContainer';
 import { Button } from '../StatelessInput/Button';
 import { GroupPermissions } from '../StatelessInput/GroupPermissions';
+
 type Props = {
   id: string,
 };
+
 function UserPermissionModal({ id }: Props) {
   const localStorageName = 'devPermissions';
   const [devPermissions, setDevPermissions] = useState<Array<string>>([]);
@@ -35,22 +38,24 @@ function UserPermissionModal({ id }: Props) {
   }
 
   return (
-    <Modal id={id} className="bg-white w-3/4 p-2 rounded-md shadow-2xl">
-      <>
-        <GroupPermissions
-          selectedPermission={devPermissions}
-          onChange={changePermissions}
-        />
-        <div className="pt-1">
-          <Button
-            className="bg-red-600 text-white"
-            size="sm"
-            onClick={clearPermissions}
-          >
-            Remove Permissions
-          </Button>
-        </div>
-      </>
+    <Modal id={id} className="w-full md:w-3/4 p-2" showClose={false}>
+      <ModalContainer>
+        <>
+          <GroupPermissions
+            selectedPermission={devPermissions}
+            onChange={changePermissions}
+          />
+          <div className="pt-1 flex justify-end">
+            <Button
+              className="bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              size="sm"
+              onClick={clearPermissions}
+            >
+              Remove All Permissions
+            </Button>
+          </div>
+        </>
+      </ModalContainer>
     </Modal>
   );
 }

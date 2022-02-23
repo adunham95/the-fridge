@@ -46,20 +46,35 @@ export function BreadCrumb() {
 
   return (
     <div className="flex py-1 text-xs">
-      {crumbs.map((c, i) => (
-        <>
-          {i > 0 && <span className="px-1">\</span>}
-          <Link key={c.path} href={c.path} passHref>
-            <a
-              className={`px-1 m-1 border-b border-transparent hover:border-brand-400 ${
-                c.current && 'border-brand-400'
-              }`}
+      <ol className='class="inline-flex items-center space-x-1 md:space-x-3"'>
+        {crumbs.map((c, i) => (
+          <li className="inline-flex items-center" key={c.path}>
+            <svg
+              className={
+                i > 0 ? `w-6 h-6 text-brand-400` : 'text-transparent w-0 h-6'
+              }
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              {c.title}
-            </a>
-          </Link>
-        </>
-      ))}
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            <Link href={c.path} passHref>
+              <a
+                className={`ml-1 text-sm font-medium  md:ml-2 hover:text-brand-700 ${
+                  c.current ? 'text-brand-500' : 'text-brand-400'
+                }`}
+              >
+                {c.title}
+              </a>
+            </Link>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

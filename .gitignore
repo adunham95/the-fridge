@@ -43,4 +43,5 @@ yarn-error.log*
 sw.js*
 workbox*.js*
 
+*.zip
 features

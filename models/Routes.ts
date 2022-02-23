@@ -1,8 +1,7 @@
 export enum ERoutes {
   WALL = '/',
   ADMIN = '/admin',
-  ADMIN_EDIT_ORG = '/admin/editOrg',
-  ADMIN_ORG = '/admin/org',
+  ADMIN_EDIT_ORG = '/admin/org',
   ADMIN_ORG_USER_GROUP = '/admin/org/editusergroup',
   ADMIN_EDIT_USER_GROUPS = '/admin/org/editusergroup/[orgID]',
   ADMIN_NEW_GROUP = '/admin/org/group/new',
@@ -25,8 +24,6 @@ export const RouteNames: IRouteName = {
   [ERoutes.WALL]: 'Wall',
   [ERoutes.ADMIN]: 'Admin',
   [ERoutes.ADMIN_NEW_GROUP]: 'New Group',
-  [ERoutes.ADMIN_EDIT_ORG]: 'Edit Org',
-  [ERoutes.ADMIN_ORG]: 'Org',
   [ERoutes.ADMIN_EDIT_ORG]: 'Edit Org',
   [ERoutes.ADMIN_ORG_USER_GROUP]: 'User Group',
   [ERoutes.ADMIN_EDIT_USER_GROUPS]: 'Edit User Groups',

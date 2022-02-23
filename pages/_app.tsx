@@ -35,22 +35,71 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         />
         <meta name="description" content="Description" />
         <meta name="keywords" content="Keywords" />
-        <title>The Fridge</title>
+        {console.log('env', process.env.NEXT_PUBLIC_VERCEL_ENV)}
+        {process.env.NEXT_PUBLIC_VERCEL_ENV === 'development' ||
+        process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' ? (
+          <>
+            <title>The Fridge Dev</title>
+            <link rel="manifest" href="/manifest_dogfood.json" />
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="/icons/dogfood/apple-touch-icon_dogfood.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+              href="/icons/dogfood/favicon-32x32_dogfood.png"
+            />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+              href="/icons/dogfood/favicon-16x16_dogfood.png"
+            />
+            <link
+              rel="mask-icon"
+              href="/icons/dogfood/safari-pinned-tab.svg"
+              color="#5b4b81"
+            />
+            <link rel="shortcut icon" href="favicon_dogfood.ico" />
+            <meta
+              name="msapplication-config"
+              content="/icons/dogfood/browserconfig.xml"
+            />
+          </>
+        ) : (
+          <>
+            <title>The Fridge </title>
+            <link rel="manifest" href="/manifest.json" />
+            <link
+              href="/icons/favicon-16x16.png"
+              rel="icon"
+              type="image/png"
+              sizes="16x16"
+            />
+            <link
+              href="/icons/favicon-32x32.png"
+              rel="icon"
+              type="image/png"
+              sizes="32x32"
+            />
+            <link
+              rel="apple-touch-icon"
+              sizes="180x180"
+              href="/icons/apple-touch-icon.png"
+            />
+            <link
+              rel="mask-icon"
+              href="/icons/safari-pinned-tab.svg"
+              color="#5b4b81"
+            />
+            <link rel="shortcut icon" href="favicon.ico" />
+          </>
+        )}
 
-        <link rel="manifest" href="/manifest.json" />
-        <link
-          href="/icons/favicon-16x16.png"
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-        />
-        <link
-          href="/icons/favicon-32x32.png"
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-        />
-        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png"></link>
+        <meta name="msapplication-TileColor" content="#5b4b81" />
         <meta name="theme-color" content="#5b4b81" />
       </Head>
       <SessionProvider session={pageProps.session} refetchInterval={86400}>
