@@ -2,21 +2,21 @@
 import { useManualQuery, useMutation } from 'graphql-hooks';
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
-import { GROUP_BY_IDS } from '../../graphql/query/groupByIds';
-import { Input } from '../../components/StatelessInput/Input';
-import { Select } from '../../components/StatelessInput/Select';
-import { EToastType, useToast } from '../../components/Toast/ToastContext';
-import { IGroup, IOrg } from '../../models/OrgModel';
-import { ERoutes } from '../../models/Routes';
-import { BreadCrumb } from '../../components/nav/BreadCrumb';
-import { Button } from '../../components/StatelessInput/Button';
-import { UPDATE_ORG_MUTATION } from '../../graphql/mutation/updateOrg';
+import { GROUP_BY_IDS } from '../../../graphql/query/groupByIds';
+import { Input } from '../../../components/StatelessInput/Input';
+import { Select } from '../../../components/StatelessInput/Select';
+import { EToastType, useToast } from '../../../components/Toast/ToastContext';
+import { IGroup, IOrg } from '../../../models/OrgModel';
+import { ERoutes } from '../../../models/Routes';
+import { BreadCrumb } from '../../../components/nav/BreadCrumb';
+import { Button } from '../../../components/StatelessInput/Button';
+import { UPDATE_ORG_MUTATION } from '../../../graphql/mutation/updateOrg';
 import Link from 'next/link';
-import theme from '../../theme/theme.json';
-import { EIcons } from '../../components/Icons';
-import { EUserPermissions } from '../../models/UserModel';
-import { EPostPermission } from '../../models/PostModel';
-import { generateURLOrigin } from '../../util/url';
+import theme from '../../../theme/theme.json';
+import { EIcons } from '../../../components/Icons';
+import { EUserPermissions } from '../../../models/UserModel';
+import { EPostPermission } from '../../../models/PostModel';
+import { generateURLOrigin } from '../../../util/url';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
