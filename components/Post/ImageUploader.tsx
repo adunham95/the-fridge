@@ -74,7 +74,7 @@ export function ImageUploader({
       console.log('postResizeFile', resizedImage);
       const data = new FormData();
       // @ts-ignore
-      data.append('images', resizedImage);
+      data.append('image', resizedImage);
 
       try {
         const response = await fetch(`/api/upload-images`, {
