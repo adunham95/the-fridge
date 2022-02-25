@@ -1,6 +1,8 @@
 // @flow
 import * as React from 'react';
+import { usePallette } from '../../hooks/usePallette';
 import theme from '../../theme/theme.json';
+
 type IProps = {
   name?: string,
   color?: string,
@@ -12,18 +14,22 @@ type IProps = {
 
 export const Avatar = ({
   name = 'A',
-  color = theme.COLORS.blue[500],
+  color = theme.BASE_COLOR['brand-blue'],
   height = 'h-8',
   width = 'w-8',
   className = '',
   mouseToggle = () => {},
 }: IProps) => {
+  const { colorPalette } = usePallette(color);
+
   return (
     <span
-      style={{ backgroundColor: color }}
+      style={{
+        background: `linear-gradient(135deg, ${colorPalette[400]}, ${colorPalette[600]})`,
+      }}
       onMouseEnter={() => mouseToggle(true)}
       onMouseLeave={() => mouseToggle(false)}
-      className={`${height} ${width} rounded-full inline-flex justify-center items-center mr-1 text-white flex-none ${className}`}
+      className={`${height} ${width} rounded-[25%] inline-flex justify-center items-center mr-1 text-white flex-none ${className}`}
     >
       {name[0]}
     </span>
