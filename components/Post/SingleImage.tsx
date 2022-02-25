@@ -10,7 +10,7 @@ export function SingleImage({ index, url, onRemove = () => {} }: Props) {
   const [showRemove, setShowRemove] = React.useState(false);
   return (
     <div
-      className="h-[5em] aspect-square ml-[1em] my-[1em] relative"
+      className="h-[3.5em] md:h-[5em] aspect-square ml-[1em] my-[1em] relative"
       onMouseEnter={() => setShowRemove(true)}
       onMouseLeave={() => setShowRemove(false)}
     >

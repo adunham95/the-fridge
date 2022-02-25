@@ -129,10 +129,10 @@ export function ImageUploader({
       />
       <label
         htmlFor={id}
-        className="flex rounded-md bg-slate-500 text-white px-2 py-1 mr-1 mb-1"
+        className="flex rounded-md text-brand-500 px-2 py-1 mr-1 mb-1 "
       >
         <IconImage height={20} width={20} />
-        <span className="pl-2 text-sm">Images</span>
+        {/* <span className="pl-2 text-sm">Images</span> */}
       </label>
     </>
   );
