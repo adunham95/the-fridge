@@ -15,14 +15,11 @@ const nextConfig = {
 
 // console.log(process.env.NODE_ENV)
 
-if (process.env.NODE_ENV !== 'development') {
-  module.exports = withPWA({
-    nextConfig,
-    pwa: {
-      dest: 'public',
-      runtimeCaching,
-    },
-  });
-} else {
-  module.exports = nextConfig;
-}
+module.exports = withPWA({
+  nextConfig,
+  pwa: {
+    dest: 'public',
+    runtimeCaching,
+    customWorkerDir: 'serviceworker',
+  },
+});

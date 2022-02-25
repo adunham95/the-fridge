@@ -45,3 +45,4 @@ workbox*.js*
 
 *.zip
 features
+vapidKeys.txt
