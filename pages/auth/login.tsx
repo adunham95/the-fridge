@@ -24,14 +24,14 @@ function Login() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const { addToast } = useToast();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   React.useEffect(() => {
-    console.log('session', session);
-    if (session !== null) {
+    console.log('status', status);
+    if (status === 'authenticated') {
       router.push(ERoutes.WALL);
     }
-  }, [session]);
+  }, [status]);
 
   async function login(e: React.FormEvent<EventTarget>) {
     e.preventDefault();
