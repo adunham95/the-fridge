@@ -57,13 +57,18 @@ export default function NewUser() {
     }
     const orgData = inviteCode.split(',').map((c) => {
       const set = c.split('-');
-      return {
-        org: set[0] || '',
-        group: set[1] || '',
-      };
+      const orgData: { org?: string, group?: string } = {};
+      console.log(set);
+      if (set[0]) {
+        orgData.org = set[0];
+      }
+      if (set[1]) {
+        orgData.group = set[1];
+      }
+      return orgData;
     });
     let newUser = {};
-    if (orgData[0].org !== '') {
+    if (orgData[0]?.org) {
       newUser = {
         newUser: {
           name,
@@ -71,7 +76,7 @@ export default function NewUser() {
           username: username !== '' ? username : email,
           password,
           accountColor,
-          org: orgData,
+          orgs: orgData,
         },
       };
     } else {
