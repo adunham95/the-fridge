@@ -97,8 +97,9 @@ self.addEventListener('message', event => {
 });
 self.addEventListener('push', event => {
   const data = JSON.parse((event === null || event === void 0 ? void 0 : event.data.text()) || '{}');
+  console.log('New Notification', data);
   event === null || event === void 0 ? void 0 : event.waitUntil(self.registration.showNotification(data.title, {
-    body: data.message,
+    body: data.body,
     icon: '/icons/android-chrome-192x192.png'
   }));
 });
