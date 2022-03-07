@@ -9,7 +9,7 @@ type Props = {
 export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
   const [currentImg, setCurrentImg] = React.useState(1);
   const slideElm = React.useRef<HTMLDivElement>(null);
-  const [hovering, setHovering] = React.useState(false);
+  const [hovering, setHovering] = React.useState(true);
 
   if (images.length === 1) {
     return (
@@ -24,14 +24,41 @@ export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
     );
   }
 
+  function setSlide(action: 'Next' | 'Back') {
+    if (action === 'Next') {
+      const nextSlide = currentImg + 1 > images.length ? 0 : currentImg;
+      setCurrentImg(nextSlide - 1);
+
+      console.log(nextSlide);
+      console.log(slideElm.current?.clientWidth);
+
+      slideElm.current?.scroll({
+        top: 0,
+        left: slideElm.current?.clientWidth * nextSlide,
+        behavior: 'smooth',
+      });
+    }
+    if (action === 'Back') {
+      const nextSlide =
+        currentImg - 1 <= 0 ? images.length - 1 : currentImg - 2;
+      setCurrentImg(nextSlide - 1);
+
+      console.log({ nextSlide, currentImg, next: currentImg - 1 <= 0 });
+
+      slideElm.current?.scroll({
+        top: 0,
+        left: slideElm.current?.clientWidth * nextSlide,
+        behavior: 'smooth',
+      });
+    }
+  }
+
   return (
     <>
       <div
         className="relative flex overflow-x-scroll snap-x snap-mandatory hide-scrollbar scroll-smooth"
         onDoubleClick={onDoubleClick}
         ref={slideElm}
-        onMouseEnter={() => setHovering(true)}
-        onMouseLeave={() => setHovering(false)}
       >
         {images.map((img, i) => (
           <SlideImg
@@ -48,24 +75,34 @@ export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
           <span>{currentImg}</span>/<span>{images.length}</span>
         </span>
       </div>
-      <button className="absolute right-6 inset-y-center">
-        <span className="rotate-[90deg] transition-transform block">
-          <IconArrowCircle
-            height={30}
-            width={30}
-            className="fill-brand-400 hover:fill-brand-600"
-          />
-        </span>
-      </button>
-      <button className="absolute left-6 inset-y-center">
-        <span className="rotate-[270deg] transition-transform block">
-          <IconArrowCircle
-            height={30}
-            width={30}
-            className="fill-brand-400 hover:fill-brand-600"
-          />
-        </span>
-      </button>
+      {hovering && (
+        <>
+          <button
+            className="absolute right-6 inset-y-center"
+            onClick={() => setSlide('Next')}
+          >
+            <span className="rotate-[90deg] transition-transform block">
+              <IconArrowCircle
+                height={30}
+                width={30}
+                className="fill-brand-400 hover:fill-brand-600"
+              />
+            </span>
+          </button>
+          <button
+            className="absolute left-6 inset-y-center"
+            onClick={() => setSlide('Back')}
+          >
+            <span className="rotate-[270deg] transition-transform block">
+              <IconArrowCircle
+                height={30}
+                width={30}
+                className="fill-brand-400 hover:fill-brand-600"
+              />
+            </span>
+          </button>
+        </>
+      )}
     </>
   );
 }
