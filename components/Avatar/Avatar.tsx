@@ -10,6 +10,7 @@ type IProps = {
   width?: string,
   className?: string,
   mouseToggle?: (isOver: boolean) => void,
+  rounded?: boolean,
 };
 
 export const Avatar = ({
@@ -18,6 +19,7 @@ export const Avatar = ({
   height = 'h-8',
   width = 'w-8',
   className = '',
+  rounded = false,
   mouseToggle = () => {},
 }: IProps) => {
   const { colorPalette } = usePallette(color);
@@ -29,7 +31,9 @@ export const Avatar = ({
       }}
       onMouseEnter={() => mouseToggle(true)}
       onMouseLeave={() => mouseToggle(false)}
-      className={`${height} ${width} rounded-[25%] inline-flex justify-center items-center mr-1 text-white flex-none ${className}`}
+      className={`${height} ${width} ${
+        rounded ? 'rounded-full' : 'rounded-[25%]'
+      } inline-flex justify-center items-center mr-1 text-white flex-none ${className}`}
     >
       {name[0]}
     </span>
