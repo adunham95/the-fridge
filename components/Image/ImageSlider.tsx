@@ -1,11 +1,15 @@
 // @flow
 import * as React from 'react';
+import IconArrowCircle from '../Icons/Icon-Arrow-Circle';
+
 type Props = {
   images: Array<string>,
   onDoubleClick?: () => void,
 };
 export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
   const [currentImg, setCurrentImg] = React.useState(1);
+  const slideElm = React.useRef<HTMLDivElement>(null);
+  const [hovering, setHovering] = React.useState(false);
 
   if (images.length === 1) {
     return (
@@ -21,25 +25,48 @@ export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
   }
 
   return (
-    <div
-      className="relative flex overflow-x-scroll snap-x snap-mandatory hide-scrollbar scroll-smooth"
-      onDoubleClick={onDoubleClick}
-    >
-      {images.map((img, i) => (
-        <SlideImg
-          key={img}
-          img={img}
-          setIsVisible={(isVisible) => {
-            isVisible && setCurrentImg(i + 1);
-          }}
-        />
-      ))}
-      <div className="sticky h-[2em] top-1 right-2 text-xs bg-slate-500 bg-opacity-40 text-white p-1 rounded flex justify-center items-center">
+    <>
+      <div
+        className="relative flex overflow-x-scroll snap-x snap-mandatory hide-scrollbar scroll-smooth"
+        onDoubleClick={onDoubleClick}
+        ref={slideElm}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+      >
+        {images.map((img, i) => (
+          <SlideImg
+            key={img}
+            img={img}
+            setIsVisible={(isVisible) => {
+              isVisible && setCurrentImg(i + 1);
+            }}
+          />
+        ))}
+      </div>
+      <div className="absolute h-[2em] top-2 right-5 text-xs bg-slate-500 bg-opacity-40 text-white p-1 rounded flex justify-center items-center">
         <span>
           <span>{currentImg}</span>/<span>{images.length}</span>
         </span>
       </div>
-    </div>
+      <button className="absolute right-6 inset-y-center">
+        <span className="rotate-[90deg] transition-transform block">
+          <IconArrowCircle
+            height={30}
+            width={30}
+            className="fill-brand-400 hover:fill-brand-600"
+          />
+        </span>
+      </button>
+      <button className="absolute left-6 inset-y-center">
+        <span className="rotate-[270deg] transition-transform block">
+          <IconArrowCircle
+            height={30}
+            width={30}
+            className="fill-brand-400 hover:fill-brand-600"
+          />
+        </span>
+      </button>
+    </>
   );
 }
 

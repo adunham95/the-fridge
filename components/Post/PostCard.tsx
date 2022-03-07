@@ -56,7 +56,7 @@ function PostCard({
           </div>
         )}
         {image.length > 0 && (
-          <div className="w-full px-2">
+          <div className="w-full px-2 relative">
             {/* <ImageCarousel images={image} /> */}
             <ImageSlider images={image} />
           </div>
