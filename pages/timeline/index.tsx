@@ -116,7 +116,7 @@ const Timeline = () => {
           onChange={setCurrentDate}
         />
       </PageBanner>
-      <main className="flex flex-wrap mx-auto py-5 px-1">
+      <main className="flex flex-wrap mx-auto py-5 px-1 max-w-[1000px]">
         {loading && (
           <div className="flex justify-center pt-1 pb-2">
             <Loader />
