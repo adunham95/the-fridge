@@ -135,7 +135,7 @@ export const NewPost = ({ onCreate }: IProps) => {
         postedBy: myUser?.id,
         viewByGroups: selectedGroups,
         permissions: selectedSettings,
-        image: images.map((img) => img.url),
+        image: images.map((img) => img.id),
       },
     };
 
