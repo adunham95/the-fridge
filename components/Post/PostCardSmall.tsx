@@ -15,7 +15,7 @@ export function PostCardSmall({
 
   useEffect(() => {
     if (image.length > 0) {
-      setStyle({ backgroundImage: `url(${image[0]})` });
+      setStyle({ backgroundImage: `url(${image[0].url})` });
     }
   }, [image]);
 
