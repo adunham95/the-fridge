@@ -291,7 +291,7 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
   async function shareLink() {
     const shareData = {
       title: 'Share Link',
-      text: 'You have been invited to a group on The Fridge',
+      text: 'You have been invited to The Fridge',
       url: inviteLink,
     };
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -343,7 +343,7 @@ function CreateInviteLink({ orgID, groups = [] }: IInviteLinkProps) {
         {hasClipboard && (
           <button
             onClick={copyText}
-            disabled={selectedGroup === ''}
+            disabled={orgID === ''}
             className="bg-brand-400 py-1 px-2 text-white rounded-md disabled:bg-red-400 flex-shrink-0"
           >
             Copy Link
