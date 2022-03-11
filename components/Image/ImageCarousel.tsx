@@ -1,9 +1,10 @@
 // @flow
 import React, { useEffect, useRef, useState } from 'react';
 import { useWindowSize } from '../../hooks/useWidowSize';
+import { IImage } from '../../models/IImage';
 import IconArrowCircle from '../Icons/Icon-Arrow-Circle';
 type Props = {
-  images: Array<string>,
+  images: Array<IImage>,
 };
 export function ImageCarousel({ images }: Props) {
   const slideWidth = 81;
@@ -11,11 +12,11 @@ export function ImageCarousel({ images }: Props) {
   const [visibleSlides, setVisibleSlides] = useState(images.length);
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeImg, setActiveImg] = useState(images[0]);
+  const [activeImg, setActiveImg] = useState(images[0].url);
   const { width } = useWindowSize();
 
   useEffect(() => {
-    setActiveImg(images[activeThumb]);
+    setActiveImg(images[activeThumb].url);
     slideElm.current?.scroll({
       top: 0,
       left: slideWidth * activeThumb,
@@ -93,7 +94,7 @@ export function ImageCarousel({ images }: Props) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     loading="lazy"
-                    src={img}
+                    src={img.url}
                     className={`rounded-md h-[65px] min-w-[65px] aspect-square object-cover inline-block border-2  ${
                       activeThumb === i && 'border-brand-400'
                     }`}
