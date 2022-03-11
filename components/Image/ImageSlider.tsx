@@ -1,9 +1,10 @@
 // @flow
 import * as React from 'react';
+import { IImage } from '../../models/IImage';
 import IconArrowCircle from '../Icons/Icon-Arrow-Circle';
 
 type Props = {
-  images: Array<string>,
+  images: Array<IImage>,
   onDoubleClick?: () => void,
 };
 export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
@@ -16,8 +17,8 @@ export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
       <div onDoubleClick={onDoubleClick}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          key={images[0]}
-          src={images[0]}
+          key={images[0].id}
+          src={images[0].url}
           className={`object-contain aspect-auto min-w-full rounded-md border border-gray-100 snap-start`}
         />
       </div>
@@ -62,8 +63,8 @@ export function ImageSlider({ images, onDoubleClick = () => {} }: Props) {
       >
         {images.map((img, i) => (
           <SlideImg
-            key={img}
-            img={img}
+            key={img.id}
+            img={img.url}
             setIsVisible={(isVisible) => {
               isVisible && setCurrentImg(i + 1);
             }}
@@ -113,6 +114,7 @@ interface ISlideImg {
 }
 
 const SlideImg = ({ img, setIsVisible }: ISlideImg) => {
+  console.log(img);
   const slideImg = React.useRef(null);
   const [inView, setInView] = React.useState(false);
 
@@ -143,7 +145,6 @@ const SlideImg = ({ img, setIsVisible }: ISlideImg) => {
     <div ref={slideImg} className="object-contain aspect-[4/3] min-w-full p-1">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        key={img}
         src={img}
         className={`object-contain aspect-[4/3] min-w-full rounded-md border border-gray-400 snap-start`}
       />

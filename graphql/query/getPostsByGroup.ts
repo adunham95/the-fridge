@@ -3,7 +3,10 @@ query GetPostsByGroup($ids:[String!]){
     getPostsByGroup(groupIDs:$ids){
       id
       description
-      image
+      image{
+        id
+        url
+      }
       dateTime
       org{
         id
@@ -24,7 +27,10 @@ query GetPostsByGroup($ids:[String!],$limit:Float,$skip:Float){
     getPostsByGroup(groupIDs:$ids,limit:$limit,skip:$skip){
       id
       description
-      image
+      image{
+        id
+        url
+      }
       dateTime
       permissions
       org{
@@ -46,7 +52,10 @@ query GetPostsByGroup($ids:[String!],$startDate:String,$endDate:String){
     getPostsByGroup(groupIDs:$ids,startDate:$startDate,endDate:$endDate){
       id
       description
-      image
+      image{
+        id
+        url
+      }
       dateTime
       permissions
       org{

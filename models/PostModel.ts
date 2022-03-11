@@ -1,10 +1,11 @@
 import { IComment } from './CommentModel';
+import { IImage } from './IImage';
 
 export interface IPost {
   id: string;
   dateTime: string;
   description?: string;
-  image?: Array<string>;
+  image?: Array<IImage>;
   orgID: string;
   orgName?: string;
   viewByGroups?: Array<string>;
