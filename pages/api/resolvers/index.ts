@@ -4,6 +4,7 @@ import dbConnect from '../utils/dbConnect';
 import { PostModel } from '../auth/models/PostModel_Server';
 import { CommentModel } from '../auth/models/CommentMode_Server';
 import { OrgModel } from '../auth/models/OrgModel_Server';
+import { ImageModel } from '../auth/models/ImageModel_service';
 import { merge } from 'lodash';
 
 import { resolvers as GroupResolvers } from '../scheme/Group';
@@ -35,6 +36,10 @@ const defaultResolvers = {
           { enabled: { $exists: false } },
           { enabled: false },
         );
+        ImageModel.updateMany(
+          { enabled: { $exists: false } },
+          { enabled: false },
+        );
         console.log('Updated complete');
         return { success: true };
       } catch (error) {
@@ -45,7 +50,7 @@ const defaultResolvers = {
       try {
         await dbConnect();
         const posts = await PostModel.find()
-          .populate(['org', 'postedBy'])
+          .populate(['org', 'postedBy', 'image'])
           .populate({
             path: 'comments', // 1st level subdoc (get comments)
             populate: ['author'],
@@ -67,7 +72,7 @@ const defaultResolvers = {
     getPost: async (_: any, args: any) => {
       try {
         await dbConnect();
-        const post = await PostModel.findById(args.id);
+        const post = await PostModel.findById(args.id).populate(['image']);
         return {
           ...post.toJSON(),
         };

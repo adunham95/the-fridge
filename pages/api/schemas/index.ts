@@ -3,6 +3,7 @@ import { typeDef as GroupDef } from '../scheme/Group';
 import { typeDef as OrgDef } from '../scheme/Org';
 import { typeDef as UserDef } from '../scheme/User';
 import { typeDef as PostDef } from '../scheme/Post';
+import { typeDef as ImageDef } from '../scheme/Image';
 
 const typeDefs = gql`
   type Query {
@@ -15,7 +16,7 @@ const typeDefs = gql`
     id: String
     dateTime: String
     description: String
-    image: [String]
+    image: [Image]
     org: Org
     orgID: String
     orgName: String
@@ -42,4 +43,4 @@ const typeDefs = gql`
   }
 `;
 
-export default [typeDefs, GroupDef, OrgDef, UserDef, PostDef];
+export default [typeDefs, GroupDef, OrgDef, UserDef, PostDef, ImageDef];

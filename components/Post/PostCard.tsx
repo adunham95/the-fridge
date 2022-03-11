@@ -12,6 +12,7 @@ import { formatDate } from '../../util/formatData';
 import { usePermissions } from '../../hooks/usePermissions';
 import Link from 'next/link';
 import { EUserPermissions } from '../../models/UserModel';
+import { ImageSlider } from '../Image/ImageSlider';
 
 function PostCard({
   id,
@@ -55,8 +56,9 @@ function PostCard({
           </div>
         )}
         {image.length > 0 && (
-          <div className="w-full px-2">
-            <ImageCarousel images={image} />
+          <div className="w-full px-2 relative">
+            {/* <ImageCarousel images={image} /> */}
+            <ImageSlider images={image} />
           </div>
         )}
         <div className="p-2 flex w-full justify-start items-center">

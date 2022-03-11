@@ -23,7 +23,7 @@ const navMenu: Array<INavMenuItem> = [
   {
     path: ERoutes.ADMIN,
     title: 'Admin',
-    icon: EIcons.GEAR,
+    icon: EIcons.USER_COG,
     showIf: {
       loggedIn: true,
     },

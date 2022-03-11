@@ -1,5 +1,5 @@
 // @flow
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { EIcons } from '../../components/Icons';
@@ -24,6 +24,14 @@ function Login() {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
   const { addToast } = useToast();
+  const { data: session, status } = useSession();
+
+  React.useEffect(() => {
+    console.log('status', status);
+    if (status === 'authenticated') {
+      router.push(ERoutes.WALL);
+    }
+  }, [status]);
 
   async function login(e: React.FormEvent<EventTarget>) {
     e.preventDefault();

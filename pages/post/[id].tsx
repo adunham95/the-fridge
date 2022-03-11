@@ -60,7 +60,7 @@ function SinglePost() {
         </div>
       )}
       {!loading && (
-        <div className=" max-w-[500px] flex flex-col items-center px-4 py-3">
+        <div className="w-full max-w-[500px] flex flex-col items-center py-3">
           {post === null ? (
             <p>Error Loading Post</p>
           ) : (
@@ -95,7 +95,7 @@ function SinglePost() {
         </div>
       )}
       {post?.comments && (
-        <div className="max-w-[500px]">
+        <div className="w-full max-w-[500px]">
           <Comments
             comments={post.comments}
             postID={post.id}

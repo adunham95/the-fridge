@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { EIcons } from '../../components/Icons';
 import { Loader } from '../../components/Loader/Loader';
 import { PageBanner } from '../../components/Page/PageBanner';
-import PostCard from '../../components/Post/PostCard';
 import { PostCardSmall } from '../../components/Post/PostCardSmall';
 import { Select } from '../../components/StatelessInput/Select';
 import { useToast } from '../../components/Toast/ToastContext';
@@ -14,6 +13,7 @@ import { monthList } from '../../models/DateModel';
 import { IPost } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import theme from '../../theme/theme.json';
+import IconFrown from '../../components/Icons/Icon-Frown';
 
 interface ITimeline {
   value: string;
@@ -116,14 +116,24 @@ const Timeline = () => {
           onChange={setCurrentDate}
         />
       </PageBanner>
-      <main className="flex flex-wrap mx-auto py-5 px-1">
+      <main className="flex flex-wrap mx-auto py-5 px-1 max-w-[1000px]">
         {loading && (
           <div className="flex justify-center pt-1 pb-2">
             <Loader />
           </div>
         )}
+        {currentDate === '' && !loading && (
+          <p className="w-full text-center">Select a month to view posts</p>
+        )}
+        {currentDate !== '' && !loading && posts.length === 0 && (
+          <div className="flex justify-center w-full items-center flex-col">
+            <p className="px-1 text-center">No Photos this month</p>
+            <span className="text-rose-400">
+              <IconFrown height={60} />
+            </span>
+          </div>
+        )}
         {posts.map((post) => (
-          // <PostCard key={post.id} {...post} />
           <PostCardSmall key={post.id} {...post} />
         ))}
       </main>

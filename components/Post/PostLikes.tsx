@@ -102,6 +102,7 @@ export function PostLikers({ likers, orgID }: Props) {
           } cursor-default`}
         >
           <Avatar
+            rounded
             name={user.name}
             color={user.accountColor}
             mouseToggle={(over) => setIsOver(over ? user.id : '')}

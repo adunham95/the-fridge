@@ -10,7 +10,7 @@ export const typeDef = gql`
     id: String
     dateTime: String
     description: String
-    image: [String]
+    image: [Image]
     org: Org
     postedBy: PostAuthor
     likedBy: [String]
@@ -22,7 +22,7 @@ export const typeDef = gql`
     id: String
     dateTime: String
     description: String
-    image: [String]
+    image: [Image]
     org: Org
     postedBy: PostAuthor
     likedBy: [String]
@@ -143,6 +143,7 @@ export const resolvers = {
         const posts = await PostModel.find(query, null, pagination).populate([
           'org',
           'postedBy',
+          'image',
         ]);
 
         console.log('posts', posts);
@@ -170,7 +171,10 @@ export const resolvers = {
             path: 'comments', // 1st level subdoc (get comments)
             populate: ['author'],
           })
-          .populate(['org', 'postedBy']);
+          .populate(['org', 'postedBy', 'image']);
+
+        console.log(post);
+
         return {
           ...post.toJSON(),
           dateTime: new Date(post.dateTime).toUTCString(),
@@ -228,6 +232,7 @@ export const resolvers = {
         const returnPost = await new PostModel(newPostFromDB).populate([
           'org',
           'postedBy',
+          'image',
         ]);
         // console.log(returnPost);
         return returnPost.toJSON();

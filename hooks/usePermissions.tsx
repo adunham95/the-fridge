@@ -31,10 +31,10 @@ export function usePermissions() {
       myPermissions = JSON.parse(localPermissions);
     } else if (orgID === '') {
       myPermissions =
-        session?.user.orgs.map((o) => o.group.permissions).flat() || [];
+        session?.user.orgs.map((o) => o?.group?.permissions).flat() || [];
     } else {
       myPermissions =
-        myUser?.orgs.find((o) => o.org.id === orgID)?.group.permissions || [];
+        myUser?.orgs.find((o) => o.org.id === orgID)?.group?.permissions || [];
     }
 
     const totalPermissions: Array<string> = [

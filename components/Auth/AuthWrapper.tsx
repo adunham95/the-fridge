@@ -16,7 +16,7 @@ function AuthWrapper({ children, permissions = [] }: IAuth) {
 
   //TODO Clean up
   const myPermissions =
-    session?.user.orgs.map((o) => o.group.permissions).flat() || [];
+    session?.user.orgs.map((o) => o?.group?.permissions).flat() || [];
 
   const found = myPermissions.some((r) => (permissions || []).includes(r));
 

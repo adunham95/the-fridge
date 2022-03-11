@@ -15,6 +15,7 @@ import { CameraUploader, ImageUploader, IUploadedImage } from './ImageUploader';
 import { ImageOrderer } from './ImageOrderer';
 import { usePermissions } from '../../hooks/usePermissions';
 import { SingleImage } from './SingleImage';
+import IconImage from '../Icons/Icon-Image';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -104,6 +105,15 @@ export const NewPost = ({ onCreate }: IProps) => {
     }
   }, [myUser]);
 
+  useEffect(() => {
+    if (newPostText !== '') {
+      setExpanded(true);
+    }
+    if (images.length > 0) {
+      setExpanded(true);
+    }
+  }, [newPostText, images]);
+
   function canPost() {
     if (newPostText !== '') {
       return true;
@@ -125,7 +135,7 @@ export const NewPost = ({ onCreate }: IProps) => {
         postedBy: myUser?.id,
         viewByGroups: selectedGroups,
         permissions: selectedSettings,
-        image: images.map((img) => img.url),
+        image: images.map((img) => img.id),
       },
     };
 
@@ -183,58 +193,35 @@ export const NewPost = ({ onCreate }: IProps) => {
 
   return (
     <div
-      className="px-3 py-2 bg-white mb-4 shadow-sm rounded-md relative"
+      className="px-3 py-2 bg-white mb-4 shadow-sm rounded-md mx-1 md:mx-0"
       ref={wrapperRef}
     >
-      {!isExpanded && (
-        <button
-          className=" absolute inset-0 bg-transparent z-10"
-          onClick={() => setExpanded(true)}
-        ></button>
-      )}
-      <div className="flex justify-between items-center">
-        <Avatar name={myUser?.name} />
-        <Select
-          id="org"
-          onChange={setSelectedOrg}
-          value={selectedOrg}
-          options={approvedOrgs.map((o) => {
-            return {
-              value: o.orgID,
-              label: o.name,
-            };
-          })}
+      <div className="flex items-center group">
+        <Avatar name={myUser?.name} color={myUser?.accountColor} />
+        <input
+          className="w-full ring-0 px-1 mr-1"
+          placeholder="Write Post"
+          onChange={(e) => setNewPostText(e.target.value)}
+          onFocus={() => setExpanded(true)}
         />
-      </div>
-      <textarea
-        value={newPostText}
-        onChange={(e) => setNewPostText(e.target.value)}
-        rows={isExpanded ? 3 : 1}
-        className={`w-full p-1 border border-slate-200  my-2 rounded focus:ring-brand-500 ${
-          isExpanded ? 'text-gray-800' : 'text-gray-500'
-        }`}
-      />
-      <div className="flex justify-start">
         <ImageUploader
           id="imageUploader"
           onUpload={(imgs) => setImages([...images, ...imgs])}
         />
-        {/* <CameraUploader id="cameraUploader" onUpload={setImages} /> */}
       </div>
-      <div>
-        <div className="flex overflow-x-auto pt-2">
-          {images.map((img, i) => (
-            <SingleImage
-              key={img.id}
-              index={i + 1}
-              {...img}
-              onRemove={removeImg}
-            />
-          ))}
-        </div>
+      <div className="flex overflow-x-auto pt-2">
+        {images.map((img, i) => (
+          <SingleImage
+            key={img.id}
+            index={i + 1}
+            {...img}
+            onRemove={removeImg}
+          />
+        ))}
       </div>
       {isExpanded && (
         <>
+          {' '}
           <h2>Share With Groups:</h2>
           <div className="overflow-x-auto whitespace-nowrap pt-1">
             <span className="mr-1">
@@ -267,6 +254,10 @@ export const NewPost = ({ onCreate }: IProps) => {
                 </span>
               ))}
           </div>
+        </>
+      )}
+      {isExpanded && (
+        <>
           <h2 className="pt-1">Share Settings:</h2>
           <div className="overflow-x-auto whitespace-nowrap pt-1">
             <span className="mr-1">
@@ -295,7 +286,27 @@ export const NewPost = ({ onCreate }: IProps) => {
               </span>
             ))}
           </div>
-          <div className="flex justify-end">
+        </>
+      )}
+      {isExpanded && (
+        <>
+          <h2 className="pt-1">Select Org:</h2>
+          <Select
+            id="org"
+            onChange={setSelectedOrg}
+            value={selectedOrg}
+            options={approvedOrgs.map((o) => {
+              return {
+                value: o.orgID,
+                label: o.name,
+              };
+            })}
+          />
+        </>
+      )}
+      {isExpanded && (
+        <>
+          <div className="flex justify-end pt-1">
             <button
               onClick={createNewPost}
               disabled={!canPost()}

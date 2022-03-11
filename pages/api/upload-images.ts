@@ -1,5 +1,7 @@
 import multer from 'multer';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { ImageModel } from './auth/models/ImageModel_service';
+import dbConnect from './utils/dbConnect';
 import runMiddleware from './utils/runMiddleware';
 import uploadS3 from './utils/uploadS3';
 
@@ -26,6 +28,7 @@ const handler = async (req: RequestWithFile, res: NextApiResponse) => {
     if (req.method === 'POST') {
       let imgFileName = '';
       await runMiddleware(req, res, upload.single('image'));
+      await dbConnect();
 
       if (!req.file) return res.status(400).json({ error: 'File empty' });
 
@@ -39,8 +42,23 @@ const handler = async (req: RequestWithFile, res: NextApiResponse) => {
         req.file.buffer,
       );
 
+      console.log(uploadResult);
+
+      const newImage = new ImageModel({
+        service: 'AWS',
+        fileName: imgFileName,
+        url: `https://d6rezagtnxx5b.cloudfront.net/${imgFileName}`,
+        created: new Date(),
+      });
+      const newImageFromDB = await newImage.save();
+
+      const newImageJSON = newImageFromDB.toJSON();
+
+      console.log(newImageJSON);
+
       return res.json({
         url: `https://d6rezagtnxx5b.cloudfront.net/${imgFileName}`,
+        id: newImageJSON.id,
         s3src: uploadResult,
       });
     }

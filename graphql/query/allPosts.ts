@@ -3,7 +3,10 @@ query allPosts{
   getPosts{
     id
     description
-    image
+    image{
+      id
+      url
+    }
     dateTime
     orgID
     orgName

@@ -3,7 +3,10 @@ query GetSinglePost($id:String!){
     getSinglePost(id:$id){
         id
         description
-        image
+        image{
+          id
+          url
+        }
         dateTime
         postedBy{
           name
