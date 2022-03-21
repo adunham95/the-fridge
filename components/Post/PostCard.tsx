@@ -84,19 +84,6 @@ function PostCard({
               EPostPermission.IS_PUBLIC,
             ],
           }) && <PostShare postID={id} />}
-          <div className="w-full" />
-          {userHasPermissions({
-            orgID: org.id,
-            additionalPermissions: permissions,
-            hasPermissions: [EUserPermissions.CAN_UPDATE_POST],
-          }) && (
-            <PostActionButton
-              onClick={() => setModalID(`${id}-settings`)}
-              icon={EIcons.GEAR}
-              className="text-amber-600"
-              actionName="Settings"
-            />
-          )}
         </div>
       </div>
       <Modal
