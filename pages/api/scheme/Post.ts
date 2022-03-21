@@ -41,6 +41,15 @@ export const typeDef = gql`
     permissions: [String]
   }
 
+  input UpdatePostInput {
+    description: String
+    image: [String]
+    org: String
+    postedBy: String
+    viewByGroups: [String]
+    permissions: [String]
+  }
+
   type Comment {
     id: String
     message: String
@@ -93,6 +102,7 @@ export const typeDef = gql`
 
   extend type Mutation {
     createPost(input: PostInput): WallPost!
+    updatePost(id: String!, input: UpdatePostInput): WallPost!
     createComment(input: CommentInput!): Comment!
     updateLike(input: UpdateLikeInput!): UpdateLikeResponse
   }
@@ -238,6 +248,21 @@ export const resolvers = {
         ]);
         // console.log(returnPost);
         return returnPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    updatePost: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const filter = { _id: args.id };
+        const update = { ...args.input };
+        const doc = await PostModel.findOneAndUpdate(filter, update, {
+          new: true,
+        });
+        const updatedPost = await doc.populate(['org', 'postedBy', 'image']);
+
+        return updatedPost.toJSON();
       } catch (error) {
         throw error;
       }
