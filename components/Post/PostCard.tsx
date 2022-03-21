@@ -1,6 +1,5 @@
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
-import { ImageCarousel } from '../Image/ImageCarousel';
 import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { EIcons } from '../Icons';
@@ -13,6 +12,8 @@ import { usePermissions } from '../../hooks/usePermissions';
 import Link from 'next/link';
 import { EUserPermissions } from '../../models/UserModel';
 import { ImageSlider } from '../Image/ImageSlider';
+import { ModalContainer } from '../Modal/ModalContainer';
+import { EditPost } from './EditPost';
 
 function PostCard({
   id,
@@ -24,6 +25,7 @@ function PostCard({
   image = [],
   dateTime,
   org,
+  viewByGroups = [],
 }: IPost) {
   const { setModalID } = useModal();
   const { userHasPermissions } = usePermissions();
@@ -61,7 +63,7 @@ function PostCard({
             <ImageSlider images={image} />
           </div>
         )}
-        <div className="p-2 flex w-full justify-start items-center">
+        <div className="p-2 flex w-full items-center">
           <PostLikes likes={likedBy} postID={id} />
           {userHasPermissions({
             orgID: org.id,
@@ -86,8 +88,31 @@ function PostCard({
               EPostPermission.IS_PUBLIC,
             ],
           }) && <PostShare postID={id} />}
+          <div className="w-full" />
+          {userHasPermissions({
+            orgID: org.id,
+            additionalPermissions: permissions,
+            hasPermissions: [EUserPermissions.CAN_UPDATE_POST],
+          }) && (
+            <PostActionButton
+              onClick={() => setModalID(`${id}-settings`)}
+              icon={EIcons.GEAR}
+              className="text-amber-600"
+              actionName="Settings"
+            />
+          )}
         </div>
       </div>
+      <Modal
+        id={`${id}-settings`}
+        className="w-full md:w-3/4 p-2"
+        showClose={false}
+        background="light"
+      >
+        <ModalContainer className="w-full">
+          <EditPost id={id} viewByGroups={viewByGroups} />
+        </ModalContainer>
+      </Modal>
       <Modal
         id={`${id}-comments`}
         position="center bottom"

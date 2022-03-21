@@ -104,7 +104,10 @@ const Wall = () => {
       </Button>
       <NewPost onCreate={newPost} />
       {state.posts.map((p: IPost) => (
-        <PostCard key={p.id} {...p} />
+        <>
+          {console.log('p', p)}
+          <PostCard key={p.id} {...p} />
+        </>
       ))}
       {loading && (
         <div className="flex justify-center pt-1 pb-2">

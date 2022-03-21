@@ -19,7 +19,7 @@ export function PostActionButton({
   return (
     <>
       <button
-        className={`flex items-center h-[1em] mr-2 text-xl md:text-base relative ${className}`}
+        className={` flex-shrink-0 flex items-center h-[1em] mr-2 text-xl md:text-base relative ${className}`}
         onClick={onClick}
         onMouseOver={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
