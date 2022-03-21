@@ -8,7 +8,7 @@ import PostCard from '../components/Post/PostCard';
 import { usePost } from '../context/PostContext';
 import { IPost } from '../models/PostModel';
 import { POST_ACTION } from '../reducers/postReducer';
-import { EToastType, useToast } from '../components/Toast/ToastContext';
+import { useToast } from '../components/Toast/ToastContext';
 import { Button } from '../components/StatelessInput/Button';
 import IconArrow from '../components/Icons/Icon-arrow';
 import theme from '../theme/theme.json';

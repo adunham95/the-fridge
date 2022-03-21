@@ -14,6 +14,12 @@ import { EIcons } from '../../components/Icons';
 import { EUserPermissions } from '../../models/UserModel';
 import Comments from '../../components/Post/Comments';
 import { PostLikers, PostLikes } from '../../components/Post/PostLikes';
+import Modal from '../../components/Modal/Modal';
+import { ModalContainer } from '../../components/Modal/ModalContainer';
+import { EditPost } from '../../components/Post/EditPost';
+import { PostActionButton } from '../../components/Post/PostAction';
+import { usePermissions } from '../../hooks/usePermissions';
+import { useModal } from '../../components/Modal/ModalContext';
 
 function SinglePost() {
   const router = useRouter();
@@ -21,6 +27,8 @@ function SinglePost() {
   const [fetchPost, { loading }] = useManualQuery(GET_SINGLE_POST_BY_ID);
   const { addToast } = useToast();
   const [post, setPost] = React.useState<IPost | null>();
+  const { userHasPermissions } = usePermissions();
+  const { setModalID } = useModal();
 
   React.useEffect(() => {
     console.log(id);
@@ -85,6 +93,19 @@ function SinglePost() {
                   likes={post?.likedBy || []}
                   postID={post?.id || ''}
                 />
+                <div className="w-full" />
+                {userHasPermissions({
+                  orgID: post?.org.id,
+                  additionalPermissions: post?.permissions,
+                  hasPermissions: [EUserPermissions.CAN_UPDATE_POST],
+                }) && (
+                  <PostActionButton
+                    onClick={() => setModalID(`${id}-settings`)}
+                    icon={EIcons.GEAR}
+                    className="text-amber-600"
+                    actionName="Settings"
+                  />
+                )}
               </div>
               <PostLikers
                 orgID={post?.org?.id || ''}
@@ -103,6 +124,23 @@ function SinglePost() {
             permissions={post.permissions}
           />
         </div>
+      )}
+      {post?.id && (
+        <Modal
+          id={`${post.id}-settings`}
+          className="w-full md:w-3/4 p-2"
+          showClose={false}
+          background="light"
+        >
+          <ModalContainer className="w-full">
+            <EditPost
+              id={post.id}
+              viewByGroups={post.viewByGroups || []}
+              orgID={post.org.id}
+              onSave={() => setModalID('')}
+            />
+          </ModalContainer>
+        </Modal>
       )}
     </div>
   );

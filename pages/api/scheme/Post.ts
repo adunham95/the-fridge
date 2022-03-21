@@ -16,6 +16,7 @@ export const typeDef = gql`
     likedBy: [String]
     comments: [String]
     permissions: [String]
+    viewByGroups: [String]
   }
 
   type AdvancedWallPost {
@@ -28,6 +29,7 @@ export const typeDef = gql`
     likedBy: [String]
     comments: [Comment]
     permissions: [String]
+    viewByGroups: [String]
   }
 
   input PostInput {
