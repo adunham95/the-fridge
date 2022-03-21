@@ -24,6 +24,8 @@
     "graphql-hooks": "^5.5.1",
     "graphql-hooks-memcache": "^2.2.3",
     "immutability-helper": "^3.1.1",
+    "jszip": "^3.7.1",
+    "jszip-utils": "^0.1.0",
     "lodash": "^4.17.21",
     "micro": "^9.3.4",
     "mongoose": "^6.1.8",

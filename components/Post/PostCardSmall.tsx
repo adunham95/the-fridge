@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { IPost } from '../../models/PostModel';
+import { imageDownloader } from '../../util/imageDownloader';
 import { Avatar } from '../Avatar/Avatar';
 import IconImages from '../Icons/Icon-Images';
 
@@ -44,10 +45,13 @@ export function PostCardSmall({
             </div>
           )}
           {image.length > 1 && (
-            <div className="absolute right-1 top-1 text-white p-1 flex justify-around w-[3em] bg-slate-800 bg-opacity-70 rounded">
+            <button
+              onClick={() => imageDownloader(image)}
+              className="absolute right-1 top-1 text-white p-1 flex justify-around w-[3em] bg-slate-800 bg-opacity-70 rounded"
+            >
               <IconImages width={'1em'} />
               {image.length}
-            </div>
+            </button>
           )}
         </div>
       </a>
