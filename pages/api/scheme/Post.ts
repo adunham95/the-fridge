@@ -9,6 +9,8 @@ export const typeDef = gql`
   type WallPost {
     id: String
     dateTime: String
+    updatedAt: String
+    edited: Boolean
     description: String
     image: [Image]
     org: Org
@@ -23,6 +25,8 @@ export const typeDef = gql`
     id: String
     dateTime: String
     description: String
+    updatedAt: String
+    edited: Boolean
     image: [Image]
     org: Org
     postedBy: PostAuthor
@@ -256,7 +260,12 @@ export const resolvers = {
       try {
         await dbConnect();
         const filter = { _id: args.id };
-        const update = { ...args.input };
+        const update = { ...args.input, updatedAt: new Date() };
+        if (args.input?.description || args.input?.image) {
+          update.edited = true;
+        }
+
+        console.log(update);
         const doc = await PostModel.findOneAndUpdate(filter, update, {
           new: true,
         });

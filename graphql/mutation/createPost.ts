@@ -1,6 +1,8 @@
 export const DEFAULT_POST_RETURN = `
 id
 description
+edited
+updatedAt
 image{
   id
   url
