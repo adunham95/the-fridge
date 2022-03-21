@@ -12,9 +12,6 @@ import { usePermissions } from '../../hooks/usePermissions';
 import Link from 'next/link';
 import { EUserPermissions } from '../../models/UserModel';
 import { ImageSlider } from '../Image/ImageSlider';
-import { ModalContainer } from '../Modal/ModalContainer';
-import { EditPost } from './EditPost';
-
 function PostCard({
   id,
   description = '',
@@ -25,7 +22,6 @@ function PostCard({
   image = [],
   dateTime,
   org,
-  viewByGroups = [],
 }: IPost) {
   const { setModalID } = useModal();
   const { userHasPermissions } = usePermissions();
@@ -103,16 +99,6 @@ function PostCard({
           )}
         </div>
       </div>
-      <Modal
-        id={`${id}-settings`}
-        className="w-full md:w-3/4 p-2"
-        showClose={false}
-        background="light"
-      >
-        <ModalContainer className="w-full">
-          <EditPost id={id} viewByGroups={viewByGroups} />
-        </ModalContainer>
-      </Modal>
       <Modal
         id={`${id}-comments`}
         position="center bottom"
