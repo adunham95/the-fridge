@@ -4,6 +4,8 @@ query GetPostsByGroup($ids:[String!]){
       id
       description
       viewByGroups
+      edited
+      updatedAt
       image{
         id
         url
