@@ -25,6 +25,7 @@ import IconUserShield from './Icon-User-Shield';
 import IconUsers from './Icon-Users';
 import IconUsersCog from './Icon-Users-Cog';
 import IconUsersPlus from './Icon-Users-Plus';
+import IconVote from './Icon-Vote';
 import IconWarning from './Icon-Warning';
 
 export interface IIconProps {
@@ -63,6 +64,7 @@ export enum EIcons {
   USERS_PLUS = 'UsersPlus',
   USERS_COG = 'UsersCog',
   USERS = 'Users',
+  VOTE = 'Vote',
 }
 
 export const IconList = Object.values(EIcons);
@@ -126,6 +128,8 @@ const Icon = (props: IIconProps) => {
       return <IconUsersCog {...props} />;
     case EIcons.USERS:
       return <IconUsers {...props} />;
+    case EIcons.VOTE:
+      return <IconVote {...props} />;
     default:
       return <></>;
   }
