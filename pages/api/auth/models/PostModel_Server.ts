@@ -14,6 +14,7 @@ const PostSchema = new Schema(
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     permissions: [{ type: 'String' }],
     likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    approved: { type: 'String', index: true },
   },
   {
     toJSON: {

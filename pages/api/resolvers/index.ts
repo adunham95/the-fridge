@@ -41,6 +41,14 @@ const defaultResolvers = {
           { enabled: false },
         );
         console.log('Updated complete');
+        const update = {
+          approved: 'approved',
+        };
+        const data = await PostModel.updateMany({}, update, {
+          new: true,
+          multi: true,
+        });
+        console.log(data);
         return { success: true };
       } catch (error) {
         throw error;
