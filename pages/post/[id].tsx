@@ -107,10 +107,12 @@ function SinglePost() {
                   />
                 )}
               </div>
-              <PostLikers
-                orgID={post?.org?.id || ''}
-                likers={post?.likedBy || []}
-              />
+              {(post?.likedBy.length || 0) > 0 && (
+                <PostLikers
+                  orgID={post?.org?.id || ''}
+                  likers={post?.likedBy || []}
+                />
+              )}
             </>
           )}
         </div>
