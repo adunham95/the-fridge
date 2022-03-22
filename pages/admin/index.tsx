@@ -1,15 +1,17 @@
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { Avatar } from '../../components/Avatar/Avatar';
 import { DashboardLink } from '../../components/Dashboard/DashboardLink';
 import { EIcons } from '../../components/Icons';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
+import { usePermissions } from '../../hooks/usePermissions';
 import { ERoutes } from '../../models/Routes';
 import { EUserPermissions } from '../../models/UserModel';
 
 const AdminHome = () => {
   const { data: session } = useSession();
   const myUser = session?.user;
+  const { userHasPermissions } = usePermissions();
+
   return (
     <>
       <header className="bg-white shadow">
@@ -38,11 +40,15 @@ const AdminHome = () => {
             title="Groups"
             icon={EIcons.USERS}
           />
-          {/* <DashboardLink
-            href={ERoutes.ADMIN}
-            title="Approve Posts"
-            icon={EIcons.VOTE}
-          /> */}
+          {userHasPermissions({
+            hasPermissions: [EUserPermissions.CAN_APPROVE_POSTS],
+          }) && (
+            <DashboardLink
+              href={ERoutes.ADMIN_APPROVE_POSTS}
+              title="Approve Posts"
+              icon={EIcons.VOTE}
+            />
+          )}
         </div>
       </main>
     </>
