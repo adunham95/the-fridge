@@ -16,6 +16,7 @@ import { ImageOrderer } from './ImageOrderer';
 import { usePermissions } from '../../hooks/usePermissions';
 import { SingleImage } from './SingleImage';
 import IconImage from '../Icons/Icon-Image';
+import { SelectedGroup } from '../StatelessInput/SelectedGroup';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -223,7 +224,10 @@ export const NewPost = ({ onCreate }: IProps) => {
         <>
           {' '}
           <h2>Share With Groups:</h2>
-          <div className="overflow-x-auto whitespace-nowrap pt-1">
+          <div
+            className="overflow-x-auto whitespace-nowrap pt-1 hide-scrollbar"
+            style={{ scrollbarWidth: 'none' }}
+          >
             <span className="mr-1">
               <button
                 className="bg-red-400 text-white p-1 rounded text-sm"
@@ -237,21 +241,13 @@ export const NewPost = ({ onCreate }: IProps) => {
                 g.permissions.includes(EUserPermissions.CAN_VIEW_POST),
               )
               .map((g) => (
-                <span key={g.id} className="inline-flex mr-1">
-                  <input
-                    type="checkbox"
-                    id={`${g.id}-value`}
-                    checked={selectedGroups.includes(g.id)}
-                    onChange={() => setOrgGroup(g.id)}
-                    className="hidden peer"
-                  />
-                  <label
-                    className="peer-checked:bg-brand-500 peer-checked:bg-opacity-100 bg-brand-400 bg-opacity-50 text-white p-1 rounded text-sm"
-                    htmlFor={`${g.id}-value`}
-                  >
-                    {g.name}
-                  </label>
-                </span>
+                <SelectedGroup
+                  key={g.id}
+                  id={g.id}
+                  name={g.name}
+                  checked={selectedGroups.includes(g.id)}
+                  onClick={(id) => setOrgGroup(id)}
+                />
               ))}
           </div>
         </>

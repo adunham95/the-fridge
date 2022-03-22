@@ -1,6 +1,5 @@
 import { EPostPermission, IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
-import { ImageCarousel } from '../Image/ImageCarousel';
 import { useModal } from '../Modal/ModalContext';
 import Modal from '../Modal/Modal';
 import { EIcons } from '../Icons';
@@ -13,7 +12,6 @@ import { usePermissions } from '../../hooks/usePermissions';
 import Link from 'next/link';
 import { EUserPermissions } from '../../models/UserModel';
 import { ImageSlider } from '../Image/ImageSlider';
-
 function PostCard({
   id,
   description = '',
@@ -61,7 +59,7 @@ function PostCard({
             <ImageSlider images={image} />
           </div>
         )}
-        <div className="p-2 flex w-full justify-start items-center">
+        <div className="p-2 flex w-full items-center">
           <PostLikes likes={likedBy} postID={id} />
           {userHasPermissions({
             orgID: org.id,

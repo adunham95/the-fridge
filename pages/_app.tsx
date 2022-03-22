@@ -11,7 +11,7 @@ import { ModalProvider } from '../components/Modal/ModalContext';
 import { UserProvider } from '../context/UserContext';
 import Layout from '../components/Layout/Layout';
 import AuthWrapper from '../components/Auth/AuthWrapper';
-import UserPermissionsModal from '../components/Dev/UserPermissionModal';
+import GlobalModals from '../modals';
 
 type AuthComponent = NextComponentType & {
   auth?: boolean,
@@ -117,7 +117,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
                       ) : (
                         <Component {...pageProps} />
                       )}
-                      <UserPermissionsModal id="userPermissions" />
+                      <GlobalModals />
                     </>
                   </Layout>
                 </ClientContext.Provider>

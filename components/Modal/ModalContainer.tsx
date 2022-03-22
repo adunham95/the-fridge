@@ -3,11 +3,14 @@ import * as React from 'react';
 import { useModal } from './ModalContext';
 type Props = {
   children: React.ReactChild,
+  className?: string,
 };
-export function ModalContainer({ children }: Props) {
+export function ModalContainer({ children, className = '' }: Props) {
   const { setModalID } = useModal();
   return (
-    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <div
+      className={`relative bg-white rounded-lg shadow dark:bg-gray-700 ${className}`}
+    >
       <div className="flex justify-end p-2">
         <button
           type="button"

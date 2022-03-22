@@ -8,7 +8,7 @@ import PostCard from '../components/Post/PostCard';
 import { usePost } from '../context/PostContext';
 import { IPost } from '../models/PostModel';
 import { POST_ACTION } from '../reducers/postReducer';
-import { EToastType, useToast } from '../components/Toast/ToastContext';
+import { useToast } from '../components/Toast/ToastContext';
 import { Button } from '../components/StatelessInput/Button';
 import IconArrow from '../components/Icons/Icon-arrow';
 import theme from '../theme/theme.json';
@@ -104,7 +104,10 @@ const Wall = () => {
       </Button>
       <NewPost onCreate={newPost} />
       {state.posts.map((p: IPost) => (
-        <PostCard key={p.id} {...p} />
+        <>
+          {console.log('p', p)}
+          <PostCard key={p.id} {...p} />
+        </>
       ))}
       {loading && (
         <div className="flex justify-center pt-1 pb-2">

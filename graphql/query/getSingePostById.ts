@@ -13,6 +13,10 @@ query GetSinglePost($id:String!){
           id
         }
         likedBy
+        viewByGroups
+        org{
+          id
+        }
         comments{
           id
           parentComment

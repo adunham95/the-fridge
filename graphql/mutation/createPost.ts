@@ -1,20 +1,26 @@
+export const DEFAULT_POST_RETURN = `
+id
+description
+edited
+updatedAt
+image{
+  id
+  url
+}
+dateTime
+org{
+  id
+  name
+}
+postedBy{
+  name
+  id
+}
+likedBy
+`;
+
 export const CREATE_POST_MUTATION = `mutation CreatePost($newPost:PostInput) {
     createPost(input:$newPost) {
-      id
-      description
-      image{
-        id
-        url
-      }
-      dateTime
-      org{
-        id
-        name
-      }
-      postedBy{
-        name
-        id
-      }
-      likedBy
+     ${DEFAULT_POST_RETURN}
     }
   }`;

@@ -73,7 +73,7 @@ type Props = {
   likers: Array<string>,
   orgID: string,
 };
-export function PostLikers({ likers, orgID }: Props) {
+export function PostLikers({ likers = [], orgID }: Props) {
   const { userHasPermissions } = usePermissions();
   const [isOver, setIsOver] = useState('');
   const [isExpanded, setExpanded] = useState(false);

@@ -4,6 +4,8 @@ import { IImage } from './IImage';
 export interface IPost {
   id: string;
   dateTime: string;
+  updatedAt?: string;
+  edited?: boolean;
   description?: string;
   image?: Array<IImage>;
   orgID: string;

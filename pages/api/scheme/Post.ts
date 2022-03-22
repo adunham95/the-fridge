@@ -9,6 +9,8 @@ export const typeDef = gql`
   type WallPost {
     id: String
     dateTime: String
+    updatedAt: String
+    edited: Boolean
     description: String
     image: [Image]
     org: Org
@@ -16,21 +18,34 @@ export const typeDef = gql`
     likedBy: [String]
     comments: [String]
     permissions: [String]
+    viewByGroups: [String]
   }
 
   type AdvancedWallPost {
     id: String
     dateTime: String
     description: String
+    updatedAt: String
+    edited: Boolean
     image: [Image]
     org: Org
     postedBy: PostAuthor
     likedBy: [String]
     comments: [Comment]
     permissions: [String]
+    viewByGroups: [String]
   }
 
   input PostInput {
+    description: String
+    image: [String]
+    org: String
+    postedBy: String
+    viewByGroups: [String]
+    permissions: [String]
+  }
+
+  input UpdatePostInput {
     description: String
     image: [String]
     org: String
@@ -91,6 +106,7 @@ export const typeDef = gql`
 
   extend type Mutation {
     createPost(input: PostInput): WallPost!
+    updatePost(id: String!, input: UpdatePostInput): WallPost!
     createComment(input: CommentInput!): Comment!
     updateLike(input: UpdateLikeInput!): UpdateLikeResponse
   }
@@ -236,6 +252,26 @@ export const resolvers = {
         ]);
         // console.log(returnPost);
         return returnPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    updatePost: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const filter = { _id: args.id };
+        const update = { ...args.input, updatedAt: new Date() };
+        if (args.input?.description || args.input?.image) {
+          update.edited = true;
+        }
+
+        console.log(update);
+        const doc = await PostModel.findOneAndUpdate(filter, update, {
+          new: true,
+        });
+        const updatedPost = await doc.populate(['org', 'postedBy', 'image']);
+
+        return updatedPost.toJSON();
       } catch (error) {
         throw error;
       }
