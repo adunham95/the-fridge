@@ -8,6 +8,7 @@ import IconCalender from './Icon-Calender';
 import IconCheckCircle from './Icon-Check-Circle';
 import IconComment from './Icon-Comment';
 import IconCowbell from './Icon-Cowbwll';
+import IconEmptyFolder from './Icon-Empty-Folder';
 import IconExclamation from './Icon-Exclamation';
 import IconExclamationTriangle from './Icon-ExlamationTriangle';
 import IconExternal from './Icon-External';
@@ -65,6 +66,7 @@ export enum EIcons {
   USERS_COG = 'UsersCog',
   USERS = 'Users',
   VOTE = 'Vote',
+  FOLDER_EMPTY = 'EmptyFolder',
 }
 
 export const IconList = Object.values(EIcons);
@@ -130,6 +132,8 @@ const Icon = (props: IIconProps) => {
       return <IconUsers {...props} />;
     case EIcons.VOTE:
       return <IconVote {...props} />;
+    case EIcons.FOLDER_EMPTY:
+      return <IconEmptyFolder {...props} />;
     default:
       return <></>;
   }
