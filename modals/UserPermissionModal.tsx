@@ -1,9 +1,9 @@
 // @flow
 import React, { useEffect, useState } from 'react';
-import Modal from '../Modal/Modal';
-import { ModalContainer } from '../Modal/ModalContainer';
-import { Button } from '../StatelessInput/Button';
-import { GroupPermissions } from '../StatelessInput/GroupPermissions';
+import Modal from '../components/Modal/Modal';
+import { ModalContainer } from '../components/Modal/ModalContainer';
+import { Button } from '../components/StatelessInput/Button';
+import { GroupPermissions } from '../components/StatelessInput/GroupPermissions';
 
 type Props = {
   id: string,
