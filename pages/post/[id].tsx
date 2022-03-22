@@ -16,7 +16,7 @@ import Comments from '../../components/Post/Comments';
 import { PostLikers, PostLikes } from '../../components/Post/PostLikes';
 import Modal from '../../components/Modal/Modal';
 import { ModalContainer } from '../../components/Modal/ModalContainer';
-import { EditPost } from '../../components/Post/EditPost';
+import { EditPostSettings } from '../../components/Post/EditPostSettings';
 import { PostActionButton } from '../../components/Post/PostAction';
 import { usePermissions } from '../../hooks/usePermissions';
 import { useModal } from '../../components/Modal/ModalContext';
@@ -133,7 +133,7 @@ function SinglePost() {
           background="light"
         >
           <ModalContainer className="w-full">
-            <EditPost
+            <EditPostSettings
               id={post.id}
               viewByGroups={post.viewByGroups || []}
               orgID={post.org.id}

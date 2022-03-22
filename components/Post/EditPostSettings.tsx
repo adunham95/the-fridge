@@ -12,7 +12,7 @@ type Props = {
   onSave: () => void,
 };
 
-export function EditPost({ id, orgID, viewByGroups, onSave }: Props) {
+export function EditPostSettings({ id, orgID, viewByGroups, onSave }: Props) {
   const { loading, error, data } = useQuery(GET_GROUPS_BY_ORG, {
     variables: {
       orgIDs: [orgID],
