@@ -1,9 +1,13 @@
-import { useQuery } from 'graphql-hooks';
+import { useMutation, useQuery } from 'graphql-hooks';
 import * as React from 'react';
+import { UPDATE_POST_MUTATION } from '../../graphql/mutation/updatePost';
 import { GET_GROUPS_BY_ORG } from '../../graphql/query/getGroupsByOrg';
 import { Loader } from '../Loader/Loader';
 import { Button } from '../StatelessInput/Button';
 import { SelectedGroup } from '../StatelessInput/SelectedGroup';
+import { useToast } from '../Toast/ToastContext';
+import theme from '../../theme/theme.json';
+import { EIcons } from '../Icons';
 
 type Props = {
   id: string,
@@ -18,6 +22,8 @@ export function EditPostSettings({ id, orgID, viewByGroups, onSave }: Props) {
       orgIDs: [orgID],
     },
   });
+  const [updatePost] = useMutation(UPDATE_POST_MUTATION);
+  const { addToast } = useToast();
 
   // eslint-disable-next-line prettier/prettier
   const [orgGroups, setOrgGroups] = React.useState<Array<any>>([]);
@@ -46,8 +52,25 @@ export function EditPostSettings({ id, orgID, viewByGroups, onSave }: Props) {
     setSelectedGroups(groups);
   }
 
-  function save() {
-    onSave();
+  async function save() {
+    const newPostData = {
+      id,
+      postInput: {
+        viewByGroups: selectedGroups,
+      },
+    };
+    const data = await updatePost({ variables: newPostData });
+    if (data?.error) {
+      addToast(
+        'Post Failed to save',
+        theme.BASE_COLOR.error,
+        EIcons.EXCLAMATION_TRIANGLE,
+      );
+    }
+    if (data?.data) {
+      addToast('Post Saved', theme.BASE_COLOR.success, EIcons.CHECK_CIRCLE);
+      onSave();
+    }
   }
 
   return (
