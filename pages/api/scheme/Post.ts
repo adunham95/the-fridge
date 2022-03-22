@@ -119,6 +119,7 @@ interface IPagination {
 }
 
 interface IQuery {
+  approved?: string;
   viewByGroups: object;
   dateTime?: object;
 }
@@ -133,6 +134,7 @@ export const resolvers = {
         await dbConnect();
         let pagination: IPagination = { sort: '-dateTime' };
         let query: IQuery = {
+          approved: 'approved',
           viewByGroups: {
             $in: groupList,
           },
