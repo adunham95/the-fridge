@@ -22,6 +22,10 @@ import IconThumbUp from './Icon-Thumb-Up';
 import IconUser from './Icon-User';
 import IconUserCog from './Icon-User-Cog';
 import IconUserShield from './Icon-User-Shield';
+import IconUsers from './Icon-Users';
+import IconUsersCog from './Icon-Users-Cog';
+import IconUsersPlus from './Icon-Users-Plus';
+import IconVote from './Icon-Vote';
 import IconWarning from './Icon-Warning';
 
 export interface IIconProps {
@@ -57,6 +61,10 @@ export enum EIcons {
   PLANE = 'Plane',
   USER_SHIELD = 'UserShield',
   USER_COG = 'UserCog',
+  USERS_PLUS = 'UsersPlus',
+  USERS_COG = 'UsersCog',
+  USERS = 'Users',
+  VOTE = 'Vote',
 }
 
 export const IconList = Object.values(EIcons);
@@ -114,6 +122,14 @@ const Icon = (props: IIconProps) => {
       return <IconUserShield {...props} />;
     case EIcons.USER_COG:
       return <IconUserCog {...props} />;
+    case EIcons.USERS_PLUS:
+      return <IconUsersPlus {...props} />;
+    case EIcons.USERS_COG:
+      return <IconUsersCog {...props} />;
+    case EIcons.USERS:
+      return <IconUsers {...props} />;
+    case EIcons.VOTE:
+      return <IconVote {...props} />;
     default:
       return <></>;
   }
