@@ -4,6 +4,7 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { CommentModel } from '../auth/models/CommentMode_Server';
 import { getMonths } from '../utils/date';
+import { UserModel } from '../auth/models/UserModel_Server';
 
 export const typeDef = gql`
   type WallPost {
@@ -34,6 +35,18 @@ export const typeDef = gql`
     comments: [Comment]
     permissions: [String]
     viewByGroups: [String]
+  }
+
+  type ApprovalWallPost {
+    id: String
+    dateTime: String
+    description: String
+    image: [Image]
+    org: Org
+    postedBy: PostAuthor
+    permissions: [String]
+    viewByGroups: [String]
+    approved: String
   }
 
   input PostInput {
@@ -99,6 +112,7 @@ export const typeDef = gql`
       startDate: String
       endDate: String
     ): [WallPost!]
+    getPostsForApproval(userID: String): [ApprovalWallPost]
     getSinglePost(id: String!): AdvancedWallPost
     getCommentsByPost(id: String!): [Comment]
     getPostTimeline(groupIDs: [String!]): [MonthResponse]
@@ -120,8 +134,9 @@ interface IPagination {
 
 interface IQuery {
   approved?: string;
-  viewByGroups: object;
+  viewByGroups?: object;
   dateTime?: object;
+  org?: object;
 }
 
 export const resolvers = {
@@ -165,6 +180,51 @@ export const resolvers = {
         ]);
 
         console.log('posts', posts);
+
+        return posts
+          .sort((a, b) => {
+            return Date.parse(b.dateTime) - Date.parse(a.dateTime);
+          })
+          .map((post) => {
+            return {
+              ...post.toJSON(),
+              dateTime: new Date(post.dateTime).toUTCString(),
+            };
+          });
+      } catch (error) {
+        throw error;
+      }
+    },
+    getPostsForApproval: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const user = await UserModel.findById(
+          new Types.ObjectId(args.userID),
+        ).populate({
+          path: 'orgs',
+          populate: ['group', 'org'],
+        });
+
+        const userOrgsWithApprovalPermission = user.orgs
+          .filter((o: any) => {
+            return o?.group.permissions.includes('canApprovePosts');
+          })
+          .map((o: any) => new Types.ObjectId(o.org.id));
+
+        const postQuery: IQuery = {
+          approved: 'waiting-approval',
+          org: {
+            $in: userOrgsWithApprovalPermission,
+          },
+        };
+
+        const posts = await PostModel.find(postQuery, null).populate([
+          'org',
+          'postedBy',
+          'image',
+        ]);
+
+        console.log(posts);
 
         return posts
           .sort((a, b) => {
