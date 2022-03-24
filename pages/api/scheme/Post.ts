@@ -40,10 +40,14 @@ export const typeDef = gql`
   type ApprovalWallPost {
     id: String
     dateTime: String
+    updatedAt: String
+    edited: Boolean
     description: String
     image: [Image]
     org: Org
     postedBy: PostAuthor
+    likedBy: [String]
+    comments: [String]
     permissions: [String]
     viewByGroups: [String]
     approved: String
