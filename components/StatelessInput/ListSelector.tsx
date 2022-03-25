@@ -8,6 +8,7 @@ interface IListItem {
 interface IProps {
   title?: string;
   containerClass?: string;
+  scrollText?: boolean;
   itemList: Array<IListItem>;
   selectedItemList: Array<string>;
   onChange: (itemsList: Array<string>) => void;
@@ -23,6 +24,7 @@ function ListSelector({
   onChange,
   showAll = false,
   showClear = false,
+  scrollText = true,
 }: IProps) {
   function setItemList(
     itemID: null | string = null,
@@ -47,10 +49,16 @@ function ListSelector({
     onChange(newList);
   }
 
+  console.log(scrollText);
+
   return (
     <div className={`${containerClass}`}>
       {title !== '' && <h2>{title}</h2>}
-      <div className="overflow-x-auto whitespace-nowrap pt-1 hide-scrollbar">
+      <div
+        className={`${
+          scrollText ? 'overflow-x-auto whitespace-nowrap' : 'wrapText'
+        } pt-1 hide-scrollbar`}
+      >
         {showAll && (
           <ListSelectorButton
             id="All"
