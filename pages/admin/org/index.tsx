@@ -17,6 +17,7 @@ import { EIcons } from '../../../components/Icons';
 import { EUserPermissions } from '../../../models/UserModel';
 import { EPostPermission } from '../../../models/PostModel';
 import { generateURLOrigin } from '../../../util/url';
+import ListSelector from '../../../components/StatelessInput/ListSelector';
 
 export function EditOrg() {
   const [fetchGroups, { loading }] = useManualQuery(GROUP_BY_IDS);
@@ -58,59 +59,23 @@ export function EditOrg() {
     setOrgData(data.data.getOrgsByIDs);
   };
 
-  function setDefaultPostGroups(
-    id: null | string = null,
-    all = false,
-    none = false,
-  ) {
-    let newGroup = [...(selectedOrgData?.defaultPostGroups || [])];
-    if (id !== null) {
-      if (newGroup.includes(id)) {
-        newGroup = newGroup.filter((g) => g !== id);
-      } else if (!newGroup.includes(id)) {
-        newGroup = [...newGroup, id];
-      }
-    }
-    if (all) {
-      newGroup = (selectedOrgData?.groups || []).map((g) => g.id);
-    }
-    if (none) {
-      newGroup = [];
-    }
+  function setDefaultPostGroups(groups: string[]) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const newOrg: IOrg | undefined = {
       ...selectedOrgData,
-      defaultPostGroups: newGroup,
+      defaultPostGroups: groups,
     };
 
     setSelectedOrgData(newOrg);
   }
 
-  function setDefaultPostSettings(
-    setting: null | string = null,
-    all = false,
-    none = false,
-  ) {
-    let newSettings = [...(selectedOrgData?.defaultPostSettings || [])];
-    if (setting !== null) {
-      if (newSettings.includes(setting)) {
-        newSettings = newSettings.filter((g) => g !== setting);
-      } else if (!newSettings.includes(setting)) {
-        newSettings = [...newSettings, setting];
-      }
-    }
-    if (all) {
-      newSettings = Object.values(EPostPermission);
-    }
-    if (none) {
-      newSettings = [];
-    }
+  function setDefaultPostSettings(settings: string[]) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const newOrg: IOrg | undefined = {
       ...selectedOrgData,
-      defaultPostSettings: newSettings,
+      defaultPostSettings: settings,
     };
 
     setSelectedOrgData(newOrg);
@@ -180,66 +145,34 @@ export function EditOrg() {
               orgID={selectedOrg}
               groups={selectedOrgData?.groups || []}
             />
-            <h3 className="block text-sm font-medium text-gray-700 pb-1">
-              Set default post groups
-            </h3>
-            <div>
-              <button
-                onClick={() => setDefaultPostGroups(null, true)}
-                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-emerald-400 "
-              >
-                All
-              </button>
-              <button
-                onClick={() => setDefaultPostGroups(null, false, true)}
-                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-rose-400 "
-              >
-                None
-              </button>
-              {(selectedOrgData?.groups || []).map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => setDefaultPostGroups(g.id)}
-                  className={`bg-brand-400 text-white py-1 px-2 mr-1 mb-1 rounded ${
-                    selectedOrgData.defaultPostGroups?.includes(g.id)
-                      ? 'opacity-100'
-                      : 'opacity-70'
-                  }`}
-                >
-                  {g.name}
-                </button>
-              ))}
-            </div>
-            <h3 className="block text-sm font-medium text-gray-700 pb-1">
-              Set default post settings
-            </h3>
-            <div>
-              <button
-                onClick={() => setDefaultPostSettings(null, true)}
-                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-emerald-400 "
-              >
-                All
-              </button>
-              <button
-                onClick={() => setDefaultPostSettings(null, false, true)}
-                className="text-white py-1 px-2 mr-1 mb-1 rounded bg-rose-400 "
-              >
-                None
-              </button>
-              {Object.values(EPostPermission).map((g) => (
-                <button
-                  key={g}
-                  onClick={() => setDefaultPostSettings(g)}
-                  className={`bg-brand-400 text-white py-1 px-2 mr-1 mb-1 rounded ${
-                    selectedOrgData.defaultPostSettings?.includes(g)
-                      ? 'opacity-100'
-                      : 'opacity-70'
-                  }`}
-                >
-                  {g}
-                </button>
-              ))}
-            </div>
+            <ListSelector
+              showAll
+              showClear
+              scrollText={false}
+              title="Set default post groups"
+              itemList={(selectedOrgData?.groups || []).map((g) => {
+                return {
+                  id: g.id,
+                  name: g.name,
+                };
+              })}
+              selectedItemList={selectedOrgData.defaultPostGroups || []}
+              onChange={(items) => setDefaultPostGroups(items)}
+            />
+            <ListSelector
+              showAll
+              showClear
+              scrollText={false}
+              title="Set default post settings"
+              itemList={Object.values(EPostPermission).map((g) => {
+                return {
+                  id: g,
+                  name: g,
+                };
+              })}
+              selectedItemList={selectedOrgData.defaultPostSettings || []}
+              onChange={(items) => setDefaultPostSettings(items)}
+            />
             <div className="flex justify-end">
               <Button
                 onClick={updateOrgData}
