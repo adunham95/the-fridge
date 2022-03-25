@@ -108,6 +108,11 @@ export const typeDef = gql`
     year: String!
   }
 
+  input PostsToApproval {
+    id: String!
+    value: String!
+  }
+
   extend type Query {
     getPostsByGroup(
       groupIDs: [String!]
@@ -125,6 +130,7 @@ export const typeDef = gql`
   extend type Mutation {
     createPost(input: PostInput): WallPost!
     updatePost(id: String!, input: UpdatePostInput): WallPost!
+    setPostApprovals(posts: [PostsToApproval]): UpdateLikeResponse
     createComment(input: CommentInput!): Comment!
     updateLike(input: UpdateLikeInput!): UpdateLikeResponse
   }
@@ -141,6 +147,7 @@ interface IQuery {
   viewByGroups?: object;
   dateTime?: object;
   org?: object;
+  _id?: object;
 }
 
 export const resolvers = {
@@ -338,6 +345,31 @@ export const resolvers = {
         const updatedPost = await doc.populate(['org', 'postedBy', 'image']);
 
         return updatedPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    setPostApprovals: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+
+        const bulkOps = args.posts.map((p: any) => ({
+          updateOne: {
+            filter: { _id: new Types.ObjectId(p.id) },
+            update: {
+              approved: p.value,
+            },
+            upsert: true,
+          },
+        }));
+
+        const data = await PostModel.bulkWrite(bulkOps);
+
+        console.log(data);
+
+        return {
+          success: true,
+        };
       } catch (error) {
         throw error;
       }
