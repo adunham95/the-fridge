@@ -150,7 +150,10 @@ import Modal from '../../../components/Modal/Modal';
 import { ModalContainer } from '../../../components/Modal/ModalContainer';
 import ListSelector from '../../../components/StatelessInput/ListSelector';
 import { GET_GROUPS_BY_ORG } from '../../../graphql/query/getGroupsByOrg';
-import { Button } from '../../../components/StatelessInput/Button';
+import {
+  Button,
+  EButtonStyle,
+} from '../../../components/StatelessInput/Button';
 import { SET_POST_APPROVALS } from '../../../graphql/mutation/setPostApprovals';
 import { EIcons } from '../../../components/Icons';
 
@@ -265,8 +268,12 @@ function PostForApproval(post: IProps) {
               })}
             />
             <div className="flex justify-end">
-              <Button onClick={() => setModalID('')} className="">
-                CLose
+              <Button
+                buttonStyle={EButtonStyle.SUCCESS}
+                onClick={() => setModalID('')}
+                className=""
+              >
+                Close
               </Button>
             </div>
           </>

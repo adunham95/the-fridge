@@ -11,7 +11,10 @@ import IconGrab from '../../../../components/Icons/Icon-Grab';
 import { Loader } from '../../../../components/Loader/Loader';
 import { BreadCrumb } from '../../../../components/nav/BreadCrumb';
 import { PageBanner } from '../../../../components/Page/PageBanner';
-import { Button } from '../../../../components/StatelessInput/Button';
+import {
+  Button,
+  EButtonStyle,
+} from '../../../../components/StatelessInput/Button';
 import { useToast } from '../../../../components/Toast/ToastContext';
 import { UPDATE_USER_GROUPS_MUTATION } from '../../../../graphql/mutation/updateUserGroup';
 import { GET_GROUPS_BY_ORG_QUERY } from '../../../../graphql/query/getGroupsByOrg';
@@ -203,7 +206,7 @@ export function EditUserGroups() {
             </div>
           </div>
           <div className="flex justify-end">
-            <Button onClick={saveChanges} className="bg-emerald-400 text-white">
+            <Button onClick={saveChanges} buttonStyle={EButtonStyle.SUCCESS}>
               Save Changes
             </Button>
           </div>

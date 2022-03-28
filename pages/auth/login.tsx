@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { EIcons } from '../../components/Icons';
 import IconLogo from '../../components/Icons/Icon-Logo';
-import { Button } from '../../components/StatelessInput/Button';
+import { Button, EButtonStyle } from '../../components/StatelessInput/Button';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
 import { ERoutes } from '../../models/Routes';
@@ -91,7 +91,7 @@ function Login() {
             className="text-black"
           />
           <div className="pt-2">
-            <Button type="submit" className="text-white w-full bg-brand-400">
+            <Button buttonStyle={EButtonStyle.BRAND} type="submit">
               Login
             </Button>
           </div>

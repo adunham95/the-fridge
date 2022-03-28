@@ -9,7 +9,10 @@ import { EToastType, useToast } from '../../../components/Toast/ToastContext';
 import { IGroup, IOrg } from '../../../models/OrgModel';
 import { ERoutes } from '../../../models/Routes';
 import { BreadCrumb } from '../../../components/nav/BreadCrumb';
-import { Button } from '../../../components/StatelessInput/Button';
+import {
+  Button,
+  EButtonStyle,
+} from '../../../components/StatelessInput/Button';
 import { UPDATE_ORG_MUTATION } from '../../../graphql/mutation/updateOrg';
 import Link from 'next/link';
 import theme from '../../../theme/theme.json';
@@ -176,7 +179,7 @@ export function EditOrg() {
             <div className="flex justify-end">
               <Button
                 onClick={updateOrgData}
-                className="bg-teal-600 text-white"
+                buttonStyle={EButtonStyle.SUCCESS}
               >
                 Update Org Data
               </Button>

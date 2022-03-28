@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { UPDATE_USER_MUTATION } from '../../graphql/mutation/updateUser';
 import { PageBanner } from '../../components/Page/PageBanner';
-import { Button } from '../../components/StatelessInput/Button';
+import { Button, EButtonStyle } from '../../components/StatelessInput/Button';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
@@ -69,7 +69,7 @@ function UserProfile() {
           onChange={setAccountColor}
         />
         <div className="mt-1 flex justify-end">
-          <Button className="bg-brand-400 text-white" onClick={updateMyUser}>
+          <Button buttonStyle={EButtonStyle.BRAND} onClick={updateMyUser}>
             Update Profile
           </Button>
         </div>
