@@ -137,6 +137,7 @@ function InnerMenu({
               <IconLogo
                 size={28}
                 color={isCollapsed ? 'white' : theme.COLORS.brand[400]}
+                showDogFood={process.env.NODE_ENV === 'development'}
               />
             </span>
             {!isCollapsed && (
