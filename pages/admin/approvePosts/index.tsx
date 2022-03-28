@@ -81,9 +81,8 @@ const ApprovePosts = () => {
   );
 };
 
-import React from 'react';
 import { PostCardSmall } from '../../../components/Post/PostCardSmall';
-import { String } from 'aws-sdk/clients/cloudsearchdomain';
+import IconGear from '../../../components/Icons/Icon-gear';
 
 interface IProps extends IPost {
   onChange: (id: string, value: string) => void;
@@ -94,7 +93,12 @@ function PostForApproval(post: IProps) {
     <div className="w-1/2  md:w-1/3 lg:w-1/4 p-1 h-full aspect-square">
       <PostCardSmall {...post} width="full" padding={false} />
       <div className="flex justify-around">
-        <div className="p-1 pl-0  w-full text-center">
+        <div className="p-1 w-full">
+          <button className="flex w-full h-full bg-west-side-400 text-white min-w-[2em] justify-center items-center rounded p-1">
+            <IconGear width={'1em'} />
+          </button>
+        </div>
+        <div className="p-1 w-full text-center">
           <input
             type="radio"
             id={`${post.id}-approve`}
@@ -104,7 +108,7 @@ function PostForApproval(post: IProps) {
             onChange={() => post.onChange(post.id, 'approved')}
           />
           <label
-            className="px-1 py-2 peer-checked:bg-opacity-100 bg-opacity-50 bg-emerald-400 text-white w-full block rounded "
+            className="px-1 py-2 peer-checked:bg-opacity-100 bg-opacity-50 bg-emerald-400 text-white w-full block rounded cursor-pointer hover:bg-opacity-70"
             htmlFor={`${post.id}-approve`}
           >
             Approve
@@ -120,7 +124,7 @@ function PostForApproval(post: IProps) {
             onChange={() => post.onChange(post.id, 'deny')}
           />
           <label
-            className="px-1 py-2 peer-checked:bg-opacity-100 bg-opacity-50 bg-rose-400 text-white w-full block rounded "
+            className="px-1 py-2 peer-checked:bg-opacity-100 bg-opacity-50 bg-rose-400 text-white w-full block rounded cursor-pointer hover:bg-opacity-70"
             htmlFor={`${post.id}-deny`}
           >
             Deny
