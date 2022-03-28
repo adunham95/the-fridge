@@ -9,7 +9,10 @@ import {
   EToastType,
   useToast,
 } from '../../../../components/Toast/ToastContext';
-import { Button } from '../../../../components/StatelessInput/Button';
+import {
+  Button,
+  EButtonStyle,
+} from '../../../../components/StatelessInput/Button';
 import { BreadCrumb } from '../../../../components/nav/BreadCrumb';
 import theme from '../../../../theme/theme.json';
 import { GroupPermissions } from '../../../../components/StatelessInput/GroupPermissions';
@@ -143,7 +146,7 @@ const AdminGroup = () => {
           <div className="flex justify-end pt-2">
             <Button
               disabled={!canSave()}
-              className="text-white bg-brand-400 hover:bg-brand-600"
+              buttonStyle={EButtonStyle.BRAND}
               type="submit"
             >
               Save

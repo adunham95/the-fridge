@@ -150,7 +150,10 @@ import Modal from '../../../components/Modal/Modal';
 import { ModalContainer } from '../../../components/Modal/ModalContainer';
 import ListSelector from '../../../components/StatelessInput/ListSelector';
 import { GET_GROUPS_BY_ORG } from '../../../graphql/query/getGroupsByOrg';
-import { Button } from '../../../components/StatelessInput/Button';
+import {
+  Button,
+  EButtonStyle,
+} from '../../../components/StatelessInput/Button';
 import { SET_POST_APPROVALS } from '../../../graphql/mutation/setPostApprovals';
 import { EIcons } from '../../../components/Icons';
 
@@ -171,14 +174,17 @@ function PostForApproval(post: IProps) {
         <PostCardSmall {...post} width="full" padding={false} />
         <div className="flex justify-around">
           <div className="p-1 w-full">
-            <button
-              className="flex w-full h-full bg-west-side-400 text-white min-w-[2em] justify-center items-center rounded p-1 hover:bg-opacity-100 bg-opacity-90"
-              title="Settings"
+            <Button
+              buttonStyle={EButtonStyle.WARN}
+              className="flex w-full h-full justify-center items-center"
+              label="Settings"
               onClick={() => setModalID(`${post.id}-settings`)}
             >
-              <span className=" sr-only">Settings</span>
-              <IconGear width={'1em'} />
-            </button>
+              <>
+                <span className=" sr-only">Settings</span>
+                <IconGear width={'1em'} />
+              </>
+            </Button>
           </div>
           <div className="p-1 w-full text-center">
             <input
@@ -265,8 +271,12 @@ function PostForApproval(post: IProps) {
               })}
             />
             <div className="flex justify-end">
-              <Button onClick={() => setModalID('')} className="">
-                CLose
+              <Button
+                buttonStyle={EButtonStyle.SUCCESS}
+                onClick={() => setModalID('')}
+                className=""
+              >
+                Close
               </Button>
             </div>
           </>

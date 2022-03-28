@@ -5,7 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { Loader } from '../../../../components/Loader/Loader';
 import { BreadCrumb } from '../../../../components/nav/BreadCrumb';
 import { PageBanner } from '../../../../components/Page/PageBanner';
-import { Button } from '../../../../components/StatelessInput/Button';
+import {
+  Button,
+  EButtonStyle,
+} from '../../../../components/StatelessInput/Button';
 import { GroupPermissions } from '../../../../components/StatelessInput/GroupPermissions';
 import { Input } from '../../../../components/StatelessInput/Input';
 import { useToast } from '../../../../components/Toast/ToastContext';
@@ -123,10 +126,7 @@ function SingleGroupPage() {
           </div>
         )}
         <div className="pt-2 flex justify-end">
-          <Button
-            onClick={saveGroup}
-            className="bg-emerald-500 text-white hover:bg-emerald-600"
-          >
+          <Button onClick={saveGroup} buttonStyle={EButtonStyle.SUCCESS}>
             Save
           </Button>
         </div>

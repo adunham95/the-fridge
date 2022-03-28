@@ -3,7 +3,7 @@ import * as React from 'react';
 import { UPDATE_POST_MUTATION } from '../../graphql/mutation/updatePost';
 import { GET_GROUPS_BY_ORG } from '../../graphql/query/getGroupsByOrg';
 import { Loader } from '../Loader/Loader';
-import { Button } from '../StatelessInput/Button';
+import { Button, EButtonStyle } from '../StatelessInput/Button';
 import { SelectedGroup } from '../StatelessInput/SelectedGroup';
 import { useToast } from '../Toast/ToastContext';
 import theme from '../../theme/theme.json';
@@ -111,11 +111,7 @@ export function EditPostSettings({ id, orgID, viewByGroups, onSave }: Props) {
         </>
       )}
       <div className="flex justify-end pt-2">
-        <Button
-          onClick={save}
-          size="base"
-          className="bg-emerald-400 text-white"
-        >
+        <Button onClick={save} size="base" buttonStyle={EButtonStyle.SUCCESS}>
           Save
         </Button>
       </div>
