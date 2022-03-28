@@ -110,7 +110,9 @@ export const typeDef = gql`
 
   input PostsToApproval {
     id: String!
-    value: String!
+    approval: String!
+    viewByGroups: [String]
+    permissions: [String]
   }
 
   extend type Query {
@@ -357,7 +359,9 @@ export const resolvers = {
           updateOne: {
             filter: { _id: new Types.ObjectId(p.id) },
             update: {
-              approved: p.value,
+              approved: p.approval,
+              viewByGroups: p.viewByGroups,
+              permissions: p.permissions,
             },
             upsert: true,
           },
