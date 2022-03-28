@@ -5,12 +5,19 @@ import { IPost } from '../../models/PostModel';
 import { Avatar } from '../Avatar/Avatar';
 import IconImages from '../Icons/Icon-Images';
 
+interface IPostCardSmall extends IPost {
+  width?: string;
+  padding?: boolean;
+}
+
 export function PostCardSmall({
   id,
   description = '',
   image = [],
   postedBy,
-}: IPost) {
+  width = '',
+  padding = true,
+}: IPostCardSmall) {
   const [style, setStyle] = useState({});
 
   useEffect(() => {
@@ -19,9 +26,19 @@ export function PostCardSmall({
     }
   }, [image]);
 
+  function setStyles() {
+    if (width === 'full') {
+      return 'w-full';
+    }
+    return 'w-1/2  md:w-1/3 lg:w-1/4';
+  }
+
   return (
     <Link href={`/post/${id}`} passHref>
-      <a id={id} className="aspect-square w-1/2  md:w-1/3 lg:w-1/4 p-1">
+      <a
+        id={id}
+        className={`aspect-square ${setStyles()} ${padding ? 'p-1' : ''}`}
+      >
         <div
           style={style}
           className="bg-gradient-to-br from-brand-300 to-brand-blue-500 rounded-md bg-no-repeat bg-cover w-full h-full relative"

@@ -38,4 +38,5 @@ export enum EUserPermissions {
   CREATE_GROUPS = 'canCreateGroup',
   CAN_VIEW_POST = 'canViewPost',
   CAN_VIEW_LIKERS = 'canViewLikers',
+  CAN_UPDATE_POST = 'canUpdatePost',
 }

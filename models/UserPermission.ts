@@ -42,4 +42,8 @@ export const UserPermissionDetails: IUserPermissionDetails = {
     description:
       'This group can view who has liked a post. Unselected will just see the number',
   },
+  [EUserPermissions.CAN_UPDATE_POST]: {
+    title: 'Can Update Post',
+    description: 'This group can update post settings',
+  },
 };

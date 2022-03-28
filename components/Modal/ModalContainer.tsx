@@ -3,11 +3,19 @@ import * as React from 'react';
 import { useModal } from './ModalContext';
 type Props = {
   children: React.ReactChild,
+  className?: string,
+  childrenClass?: string,
 };
-export function ModalContainer({ children }: Props) {
+export function ModalContainer({
+  children,
+  className = '',
+  childrenClass = 'text-center',
+}: Props) {
   const { setModalID } = useModal();
   return (
-    <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+    <div
+      className={`relative bg-white rounded-lg shadow dark:bg-gray-700 ${className}`}
+    >
       <div className="flex justify-end p-2">
         <button
           type="button"
@@ -29,7 +37,7 @@ export function ModalContainer({ children }: Props) {
           </svg>
         </button>
       </div>
-      <div className="p-6 pt-0 text-center">{children}</div>
+      <div className={`p-6 pt-0 ${childrenClass}`}>{children}</div>
     </div>
   );
 }

@@ -11,11 +11,10 @@ import { Select } from '../StatelessInput/Select';
 import { useToast } from '../Toast/ToastContext';
 import theme from '../../theme/theme.json';
 import { EIcons } from '../Icons';
-import { CameraUploader, ImageUploader, IUploadedImage } from './ImageUploader';
-import { ImageOrderer } from './ImageOrderer';
+import { ImageUploader, IUploadedImage } from './ImageUploader';
 import { usePermissions } from '../../hooks/usePermissions';
 import { SingleImage } from './SingleImage';
-import IconImage from '../Icons/Icon-Image';
+import ListSelector from '../StatelessInput/ListSelector';
 
 const ALL_GROUPS_QUERY = `
 query GetGroupsByOrg($orgIDs:[String!]){
@@ -158,26 +157,6 @@ export const NewPost = ({ onCreate }: IProps) => {
     }
   }
 
-  function setOrgGroup(groupVal: string) {
-    let newGroup = [...selectedGroups];
-    if (newGroup.includes(groupVal)) {
-      newGroup = newGroup.filter((g) => g !== groupVal);
-    } else if (!newGroup.includes(groupVal)) {
-      newGroup = [...newGroup, groupVal];
-    }
-    setSelectedGroups(newGroup);
-  }
-
-  function setSettings(setting: string) {
-    let newSettings = [...selectedSettings];
-    if (newSettings.includes(setting)) {
-      newSettings = newSettings.filter((g) => g !== setting);
-    } else if (!newSettings.includes(setting)) {
-      newSettings = [...newSettings, setting];
-    }
-    setSelectedSettings(newSettings);
-  }
-
   if (
     userHasPermissions({
       hasNotPermissions: [EUserPermissions.CAN_POST],
@@ -220,73 +199,38 @@ export const NewPost = ({ onCreate }: IProps) => {
         ))}
       </div>
       {isExpanded && (
-        <>
-          {' '}
-          <h2>Share With Groups:</h2>
-          <div className="overflow-x-auto whitespace-nowrap pt-1">
-            <span className="mr-1">
-              <button
-                className="bg-red-400 text-white p-1 rounded text-sm"
-                onClick={() => setSelectedGroups([])}
-              >
-                Clear
-              </button>
-            </span>
-            {orgGroups
-              .filter((g) =>
-                g.permissions.includes(EUserPermissions.CAN_VIEW_POST),
-              )
-              .map((g) => (
-                <span key={g.id} className="inline-flex mr-1">
-                  <input
-                    type="checkbox"
-                    id={`${g.id}-value`}
-                    checked={selectedGroups.includes(g.id)}
-                    onChange={() => setOrgGroup(g.id)}
-                    className="hidden peer"
-                  />
-                  <label
-                    className="peer-checked:bg-brand-500 peer-checked:bg-opacity-100 bg-brand-400 bg-opacity-50 text-white p-1 rounded text-sm"
-                    htmlFor={`${g.id}-value`}
-                  >
-                    {g.name}
-                  </label>
-                </span>
-              ))}
-          </div>
-        </>
+        <ListSelector
+          title="Share With Groups:"
+          showClear
+          showAll
+          selectedItemList={selectedGroups}
+          onChange={(groupList) => setSelectedGroups(groupList)}
+          itemList={orgGroups
+            .filter((g) =>
+              g.permissions.includes(EUserPermissions.CAN_VIEW_POST),
+            )
+            .map((g) => {
+              return {
+                id: g.id,
+                name: g.name,
+              };
+            })}
+        />
       )}
       {isExpanded && (
-        <>
-          <h2 className="pt-1">Share Settings:</h2>
-          <div className="overflow-x-auto whitespace-nowrap pt-1">
-            <span className="mr-1">
-              <button
-                className="bg-red-400 text-white p-1 rounded text-sm"
-                onClick={() => setSelectedSettings([])}
-              >
-                Clear
-              </button>
-            </span>
-            {Object.values(EPostPermission).map((s) => (
-              <span key={s} className="inline-flex mr-1">
-                <input
-                  type="checkbox"
-                  id={`${s}-value`}
-                  checked={selectedSettings.includes(s)}
-                  onChange={() => setSettings(s)}
-                  className="hidden peer"
-                />
-                <label
-                  className="peer-checked:bg-brand-500 peer-checked:bg-opacity-100 bg-brand-400 bg-opacity-50 text-white p-1 rounded text-sm"
-                  htmlFor={`${s}-value`}
-                >
-                  {s}
-                </label>
-              </span>
-            ))}
-          </div>
-        </>
+        <ListSelector
+          title="Share Settings:"
+          showClear
+          showAll
+          selectedItemList={selectedSettings}
+          onChange={(groupList) => setSelectedSettings(groupList)}
+          itemList={Object.values(EPostPermission).map((g) => {
+            return {
+              id: g,
+              name: g,
+            };
+          })}
+        />
       )}
       {isExpanded && (
         <>

@@ -3,6 +3,8 @@ import { Schema, model, models } from 'mongoose';
 const PostSchema = new Schema(
   {
     dateTime: { type: 'Date', index: true },
+    updatedAt: { type: 'Date' },
+    edited: { type: 'Boolean' },
     description: { type: 'String' },
     image: [{ type: Schema.Types.ObjectId, ref: 'Image' }],
     org: { type: Schema.Types.ObjectId, ref: 'Org' },
@@ -12,6 +14,7 @@ const PostSchema = new Schema(
     comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     permissions: [{ type: 'String' }],
     likedBy: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    approved: { type: 'String', index: true },
   },
   {
     toJSON: {

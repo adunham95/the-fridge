@@ -4,11 +4,14 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { CommentModel } from '../auth/models/CommentMode_Server';
 import { getMonths } from '../utils/date';
+import { UserModel } from '../auth/models/UserModel_Server';
 
 export const typeDef = gql`
   type WallPost {
     id: String
     dateTime: String
+    updatedAt: String
+    edited: Boolean
     description: String
     image: [Image]
     org: Org
@@ -16,21 +19,50 @@ export const typeDef = gql`
     likedBy: [String]
     comments: [String]
     permissions: [String]
+    viewByGroups: [String]
   }
 
   type AdvancedWallPost {
     id: String
     dateTime: String
     description: String
+    updatedAt: String
+    edited: Boolean
     image: [Image]
     org: Org
     postedBy: PostAuthor
     likedBy: [String]
     comments: [Comment]
     permissions: [String]
+    viewByGroups: [String]
+  }
+
+  type ApprovalWallPost {
+    id: String
+    dateTime: String
+    updatedAt: String
+    edited: Boolean
+    description: String
+    image: [Image]
+    org: Org
+    postedBy: PostAuthor
+    likedBy: [String]
+    comments: [String]
+    permissions: [String]
+    viewByGroups: [String]
+    approved: String
   }
 
   input PostInput {
+    description: String
+    image: [String]
+    org: String
+    postedBy: String
+    viewByGroups: [String]
+    permissions: [String]
+  }
+
+  input UpdatePostInput {
     description: String
     image: [String]
     org: String
@@ -76,6 +108,13 @@ export const typeDef = gql`
     year: String!
   }
 
+  input PostsToApproval {
+    id: String!
+    approval: String!
+    viewByGroups: [String]
+    permissions: [String]
+  }
+
   extend type Query {
     getPostsByGroup(
       groupIDs: [String!]
@@ -84,6 +123,7 @@ export const typeDef = gql`
       startDate: String
       endDate: String
     ): [WallPost!]
+    getPostsForApproval(userID: String): [ApprovalWallPost]
     getSinglePost(id: String!): AdvancedWallPost
     getCommentsByPost(id: String!): [Comment]
     getPostTimeline(groupIDs: [String!]): [MonthResponse]
@@ -91,6 +131,8 @@ export const typeDef = gql`
 
   extend type Mutation {
     createPost(input: PostInput): WallPost!
+    updatePost(id: String!, input: UpdatePostInput): WallPost!
+    setPostApprovals(posts: [PostsToApproval]): UpdateLikeResponse
     createComment(input: CommentInput!): Comment!
     updateLike(input: UpdateLikeInput!): UpdateLikeResponse
   }
@@ -103,8 +145,11 @@ interface IPagination {
 }
 
 interface IQuery {
-  viewByGroups: object;
+  approved?: string;
+  viewByGroups?: object;
   dateTime?: object;
+  org?: object;
+  _id?: object;
 }
 
 export const resolvers = {
@@ -117,6 +162,7 @@ export const resolvers = {
         await dbConnect();
         let pagination: IPagination = { sort: '-dateTime' };
         let query: IQuery = {
+          approved: 'approved',
           viewByGroups: {
             $in: groupList,
           },
@@ -147,6 +193,51 @@ export const resolvers = {
         ]);
 
         console.log('posts', posts);
+
+        return posts
+          .sort((a, b) => {
+            return Date.parse(b.dateTime) - Date.parse(a.dateTime);
+          })
+          .map((post) => {
+            return {
+              ...post.toJSON(),
+              dateTime: new Date(post.dateTime).toUTCString(),
+            };
+          });
+      } catch (error) {
+        throw error;
+      }
+    },
+    getPostsForApproval: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const user = await UserModel.findById(
+          new Types.ObjectId(args.userID),
+        ).populate({
+          path: 'orgs',
+          populate: ['group', 'org'],
+        });
+
+        const userOrgsWithApprovalPermission = user.orgs
+          .filter((o: any) => {
+            return o?.group.permissions.includes('canApprovePosts');
+          })
+          .map((o: any) => new Types.ObjectId(o.org.id));
+
+        const postQuery: IQuery = {
+          approved: 'waiting-approval',
+          org: {
+            $in: userOrgsWithApprovalPermission,
+          },
+        };
+
+        const posts = await PostModel.find(postQuery, null).populate([
+          'org',
+          'postedBy',
+          'image',
+        ]);
+
+        console.log(posts);
 
         return posts
           .sort((a, b) => {
@@ -236,6 +327,53 @@ export const resolvers = {
         ]);
         // console.log(returnPost);
         return returnPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    updatePost: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const filter = { _id: args.id };
+        const update = { ...args.input, updatedAt: new Date() };
+        if (args.input?.description || args.input?.image) {
+          update.edited = true;
+        }
+
+        console.log(update);
+        const doc = await PostModel.findOneAndUpdate(filter, update, {
+          new: true,
+        });
+        const updatedPost = await doc.populate(['org', 'postedBy', 'image']);
+
+        return updatedPost.toJSON();
+      } catch (error) {
+        throw error;
+      }
+    },
+    setPostApprovals: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+
+        const bulkOps = args.posts.map((p: any) => ({
+          updateOne: {
+            filter: { _id: new Types.ObjectId(p.id) },
+            update: {
+              approved: p.approval,
+              viewByGroups: p.viewByGroups,
+              permissions: p.permissions,
+            },
+            upsert: true,
+          },
+        }));
+
+        const data = await PostModel.bulkWrite(bulkOps);
+
+        console.log(data);
+
+        return {
+          success: true,
+        };
       } catch (error) {
         throw error;
       }

@@ -1,9 +1,9 @@
 // @flow
 import React, { useEffect, useState } from 'react';
-import Modal from '../Modal/Modal';
-import { ModalContainer } from '../Modal/ModalContainer';
-import { Button } from '../StatelessInput/Button';
-import { GroupPermissions } from '../StatelessInput/GroupPermissions';
+import Modal from '../components/Modal/Modal';
+import { ModalContainer } from '../components/Modal/ModalContainer';
+import { Button } from '../components/StatelessInput/Button';
+import { GroupPermissions } from '../components/StatelessInput/GroupPermissions';
 
 type Props = {
   id: string,
@@ -47,7 +47,7 @@ function UserPermissionModal({ id }: Props) {
           />
           <div className="pt-1 flex justify-end">
             <Button
-              className="bg-red-500 hover:bg-red-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              className="bg-rose-500 hover:bg-rose-700 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center"
               size="sm"
               onClick={clearPermissions}
             >

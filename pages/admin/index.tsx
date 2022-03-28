@@ -1,13 +1,17 @@
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { Avatar } from '../../components/Avatar/Avatar';
+import { DashboardLink } from '../../components/Dashboard/DashboardLink';
+import { EIcons } from '../../components/Icons';
 import { BreadCrumb } from '../../components/nav/BreadCrumb';
+import { usePermissions } from '../../hooks/usePermissions';
 import { ERoutes } from '../../models/Routes';
 import { EUserPermissions } from '../../models/UserModel';
 
 const AdminHome = () => {
   const { data: session } = useSession();
   const myUser = session?.user;
+  const { userHasPermissions } = usePermissions();
+
   return (
     <>
       <header className="bg-white shadow">
@@ -20,22 +24,31 @@ const AdminHome = () => {
       </header>
       <main className="pt-2 px-1">
         <BreadCrumb />
-        <div className="flex">
-          <Link href={ERoutes.ADMIN_NEW_GROUP} passHref>
-            <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
-              <span>New Group</span>
-            </a>
-          </Link>
-          <Link href={ERoutes.ADMIN_EDIT_ORG} passHref>
-            <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
-              <span>Edit Org</span>
-            </a>
-          </Link>
-          <Link href={ERoutes.ADMIN_GROUPS} passHref>
-            <a className="bg-brand-400 hover:bg-brand-600 text-white mb-1 mr-1 px-2 py-1 rounded">
-              <span>Groups</span>
-            </a>
-          </Link>
+        <div className="flex flex-wrap">
+          <DashboardLink
+            href={ERoutes.ADMIN_NEW_GROUP}
+            title="New Group"
+            icon={EIcons.USERS_PLUS}
+          />
+          <DashboardLink
+            href={ERoutes.ADMIN_EDIT_ORG}
+            title="Edit Org"
+            icon={EIcons.USERS_COG}
+          />
+          <DashboardLink
+            href={ERoutes.ADMIN_GROUPS}
+            title="Groups"
+            icon={EIcons.USERS}
+          />
+          {userHasPermissions({
+            hasPermissions: [EUserPermissions.CAN_APPROVE_POSTS],
+          }) && (
+            <DashboardLink
+              href={ERoutes.ADMIN_APPROVE_POSTS}
+              title="Approve Posts"
+              icon={EIcons.VOTE}
+            />
+          )}
         </div>
       </main>
     </>
