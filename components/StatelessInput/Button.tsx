@@ -51,7 +51,7 @@ export function Button({
       case EButtonStyle.ERROR:
         return 'bg-rose-500 hover:bg-rose-700 text-white';
       case EButtonStyle.WARN:
-        return 'bg-amber-500 hover:bg-amber-700 text-white';
+        return 'bg-carrot-500 hover:bg-carrot-700 text-white';
       case EButtonStyle.BRAND:
         return 'bg-brand-500 hover:bg-brand-700 text-white';
       case EButtonStyle.BRAND_BLUE:
