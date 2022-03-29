@@ -4,7 +4,6 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { CommentModel } from '../auth/models/CommentMode_Server';
 import { getMonths } from '../utils/date';
-import { UserModel } from '../auth/models/UserModel_Server';
 
 export const typeDef = gql`
   type WallPost {
@@ -154,10 +153,11 @@ interface IQuery {
 
 export const resolvers = {
   Query: {
-    getPostsByGroup: async (_: any, args: any) => {
-      // console.log(args);
-      const groupList = args.groupIDs;
-      // console.log(groupList);
+    getPostsByGroup: async (_: any, args: any, context: any) => {
+      let groupList: Array<string> = [];
+      if (context?.user) {
+        groupList = context.user.orgs.map((o: any) => o.group.id);
+      }
       try {
         await dbConnect();
         let pagination: IPagination = { sort: '-dateTime' };
@@ -208,15 +208,11 @@ export const resolvers = {
         throw error;
       }
     },
-    getPostsForApproval: async (_: any, args: any) => {
+    getPostsForApproval: async (_: any, args: any, context: any) => {
       try {
         await dbConnect();
-        const user = await UserModel.findById(
-          new Types.ObjectId(args.userID),
-        ).populate({
-          path: 'orgs',
-          populate: ['group', 'org'],
-        });
+
+        const user = context?.user;
 
         const userOrgsWithApprovalPermission = user.orgs
           .filter((o: any) => {
@@ -286,8 +282,11 @@ export const resolvers = {
         throw error;
       }
     },
-    getPostTimeline: async (_: any, args: any) => {
-      const groupList = args.groupIDs;
+    getPostTimeline: async (_: any, args: any, context: any) => {
+      let groupList: Array<string> = [];
+      if (context?.user) {
+        groupList = context.user.orgs.map((o: any) => o.group.id);
+      }
       let months: Array<{ month: number, year: number }> = [];
       try {
         await dbConnect();
@@ -312,11 +311,12 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createPost: async (_: any, args: any) => {
+    createPost: async (_: any, args: any, context: any) => {
       try {
         await dbConnect();
         const newPost = new PostModel({
           ...args.input,
+          postedBy: context?.user.id,
           dateTime: new Date(),
         });
         const newPostFromDB = await newPost.save();
@@ -378,11 +378,12 @@ export const resolvers = {
         throw error;
       }
     },
-    createComment: async (_: any, args: any) => {
+    createComment: async (_: any, args: any, context: any) => {
       try {
         await dbConnect();
         const newComment = new CommentModel({
           ...args.input,
+          author: context.user.id,
           dateTime: new Date(),
         });
         const newCommentFromDB = await newComment.save();
@@ -401,7 +402,7 @@ export const resolvers = {
         throw error;
       }
     },
-    updateLike: async (_: any, args: any) => {
+    updateLike: async (_: any, args: any, context: any) => {
       console.log(args);
       try {
         await dbConnect();
@@ -411,7 +412,7 @@ export const resolvers = {
         }
         const res = await PostModel.updateOne(
           { _id: args.input.postID },
-          { [action]: { likedBy: args.input.userID } },
+          { [action]: { likedBy: context.user?.id } },
         );
         return {
           success: res.modifiedCount > 0,

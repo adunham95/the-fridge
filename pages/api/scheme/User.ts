@@ -3,7 +3,6 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
-import { result } from 'lodash';
 
 export const typeDef = gql`
   type User {

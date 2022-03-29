@@ -1,4 +1,3 @@
-import { GroupModel } from '../auth/models/GroupModel_server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
 import { OrgModel } from '../auth/models/OrgModel_Server';

@@ -5,11 +5,19 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import typeDefs from './schemas';
 import resolvers from './resolvers';
+import { getToken } from 'next-auth/jwt';
+const secret = process.env.JWT_SECRET || '';
 
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+  context: async ({ req, res }) => {
+    const token = await getToken({ req, secret });
+
+    // console.log('token', { token });
+    return { user: token?.user };
+  },
 });
 
 export const schema = makeExecutableSchema({ typeDefs, resolvers });
