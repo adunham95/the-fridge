@@ -59,6 +59,7 @@ export const typeDef = gql`
     postedBy: String
     viewByGroups: [String]
     permissions: [String]
+    approved: String
   }
 
   input UpdatePostInput {
