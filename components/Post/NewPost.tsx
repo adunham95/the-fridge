@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react';
 import React, { useEffect, useRef, useState } from 'react';
 import { CREATE_POST_MUTATION } from '../../graphql/mutation/createPost';
 import { useOutsideAlerter } from '../../hooks/useOutsideClick';
-import { EPostPermission, IPost } from '../../models/PostModel';
+import { EPostPermission, IPost, EPostApproval } from '../../models/PostModel';
 import { EUserPermissions } from '../../models/UserModel';
 import { Avatar } from '../Avatar/Avatar';
 import { Select } from '../StatelessInput/Select';
@@ -126,7 +126,14 @@ export const NewPost = ({ onCreate }: IProps) => {
     if (postSubmitting) {
       return;
     }
+
     setPostSubmitting(true);
+
+    const thisPostOrg = myUser?.orgs.find((org) => org.org.id === selectedOrg);
+    const doesNotRequireApproval = thisPostOrg?.group.permissions.includes(
+      EUserPermissions.PRE_POST_APPROVAL,
+    );
+
     const newPostData = {
       newPost: {
         description: newPostText,
@@ -135,10 +142,13 @@ export const NewPost = ({ onCreate }: IProps) => {
         viewByGroups: selectedGroups,
         permissions: selectedSettings,
         image: images.map((img) => img.id),
+        approved: doesNotRequireApproval
+          ? EPostApproval.APPROVED
+          : EPostApproval.WAITING_APPROVAL,
       },
     };
 
-    console.log(newPostData);
+    // console.log(newPostData);
     const data = await createPost({ variables: newPostData });
     if (data?.error) {
       addToast(
@@ -152,7 +162,11 @@ export const NewPost = ({ onCreate }: IProps) => {
       onCreate(data.data.createPost);
       setNewPostText('');
       setImages([]);
-      addToast('Post Saved', theme.BASE_COLOR.success, EIcons.BELL);
+      addToast(
+        doesNotRequireApproval ? 'Post Saved' : 'Post Submitted for Review',
+        theme.BASE_COLOR.success,
+        EIcons.BELL,
+      );
       setPostSubmitting(false);
     }
   }

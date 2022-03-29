@@ -25,6 +25,10 @@ export const UserPermissionDetails: IUserPermissionDetails = {
     title: 'Can Post w/ Permission',
     description: 'They can post, but if the posts require approval ',
   },
+  [EUserPermissions.PRE_POST_APPROVAL]: {
+    title: 'Can Post w/o Permission',
+    description: 'They can post and the post has already been approved ',
+  },
   [EUserPermissions.CAN_APPROVE_POSTS]: {
     title: 'Can Approve Posts',
     description: 'They can approve posts that require approval',
