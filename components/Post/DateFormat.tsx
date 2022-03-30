@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { formatDate } from '../../util/formatData';
 
 interface IProps {
@@ -8,7 +8,7 @@ interface IProps {
 const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
 interface IUnits {
-  [key: Intl.RelativeTimeFormatOptions]: number;
+  [key: string]: number;
 }
 
 const units: IUnits = {
@@ -22,7 +22,7 @@ const units: IUnits = {
 
 function Dateformat({ date }: IProps) {
   const getRelativeTime = (d1: Date, d2: Date = new Date()) => {
-    const elapsed = d1 - d2;
+    const elapsed = d1.getTime() - d2.getTime();
 
     // "Math.abs" accounts for both "past" & "future" scenarios
     for (const u in units) {
@@ -31,7 +31,9 @@ function Dateformat({ date }: IProps) {
         if (distance < -1 && u === 'month') {
           return formatDate(date, true, false);
         } else {
-          return rtf.format(distance, u);
+            //eslint-disable-next-line
+            const unit: Intl.RelativeTimeFormatUnit = u as Intl.RelativeTimeFormatUnit; 
+            return rtf.format(distance, unit);
         }
       }
     }
