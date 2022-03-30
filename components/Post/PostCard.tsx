@@ -12,6 +12,7 @@ import { usePermissions } from '../../hooks/usePermissions';
 import Link from 'next/link';
 import { EUserPermissions } from '../../models/UserModel';
 import { ImageSlider } from '../Image/ImageSlider';
+import Dateformat from './DateFormat';
 function PostCard({
   id,
   description = '',
@@ -43,7 +44,10 @@ function PostCard({
               <Avatar name={postedBy.name} color={postedBy.accountColor} />
               <div className="flex flex-col justify-start pl-1">
                 <p>{postedBy.name}</p>
-                <p className="text-slate-600 text-xs">{formatDate(dateTime)}</p>
+                <p className="text-slate-600 text-xs">
+                  <Dateformat date={dateTime} />
+                  {/* {formatDate(dateTime)} */}
+                </p>
               </div>
             </a>
           </Link>
