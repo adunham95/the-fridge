@@ -40,6 +40,11 @@ const AdminHome = () => {
             title="Groups"
             icon={EIcons.USERS}
           />
+          <DashboardLink
+            href={ERoutes.ADMIN_USERS}
+            title="Users"
+            icon={EIcons.USERS}
+          />
           {userHasPermissions({
             hasPermissions: [EUserPermissions.CAN_APPROVE_POSTS],
           }) && (

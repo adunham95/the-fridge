@@ -7,6 +7,7 @@ export enum ERoutes {
   ADMIN_NEW_GROUP = '/admin/org/group/new',
   ADMIN_GROUPS = '/admin/org/group',
   ADMIN_EDIT_GROUPS = '/admin/org/group/[groupID]',
+  ADMIN_USERS = '/admin/users',
   AUTH = '/auth',
   AUTH_SIGN_IN = '/auth/login',
   AUTH_SIGN_OUT = '/api/auth/signout',
@@ -36,4 +37,5 @@ export const RouteNames: IRouteName = {
   [ERoutes.USER]: 'My Profile',
   [ERoutes.TIMELINE]: 'Timeline',
   [ERoutes.ADMIN_APPROVE_POSTS]: 'Approve Posts',
+  [ERoutes.ADMIN_USERS]: 'Users',
 };

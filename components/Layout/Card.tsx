@@ -8,6 +8,7 @@ interface IProps {
   border?: string;
   background?: string;
   onClick?: () => void;
+  className?: string;
 }
 
 function Card({
@@ -17,6 +18,7 @@ function Card({
   display = 'block',
   border = 'border',
   background = 'bg-white',
+  className = '',
   onClick,
 }: IProps) {
   if (onClick) {
@@ -24,7 +26,7 @@ function Card({
       <button
         type="button"
         onClick={onClick}
-        className={`${display} ${border} ${background} h-full rounded transition cursor-pointer border-gray-200 hover:border-brand-400 ${margin} ${padding} hover:shadow-md shadow-brand-200`}
+        className={`${display} ${border} ${background} h-full rounded transition cursor-pointer border-gray-200 hover:border-brand-400 ${margin} ${padding} hover:shadow-md shadow-brand-200 ${className}`}
       >
         {children}
       </button>
@@ -32,7 +34,7 @@ function Card({
   }
   return (
     <div
-      className={`${display} ${border} ${background} h-full rounded transition border-gray-200 hover:border-brand-400 ${margin} ${padding} hover:shadow-md shadow-brand-200`}
+      className={`${display} ${border} ${background} h-full rounded transition border-gray-200 hover:border-brand-400 ${margin} ${padding} hover:shadow-md shadow-brand-200 ${className}`}
     >
       {children}
     </div>
