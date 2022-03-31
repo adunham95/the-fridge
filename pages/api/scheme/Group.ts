@@ -3,6 +3,7 @@ import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
 import mongoose from 'mongoose';
 import { OrgModel } from '../auth/models/OrgModel_Server';
+import checkIfLoggedIn from '../utils/checkIfUser';
 
 export const typeDef = gql`
   input GroupInput {
@@ -37,8 +38,9 @@ export const typeDef = gql`
 
 export const resolvers = {
   Query: {
-    getGroupsByOrg: async (_: any, args: any) => {
+    getGroupsByOrg: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         const idList = args.orgIDs.map(
           (id: string) => new mongoose.Types.ObjectId(id),
         );
@@ -57,8 +59,9 @@ export const resolvers = {
         throw error;
       }
     },
-    getGroupByID: async (_: any, args: any) => {
+    getGroupByID: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const group = await GroupModel.findById({
           _id: new mongoose.Types.ObjectId(args.id),
@@ -71,8 +74,9 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createGroup: async (_: any, args: any) => {
+    createGroup: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const newGroup = new GroupModel({
           ...args.input,
@@ -89,7 +93,7 @@ export const resolvers = {
         throw error;
       }
     },
-    updateGroup: async (_: any, args: any) => {
+    updateGroup: async (_: any, args: any, context: any) => {
       const update: any = {};
       if (args.input?.name) {
         update.name = args.input.name;
@@ -98,6 +102,7 @@ export const resolvers = {
         update.permissions = args.input.permissions;
       }
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const updatedGroup = GroupModel.findByIdAndUpdate(
           new mongoose.Types.ObjectId(args.input.id),

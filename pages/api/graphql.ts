@@ -15,7 +15,7 @@ const apolloServer = new ApolloServer({
   context: async ({ req, res }) => {
     const token = await getToken({ req, secret });
 
-    // console.log('token', { token });
+    console.log('token', { token });
     return { user: token?.user };
   },
 });

@@ -4,6 +4,7 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { CommentModel } from '../auth/models/CommentMode_Server';
 import { getMonths } from '../utils/date';
+import checkIfLoggedIn from '../utils/checkIfUser';
 
 export const typeDef = gql`
   type WallPost {
@@ -155,11 +156,12 @@ interface IQuery {
 export const resolvers = {
   Query: {
     getPostsByGroup: async (_: any, args: any, context: any) => {
-      let groupList: Array<string> = [];
-      if (context?.user) {
-        groupList = context.user.orgs.map((o: any) => o.group.id);
-      }
       try {
+        let groupList: Array<string> = [];
+        checkIfLoggedIn(context);
+        if (context?.user) {
+          groupList = context.user.orgs.map((o: any) => o.group.id);
+        }
         await dbConnect();
         let pagination: IPagination = { sort: '-dateTime' };
         let query: IQuery = {
@@ -193,7 +195,7 @@ export const resolvers = {
           'image',
         ]);
 
-        console.log('posts', posts);
+        // console.log('posts', posts);
 
         return posts
           .sort((a, b) => {
@@ -211,6 +213,7 @@ export const resolvers = {
     },
     getPostsForApproval: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
 
         const user = context?.user;
@@ -250,9 +253,10 @@ export const resolvers = {
         throw error;
       }
     },
-    getSinglePost: async (_: any, args: any) => {
+    getSinglePost: async (_: any, args: any, context: any) => {
       try {
         console.log(args.id);
+        checkIfLoggedIn(context);
         await dbConnect();
         const post = await PostModel.findById(new Types.ObjectId(args.id))
           .populate({
@@ -271,9 +275,10 @@ export const resolvers = {
         throw error;
       }
     },
-    getCommentsByPost: async (_: any, args: any) => {
+    getCommentsByPost: async (_: any, args: any, context: any) => {
       console.log(args);
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const comments = CommentModel.find({
           postID: args.id,
@@ -284,12 +289,13 @@ export const resolvers = {
       }
     },
     getPostTimeline: async (_: any, args: any, context: any) => {
-      let groupList: Array<string> = [];
-      if (context?.user) {
-        groupList = context.user.orgs.map((o: any) => o.group.id);
-      }
-      let months: Array<{ month: number, year: number }> = [];
       try {
+        checkIfLoggedIn(context);
+        let groupList: Array<string> = [];
+        if (context?.user) {
+          groupList = context.user.orgs.map((o: any) => o.group.id);
+        }
+        let months: Array<{ month: number, year: number }> = [];
         await dbConnect();
         const posts = await PostModel.find({
           viewByGroups: {
@@ -314,6 +320,7 @@ export const resolvers = {
   Mutation: {
     createPost: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const newPost = new PostModel({
           ...args.input,
@@ -332,8 +339,9 @@ export const resolvers = {
         throw error;
       }
     },
-    updatePost: async (_: any, args: any) => {
+    updatePost: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const filter = { _id: args.id };
         const update = { ...args.input, updatedAt: new Date() };
@@ -352,8 +360,9 @@ export const resolvers = {
         throw error;
       }
     },
-    setPostApprovals: async (_: any, args: any) => {
+    setPostApprovals: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
 
         const bulkOps = args.posts.map((p: any) => ({
@@ -381,6 +390,7 @@ export const resolvers = {
     },
     createComment: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const newComment = new CommentModel({
           ...args.input,
@@ -406,6 +416,7 @@ export const resolvers = {
     updateLike: async (_: any, args: any, context: any) => {
       console.log(args);
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         let action = '$pull';
         if (args.input.action === 'add') {

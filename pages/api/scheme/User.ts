@@ -1,8 +1,10 @@
+import { EGraphQLErrorCode, GraphQLError } from './../utils/graphqlError';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
+import checkIfLoggedIn from '../utils/checkIfUser';
 
 export const typeDef = gql`
   type User {
@@ -82,8 +84,9 @@ interface IUpdateUserGroup {
 
 export const resolvers = {
   Query: {
-    getUser: async (_: any, args: any) => {
+    getUser: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const post = await UserModel.findById(args.id).populate({
           path: 'orgs', // 1st level subdoc (get comments)
@@ -108,8 +111,9 @@ export const resolvers = {
         throw error;
       }
     },
-    getUsersByList: async (_: any, args: any) => {
+    getUsersByList: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         const idList = args.ids.map((id: string) => new Types.ObjectId(id));
         console.log(idList);
         await dbConnect();
@@ -129,8 +133,9 @@ export const resolvers = {
         throw error;
       }
     },
-    getUsersByOrg: async (_: any, args: any) => {
+    getUsersByOrg: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         const idList = args.orgIDs.map((id: string) => new Types.ObjectId(id));
         console.log(idList);
         await dbConnect();
@@ -172,8 +177,16 @@ export const resolvers = {
         throw error;
       }
     },
-    updateUser: async (_: any, args: any) => {
+    updateUser: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
+        if (context.user.id !== args.input.id) {
+          throw new GraphQLError(
+            'Cannot update other users',
+            EGraphQLErrorCode.BAD_USER,
+          );
+        }
+
         await dbConnect();
         console.log(args);
         const update: any = {};
@@ -200,8 +213,9 @@ export const resolvers = {
         throw error;
       }
     },
-    updateUsersGroup: async (_: any, args: any) => {
+    updateUsersGroup: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         //eslint-disable-next-ling prettier/prettier
         const results = await Promise.all(
