@@ -32,7 +32,7 @@ function Card({
   }
   return (
     <div
-      className={`${display} ${border} ${background} h-full rounded transition cursor-pointer border-gray-200 hover:border-brand-400 ${margin} ${padding} hover:shadow-md shadow-brand-200`}
+      className={`${display} ${border} ${background} h-full rounded transition border-gray-200 hover:border-brand-400 ${margin} ${padding} hover:shadow-md shadow-brand-200`}
     >
       {children}
     </div>
