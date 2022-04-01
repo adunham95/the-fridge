@@ -30,4 +30,8 @@ module.exports = {
   "core": {
     "builder": "webpack5"
   },
+  env: (config) => ({
+    ...config,
+    IS_STORYBOOK: true,
+  }),
 }
