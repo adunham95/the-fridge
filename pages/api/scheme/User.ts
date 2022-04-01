@@ -179,13 +179,13 @@ export const resolvers = {
     },
     updateUser: async (_: any, args: any, context: any) => {
       try {
-        checkIfLoggedIn(context);
-        if (context.user.id !== args.input.id) {
-          throw new GraphQLError(
-            'Cannot update other users',
-            EGraphQLErrorCode.BAD_USER,
-          );
-        }
+        // checkIfLoggedIn(context);
+        // if (context.user.id !== args.input.id) {
+        //   throw new GraphQLError(
+        //     'Cannot update other users',
+        //     EGraphQLErrorCode.BAD_USER,
+        //   );
+        // }
 
         await dbConnect();
         console.log(args);

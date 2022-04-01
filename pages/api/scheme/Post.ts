@@ -4,7 +4,7 @@ import dbConnect from '../utils/dbConnect';
 import { Types } from 'mongoose';
 import { CommentModel } from '../auth/models/CommentMode_Server';
 import { getMonths } from '../utils/date';
-import checkIfLoggedIn from '../utils/checkIfUser';
+import checkIfLoggedIn, { checkIfPermission } from '../utils/checkIfUser';
 
 export const typeDef = gql`
   type WallPost {
@@ -321,6 +321,7 @@ export const resolvers = {
     createPost: async (_: any, args: any, context: any) => {
       try {
         checkIfLoggedIn(context);
+        checkIfPermission(context, args.input.org, ['canPost']);
         await dbConnect();
         const newPost = new PostModel({
           ...args.input,
