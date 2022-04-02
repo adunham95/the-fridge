@@ -33,6 +33,7 @@ export enum EUserPermissions {
   CAN_SHARE = 'canShare',
   IS_ADMIN = 'isAdmin',
   REQUIRES_POST_APPROVAL = 'requiresPostApproval',
+  PRE_POST_APPROVAL = 'prePostApproval',
   CAN_APPROVE_POSTS = 'canApprovePosts',
   UPDATE_GROUPS = 'canUpdateGroup',
   CREATE_GROUPS = 'canCreateGroup',
