@@ -9,7 +9,7 @@ import { usePost } from '../context/PostContext';
 import { IPost } from '../models/PostModel';
 import { POST_ACTION } from '../reducers/postReducer';
 import { useToast } from '../components/Toast/ToastContext';
-import { Button } from '../components/StatelessInput/Button';
+import { Button, EButtonStyle } from '../components/StatelessInput/Button';
 import IconArrow from '../components/Icons/Icon-arrow';
 import theme from '../theme/theme.json';
 import { EIcons } from '../components/Icons';
@@ -95,10 +95,12 @@ const Wall = () => {
   return (
     <div className=" max-w-md mx-auto py-5">
       <Button
-        className="fixed bottom-1 right-5 color-white bg-brand-blue-400 h-[2.5em] w-[2.5em] flex justify-center items-center"
+        buttonStyle={EButtonStyle.BRAND_BLUE}
+        className="fixed bottom-1 right-5 h-[2.5em] w-[2.5em] flex justify-center items-center"
         onClick={scrollToTop}
+        label="Scroll To Top"
       >
-        <span className=" rotate-[270deg] text-white">
+        <span className=" rotate-[270deg] ">
           <IconArrow height={20} width={20} />
         </span>
       </Button>
@@ -117,10 +119,7 @@ const Wall = () => {
       {!loading && state.posts.length === 0 && <h1>No Posts</h1>}
       {!hitLimit && !loading && (
         <div className=" flex justify-center">
-          <Button
-            className="bg-brand-400 hover:bg-brand-400 text-white"
-            onClick={loadMorePosts}
-          >
+          <Button buttonStyle={EButtonStyle.BRAND} onClick={loadMorePosts}>
             Load More Posts
           </Button>
         </div>

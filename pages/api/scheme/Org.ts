@@ -1,8 +1,8 @@
-import { GroupModel } from '../auth/models/GroupModel_server';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
 import { OrgModel } from '../auth/models/OrgModel_Server';
 import { Types } from 'mongoose';
+import checkIfLoggedIn from '../utils/checkIfUser';
 
 export const typeDef = gql`
   type Org {
@@ -39,8 +39,9 @@ export const typeDef = gql`
 
 export const resolvers = {
   Query: {
-    getOrgs: async () => {
+    getOrgs: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const orgs = await OrgModel.find();
         return orgs.map((org) => {
@@ -50,8 +51,9 @@ export const resolvers = {
         throw error;
       }
     },
-    getOrgsByIDs: async (_: any, args: any) => {
+    getOrgsByIDs: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         console.log(args.orgIDs);
         const idList = args.orgIDs.map((id: string) => new Types.ObjectId(id));
         await dbConnect();
@@ -71,8 +73,9 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createOrg: async (_: any, args: any) => {
+    createOrg: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         const newOrg = new OrgModel({
           ...args.input,
@@ -83,8 +86,9 @@ export const resolvers = {
         throw error;
       }
     },
-    updateOrg: async (_: any, args: any) => {
+    updateOrg: async (_: any, args: any, context: any) => {
       try {
+        checkIfLoggedIn(context);
         await dbConnect();
         console.log(args);
         const update: any = {};

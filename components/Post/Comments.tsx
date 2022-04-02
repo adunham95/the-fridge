@@ -6,7 +6,7 @@ import { CREATE_COMMENT_MUTATION } from '../../graphql/mutation/createComment';
 import { IComment } from '../../models/CommentModel';
 import { POST_ACTION } from '../../reducers/postReducer';
 import { Avatar } from '../Avatar/Avatar';
-import { Button } from '../StatelessInput/Button';
+import { Button, EButtonStyle } from '../StatelessInput/Button';
 import { Input } from '../StatelessInput/Input';
 import { useToast } from '../Toast/ToastContext';
 import theme from '../../theme/theme.json';
@@ -148,7 +148,7 @@ function NewComment({ postID, onSave }: INewCommentProps) {
           disabled={comment === ''}
           type="submit"
           size={'sm'}
-          className={`text-white bg-emerald-500`}
+          buttonStyle={EButtonStyle.SUCCESS}
         >
           Post
         </Button>
