@@ -5,6 +5,15 @@ import { Types } from 'mongoose';
 import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
 import checkIfLoggedIn from '../utils/checkIfUser';
+import sendEmail from '../utils/sendEmail';
+
+function randomString(length: number) {
+  return Math.round(
+    Math.pow(36, length + 1) - Math.random() * Math.pow(36, length),
+  )
+    .toString(36)
+    .slice(1);
+}
 
 export const typeDef = gql`
   type User {
@@ -13,6 +22,7 @@ export const typeDef = gql`
     accountColor: String
     email: String
     orgs: [UserOrgs]
+    validEmail: Boolean
   }
 
   type UserOrgs {
@@ -73,6 +83,7 @@ export const typeDef = gql`
     createUser(input: NewUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
     updateUsersGroup(input: [UpdateUserGroup!]): Success!
+    validateEmail(validationString: String!): Success!
   }
 `;
 
@@ -167,11 +178,17 @@ export const resolvers = {
           name: args.input.name,
           accountColor: args.input?.accountColor,
           orgs: args.input?.orgs,
+          validEmail: false,
         };
-        console.log({ newUserData });
         await dbConnect();
         const newUser = new UserModel(newUserData);
         const newUserFromDB = await newUser.save();
+        const emailData = await sendEmail.sendEmail(
+          [newUserData.email],
+          'Welcome To The Fridge',
+          `Please validate email: https:fridge.social/validate?code=${newUserFromDB.id}`,
+        );
+        console.log(emailData);
         return newUserFromDB;
       } catch (error) {
         throw error;
@@ -237,6 +254,29 @@ export const resolvers = {
             return;
           }),
         );
+        return {
+          success: true,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    validateEmail: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        console.log(args);
+        const userToValidate = await UserModel.findById(args.validationString);
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          new Types.ObjectId(userToValidate.id),
+          { validEmail: true },
+          { upsert: true, returnDocument: 'after' },
+        );
+
+        if (updatedUser.validEmail) {
+          Error('Email already valid');
+        }
+
         return {
           success: true,
         };

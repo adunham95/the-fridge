@@ -7,7 +7,7 @@ const SES_CONFIG = {
 };
 
 const AWS_SES = new SES(SES_CONFIG);
-const sourceEmail = 'support@frige.social';
+const sourceEmail = 'Fridge <support@fridge.social>';
 
 enum EEmailTemplates {}
 

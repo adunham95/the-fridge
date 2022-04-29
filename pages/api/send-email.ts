@@ -5,7 +5,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     if (req.method !== 'POST') {
       const data = await sendEmail.sendEmail(
-        ['success@simulator.amazonses.com'],
+        ['adunham95@gmail.com'],
         'Hello World',
         'My First Email',
       );

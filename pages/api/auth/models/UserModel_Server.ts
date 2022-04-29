@@ -6,6 +6,7 @@ const UserSchema = new Schema(
     accountColor: { type: 'String', default: '#0000FF' },
     password: { type: 'String', required: true },
     email: { type: 'String', required: true, index: true },
+    validEmail: { type: 'Boolean' },
     username: { type: 'String' },
     created: {
       type: Date,
