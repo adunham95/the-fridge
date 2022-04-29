@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
 import checkIfLoggedIn from '../utils/checkIfUser';
-import sendEmail from '../utils/sendEmail';
+import sendEmail, { EMyEmailTemplates } from '../utils/sendEmail';
 
 function randomString(length: number) {
   return Math.round(
@@ -183,10 +183,13 @@ export const resolvers = {
         await dbConnect();
         const newUser = new UserModel(newUserData);
         const newUserFromDB = await newUser.save();
-        const emailData = await sendEmail.sendEmail(
+        const emailData = await sendEmail.sentMyTemplateEmail(
           [newUserData.email],
-          'Welcome To The Fridge',
-          `Please validate email: https:fridge.social/account/validate?code=${newUserFromDB.id}`,
+          EMyEmailTemplates.VALIDATE_EMAIL,
+          {
+            name: newUserFromDB.name,
+            userID: newUserFromDB.id,
+          },
         );
         console.log(emailData);
         return newUserFromDB;
