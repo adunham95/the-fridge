@@ -186,7 +186,7 @@ export const resolvers = {
         const emailData = await sendEmail.sendEmail(
           [newUserData.email],
           'Welcome To The Fridge',
-          `Please validate email: https:fridge.social/validate?code=${newUserFromDB.id}`,
+          `Please validate email: https:fridge.social/account/validate?code=${newUserFromDB.id}`,
         );
         console.log(emailData);
         return newUserFromDB;
