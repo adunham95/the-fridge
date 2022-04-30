@@ -77,6 +77,7 @@ export const typeDef = gql`
     getUser(id: String!): User!
     getUsersByList(ids: [String!]): [User!]
     getUsersByOrg(orgIDs: [String!]): [User!]
+    sentPasswordRequest(): Success!
   }
 
   extend type Mutation {

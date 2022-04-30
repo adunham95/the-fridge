@@ -14,6 +14,7 @@ enum EEmailTemplates {}
 
 export enum EMyEmailTemplates {
   VALIDATE_EMAIL = 'validateEmail',
+  RESET_PASSWORD_EMAIL = 'passwordReset',
 }
 
 function sendEmail(
