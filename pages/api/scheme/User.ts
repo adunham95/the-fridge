@@ -77,7 +77,7 @@ export const typeDef = gql`
     getUser(id: String!): User!
     getUsersByList(ids: [String!]): [User!]
     getUsersByOrg(orgIDs: [String!]): [User!]
-    sentPasswordRequest(): Success!
+    sentPasswordRequest(email: String!): Success!
   }
 
   extend type Mutation {
@@ -163,6 +163,27 @@ export const resolvers = {
         return users.map((user) => {
           return user.toJSON();
         });
+      } catch (error) {
+        throw error;
+      }
+    },
+    sendPasswordRequest: async (_: any, args: any) => {
+      try {
+        const update = {
+          passwordResetToken: bcrypt.hashSync(randomString(10), 10),
+        };
+        await dbConnect();
+        const userData = await UserModel.findById(args.email);
+        const user = { ...userData.toJSON() };
+        const updatedUser = UserModel.findByIdAndUpdate(
+          new Types.ObjectId(user.id),
+          update,
+          { upsert: true, returnDocument: 'after' },
+        );
+        console.log(updatedUser);
+        return {
+          success: true,
+        };
       } catch (error) {
         throw error;
       }
