@@ -71,13 +71,14 @@ export const typeDef = gql`
 
   type Success {
     success: Boolean
+    msg: String
   }
 
   extend type Query {
     getUser(id: String!): User!
     getUsersByList(ids: [String!]): [User!]
     getUsersByOrg(orgIDs: [String!]): [User!]
-    sentPasswordRequest(email: String!): Success!
+    sendPasswordRequest(email: String!): Success!
   }
 
   extend type Mutation {
@@ -169,18 +170,36 @@ export const resolvers = {
     },
     sendPasswordRequest: async (_: any, args: any) => {
       try {
+        const passwordResetTokenString = randomString(10);
         const update = {
-          passwordResetToken: bcrypt.hashSync(randomString(10), 10),
+          passwordResetToken: bcrypt.hashSync(passwordResetTokenString, 10),
         };
         await dbConnect();
-        const userData = await UserModel.findById(args.email);
+        const userData = await UserModel.findOne({ email: args.email });
         const user = { ...userData.toJSON() };
-        const updatedUser = UserModel.findByIdAndUpdate(
+        console.log('emailInValid', {
+          invalid: !user.validEmail,
+          default: user.validEmail,
+          user,
+        });
+        if (!user.validEmail) {
+          return {
+            success: false,
+            msg: 'Email is invalid. We cannot send a password reset. Contact support@fridge.social',
+          };
+        }
+        const updatedUser = await UserModel.findByIdAndUpdate(
           new Types.ObjectId(user.id),
           update,
           { upsert: true, returnDocument: 'after' },
         );
-        console.log(updatedUser);
+        sendEmail.sentMyTemplateEmail(
+          [updatedUser.email],
+          EMyEmailTemplates.RESET_PASSWORD_EMAIL,
+          {
+            passwordResetToken: passwordResetTokenString,
+          },
+        );
         return {
           success: true,
         };
