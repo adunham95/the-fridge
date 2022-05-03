@@ -1,24 +1,26 @@
 import { useManualQuery } from 'graphql-hooks';
 import React, { useState } from 'react';
+import { Loader } from '../../components/Loader/Loader';
 import { Button, EButtonStyle } from '../../components/StatelessInput/Button';
 import { Input } from '../../components/StatelessInput/Input';
+import { QUERY_RESET_PASSWORD } from '../../graphql/query/sendPasswordReset';
 
 function ValidateEmail() {
-  const [newPassword, setNewPassword] = useState('');
-  // const [fetchRest, { loading }] = useManualQuery(QUERY_RESET_PASSWORD);
+  const [email, setEmail] = useState('');
+  const [fetchRest, { loading }] = useManualQuery(QUERY_RESET_PASSWORD);
 
   async function submitPasswordReset(e: React.FormEvent) {
     e.preventDefault();
-    // console.log({
-    //   email,
-    // });
-    // const data = await fetchRest({
-    //   variables: {
-    //     email,
-    //   },
-    //   useCache: false,
-    // });
-    // console.log(data);
+    console.log({
+      email,
+    });
+    const data = await fetchRest({
+      variables: {
+        email,
+      },
+      useCache: false,
+    });
+    console.log(data);
   }
 
   return (
@@ -28,12 +30,12 @@ function ValidateEmail() {
 
         <form onSubmit={submitPasswordReset}>
           <Input
-            id="newPassword"
-            label="New Password"
-            placeholder=""
-            type="text"
-            value={newPassword}
-            onChange={setNewPassword}
+            id="emailReset"
+            label="Email"
+            placeholder="email@fridge.social"
+            type="email"
+            value={email}
+            onChange={setEmail}
           />
           <Button
             buttonStyle={EButtonStyle.SUCCESS}

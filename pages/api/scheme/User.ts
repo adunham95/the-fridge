@@ -1,3 +1,4 @@
+import { Success } from './../../../components/Toast/Toast.stories';
 import { EGraphQLErrorCode, GraphQLError } from './../utils/graphqlError';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
@@ -86,6 +87,11 @@ export const typeDef = gql`
     updateUser(input: UpdateUserInput!): User!
     updateUsersGroup(input: [UpdateUserGroup!]): Success!
     validateEmail(validationString: String!): Success!
+    updatePassword(
+      validationString: String!
+      email: String!
+      newPassword: String!
+    ): Success!
   }
 `;
 
@@ -170,9 +176,12 @@ export const resolvers = {
     },
     sendPasswordRequest: async (_: any, args: any) => {
       try {
+        console.log('Send Password Request');
         const passwordResetTokenString = randomString(10);
+        console.log(passwordResetTokenString);
         const update = {
           passwordResetToken: bcrypt.hashSync(passwordResetTokenString, 10),
+          // passwordResetToken: passwordResetTokenString,
         };
         await dbConnect();
         const userData = await UserModel.findOne({ email: args.email });
@@ -193,13 +202,15 @@ export const resolvers = {
           update,
           { upsert: true, returnDocument: 'after' },
         );
-        sendEmail.sentMyTemplateEmail(
+        const data = sendEmail.sentMyTemplateEmail(
           [updatedUser.email],
           EMyEmailTemplates.RESET_PASSWORD_EMAIL,
           {
             passwordResetToken: passwordResetTokenString,
+            passwordResetEmail: updatedUser.email,
           },
         );
+        console.log(data);
         return {
           success: true,
         };
@@ -240,14 +251,6 @@ export const resolvers = {
     },
     updateUser: async (_: any, args: any, context: any) => {
       try {
-        // checkIfLoggedIn(context);
-        // if (context.user.id !== args.input.id) {
-        //   throw new GraphQLError(
-        //     'Cannot update other users',
-        //     EGraphQLErrorCode.BAD_USER,
-        //   );
-        // }
-
         await dbConnect();
         console.log(args);
         const update: any = {};
@@ -323,6 +326,41 @@ export const resolvers = {
 
         return {
           success: true,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    updatePassword: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const selectedUser = await UserModel.findOne({ email: args.email });
+        const selectedUserData = { ...selectedUser.toJSON() };
+        console.log(selectedUserData);
+        const match = await bcrypt.compare(
+          args.validationString,
+          selectedUser.passwordResetToken,
+        );
+
+        console.log('match', match);
+
+        if (!match) {
+          return {
+            success: false,
+            msg: 'Validation Tokens dont match',
+          };
+        }
+
+        const update: any = {};
+        update.password = bcrypt.hashSync(args.newPassword, 10);
+        const updatedUser = UserModel.findOneAndUpdate(
+          new Types.ObjectId(selectedUserData.id),
+          update,
+          { upsert: true, returnDocument: 'after' },
+        );
+        return {
+          success: true,
+          msg: 'Password Changes Successfully',
         };
       } catch (error) {
         throw error;
