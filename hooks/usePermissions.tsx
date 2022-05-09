@@ -53,5 +53,9 @@ export function usePermissions() {
   }
   function postHasPermissions() {}
 
-  return { userHasPermissions, postHasPermissions };
+  function isLoggedIn() {
+    return !session?.user;
+  }
+
+  return { userHasPermissions, postHasPermissions, isLoggedIn };
 }

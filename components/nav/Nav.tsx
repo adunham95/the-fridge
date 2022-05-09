@@ -3,9 +3,13 @@ import IconClose from '../Icons/Icon-Close';
 import IconLogo from '../Icons/Icon-Logo';
 import IconMenu from '../Icons/Icon-Menu';
 import InnerMenu from './InnerMenu';
+import { INavMenuItem } from './NavItem';
 
-// eslint-disable-next-line no-empty-pattern
-const Nav = ({}) => {
+interface INav {
+  navMenu: Array<INavMenuItem>;
+}
+
+const Nav = ({ navMenu }: INav) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <>
@@ -28,7 +32,11 @@ const Nav = ({}) => {
         <div className="fixed inset-0 flex z-50">
           <div className="bg-white w-[var(--sidebar-width)] h-full">
             {/* <button onClick={() => setIsMenuOpen(false)}>Close</button> */}
-            <InnerMenu showLogo={false} onClick={() => setIsMenuOpen(false)} />
+            <InnerMenu
+              navMenu={navMenu}
+              showLogo={false}
+              onClick={() => setIsMenuOpen(false)}
+            />
           </div>
           <button
             className="w-full h-full bg-black bg-opacity-30 relative"

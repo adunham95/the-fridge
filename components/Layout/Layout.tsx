@@ -1,6 +1,6 @@
 import React, { ReactChild, useEffect, useState } from 'react';
 import { useWindowSize } from '../../hooks/useWidowSize';
-import Nav from '../nav/Nav';
+import Nav from '../nav/NavWrapper';
 import Sidebar from '../nav/Sidebar';
 import Scrollable from './Srollable';
 
