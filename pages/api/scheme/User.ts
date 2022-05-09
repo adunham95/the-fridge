@@ -1,3 +1,4 @@
+import { Success } from './../../../components/Toast/Toast.stories';
 import { EGraphQLErrorCode, GraphQLError } from './../utils/graphqlError';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
@@ -5,6 +6,15 @@ import { Types } from 'mongoose';
 import { UserModel } from '../auth/models/UserModel_Server';
 import bcrypt from 'bcrypt';
 import checkIfLoggedIn from '../utils/checkIfUser';
+import sendEmail, { EMyEmailTemplates } from '../utils/sendEmail';
+
+function randomString(length: number) {
+  return Math.round(
+    Math.pow(36, length + 1) - Math.random() * Math.pow(36, length),
+  )
+    .toString(36)
+    .slice(1);
+}
 
 export const typeDef = gql`
   type User {
@@ -13,6 +23,7 @@ export const typeDef = gql`
     accountColor: String
     email: String
     orgs: [UserOrgs]
+    validEmail: Boolean
   }
 
   type UserOrgs {
@@ -61,18 +72,26 @@ export const typeDef = gql`
 
   type Success {
     success: Boolean
+    msg: String
   }
 
   extend type Query {
     getUser(id: String!): User!
     getUsersByList(ids: [String!]): [User!]
     getUsersByOrg(orgIDs: [String!]): [User!]
+    sendPasswordRequest(email: String!): Success!
   }
 
   extend type Mutation {
     createUser(input: NewUserInput!): User!
     updateUser(input: UpdateUserInput!): User!
     updateUsersGroup(input: [UpdateUserGroup!]): Success!
+    validateEmail(validationString: String!): Success!
+    updatePassword(
+      validationString: String!
+      email: String!
+      newPassword: String!
+    ): Success!
   }
 `;
 
@@ -155,6 +174,50 @@ export const resolvers = {
         throw error;
       }
     },
+    sendPasswordRequest: async (_: any, args: any) => {
+      try {
+        console.log('Send Password Request');
+        const passwordResetTokenString = randomString(10);
+        console.log(passwordResetTokenString);
+        const update = {
+          passwordResetToken: bcrypt.hashSync(passwordResetTokenString, 10),
+          // passwordResetToken: passwordResetTokenString,
+        };
+        await dbConnect();
+        const userData = await UserModel.findOne({ email: args.email });
+        const user = { ...userData.toJSON() };
+        console.log('emailInValid', {
+          invalid: !user.validEmail,
+          default: user.validEmail,
+          user,
+        });
+        if (!user.validEmail) {
+          return {
+            success: false,
+            msg: 'Email is invalid. We cannot send a password reset. Contact support@fridge.social',
+          };
+        }
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          new Types.ObjectId(user.id),
+          update,
+          { upsert: true, returnDocument: 'after' },
+        );
+        const data = sendEmail.sentMyTemplateEmail(
+          [updatedUser.email],
+          EMyEmailTemplates.RESET_PASSWORD_EMAIL,
+          {
+            passwordResetToken: passwordResetTokenString,
+            passwordResetEmail: updatedUser.email,
+          },
+        );
+        console.log(data);
+        return {
+          success: true,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
   },
   Mutation: {
     createUser: async (_: any, args: any) => {
@@ -167,11 +230,20 @@ export const resolvers = {
           name: args.input.name,
           accountColor: args.input?.accountColor,
           orgs: args.input?.orgs,
+          validEmail: false,
         };
-        console.log({ newUserData });
         await dbConnect();
         const newUser = new UserModel(newUserData);
         const newUserFromDB = await newUser.save();
+        const emailData = await sendEmail.sentMyTemplateEmail(
+          [newUserData.email],
+          EMyEmailTemplates.VALIDATE_EMAIL,
+          {
+            name: newUserFromDB.name,
+            userID: newUserFromDB.id,
+          },
+        );
+        console.log(emailData);
         return newUserFromDB;
       } catch (error) {
         throw error;
@@ -179,14 +251,6 @@ export const resolvers = {
     },
     updateUser: async (_: any, args: any, context: any) => {
       try {
-        // checkIfLoggedIn(context);
-        // if (context.user.id !== args.input.id) {
-        //   throw new GraphQLError(
-        //     'Cannot update other users',
-        //     EGraphQLErrorCode.BAD_USER,
-        //   );
-        // }
-
         await dbConnect();
         console.log(args);
         const update: any = {};
@@ -239,6 +303,64 @@ export const resolvers = {
         );
         return {
           success: true,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    validateEmail: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        console.log(args);
+        const userToValidate = await UserModel.findById(args.validationString);
+
+        const updatedUser = await UserModel.findByIdAndUpdate(
+          new Types.ObjectId(userToValidate.id),
+          { validEmail: true },
+          { upsert: true, returnDocument: 'after' },
+        );
+
+        if (updatedUser.validEmail) {
+          Error('Email already valid');
+        }
+
+        return {
+          success: true,
+        };
+      } catch (error) {
+        throw error;
+      }
+    },
+    updatePassword: async (_: any, args: any) => {
+      try {
+        await dbConnect();
+        const selectedUser = await UserModel.findOne({ email: args.email });
+        const selectedUserData = { ...selectedUser.toJSON() };
+        console.log(selectedUserData);
+        const match = await bcrypt.compare(
+          args.validationString,
+          selectedUser.passwordResetToken,
+        );
+
+        console.log('match', match);
+
+        if (!match) {
+          return {
+            success: false,
+            msg: 'Validation Tokens dont match',
+          };
+        }
+
+        const update: any = {};
+        update.password = bcrypt.hashSync(args.newPassword, 10);
+        const updatedUser = UserModel.findOneAndUpdate(
+          new Types.ObjectId(selectedUserData.id),
+          update,
+          { upsert: true, returnDocument: 'after' },
+        );
+        return {
+          success: true,
+          msg: 'Password Changes Successfully',
         };
       } catch (error) {
         throw error;

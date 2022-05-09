@@ -1,0 +1,36 @@
+<mjml>
+
+  <mj-head>
+
+    <mj-attributes>
+      <mj-text align="center" color="#555" />
+      <mj-section background-color="#fff" />
+    </mj-attributes>
+
+  </mj-head>
+
+  <mj-body background-color="#eee">
+    <mj-include path="./header.mjml" />
+    
+    <mj-section background-color="#eee">
+
+      <mj-column>
+        <mj-text font-size="25px">
+          Welcome to The Fridge {{name}}
+        </mj-text>
+        <mj-text>
+          Please validate your email:
+        </mj-text>
+        <mj-button background-color="#5b4b81" href="https://fridge.social/account/validate?code={{userID}}">
+					Click here to validate
+        </mj-button>
+        <mj-text background-color='transparent' font-size="10px">
+        	or copy this link: <span style="color: blue">https://fridge.social/account/validate?code={{userID}}</span>
+        </mj-text>
+      </mj-column>
+
+    </mj-section>
+    
+    <mj-include path="./footer.mjml" />
+  </mj-body>
+</mjml>
