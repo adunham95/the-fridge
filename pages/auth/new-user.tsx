@@ -2,14 +2,16 @@
 import { LockClosedIcon } from '@heroicons/react/outline';
 import { useMutation } from 'graphql-hooks';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 import React, { useEffect, useState } from 'react';
 import { EIcons } from '../../components/Icons';
+import { Checkbox } from '../../components/StatelessInput/Checkbox';
 import { ColorPicker } from '../../components/StatelessInput/ColorPIcket';
 import { Input } from '../../components/StatelessInput/Input';
 import { useToast } from '../../components/Toast/ToastContext';
-import { ERoutes } from '../../models/Routes';
+import { ERoutes, RouteNames } from '../../models/Routes';
 import theme from '../../theme/theme.json';
 
 const CREATE_USER_MUTATION = `mutation CreatUser($newUser:NewUserInput!) {
@@ -33,6 +35,7 @@ export default function NewUser() {
   const [accountColor, setAccountColor] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [inviteCode, setInviteCode] = useState<string>('');
+  const [legalChecked, setLegalChecked] = useState(false);
   const { query } = useRouter();
   const { addToast } = useToast();
   const router = useRouter();
@@ -52,6 +55,10 @@ export default function NewUser() {
   async function CreateUser(e: React.FormEvent<EventTarget>) {
     e.preventDefault();
     console.log('Create User');
+    if (!legalChecked) {
+      addToast('Legal Not Accepted', theme.BASE_COLOR.error);
+      return;
+    }
     if (Array.isArray(inviteCode)) {
       return;
     }
@@ -127,7 +134,7 @@ export default function NewUser() {
               Create Account
             </h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={(e) => CreateUser(e)}>
+          <form className="mt-8 space-y-6" onSubmit={CreateUser}>
             <div className=" -space-y-px">
               <Input
                 label="Name"
@@ -167,6 +174,27 @@ export default function NewUser() {
                 id="Account Color"
                 value={accountColor}
                 onChange={(color) => setAccountColor(color)}
+                containerClass="pt-2"
+                label="Account Color"
+              />
+              <Checkbox
+                id="legalCheck"
+                value={legalChecked}
+                onChange={setLegalChecked}
+                label={
+                  <p className=" font-normal">
+                    I agree to the{' '}
+                    <Link passHref href={ERoutes.TOS}>
+                      <a className="underline">{RouteNames[ERoutes.TOS]}</a>
+                    </Link>
+                    {' & '}
+                    <Link passHref href={ERoutes.PRIVACY_POLICY}>
+                      <a className="underline">
+                        {RouteNames[ERoutes.PRIVACY_POLICY]}
+                      </a>
+                    </Link>
+                  </p>
+                }
                 containerClass="pt-2"
               />
             </div>
