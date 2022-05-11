@@ -1,0 +1,6 @@
+<mj-section background-color="#F5F5F5">
+  <mj-column>
+    <mj-image src="https://d6rezagtnxx5b.cloudfront.net/icon-rounded.png" height="50px" width="50px" />
+    <mj-text font-size="30px" color="#5b4b81" align="center"> The Fridge </mj-text>
+  </mj-column>
+</mj-section>

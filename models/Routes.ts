@@ -15,6 +15,9 @@ export enum ERoutes {
   TIMELINE = '/timeline',
   THEME = '/theme',
   ADMIN_APPROVE_POSTS = '/admin/approvePosts',
+  TOS = '/tos',
+  PRIVACY_POLICY = '/privacy',
+  CONTACT = '/contact',
 }
 
 interface IRouteName {
@@ -36,4 +39,7 @@ export const RouteNames: IRouteName = {
   [ERoutes.USER]: 'My Profile',
   [ERoutes.TIMELINE]: 'Timeline',
   [ERoutes.ADMIN_APPROVE_POSTS]: 'Approve Posts',
+  [ERoutes.TOS]: 'Terms of Service',
+  [ERoutes.PRIVACY_POLICY]: 'Privacy Policy',
+  [ERoutes.CONTACT]: 'Contact',
 };

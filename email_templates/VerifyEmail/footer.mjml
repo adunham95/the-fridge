@@ -1,0 +1,8 @@
+<mj-section background-color="transparent">
+  <mj-column>
+    <mj-text font-size="15px" color="#5b4b81" align="center">
+      The Fridge &copy 2022
+    	<a href="https://fridge.social/unsubscribe" style="color:#37323E">Unsubscribe</a>
+    </mj-text>
+  </mj-column>
+</mj-sectioon>
