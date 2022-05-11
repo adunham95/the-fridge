@@ -8,7 +8,7 @@ export const typeDef = gql`
   }
 
   extend type Mutation {
-    sendContact(input: Contact!): Success!
+    sendContact(input: ContactInput!): Success!
   }
 `;
 
