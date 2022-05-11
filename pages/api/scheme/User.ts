@@ -70,11 +70,6 @@ export const typeDef = gql`
     orgID: String!
   }
 
-  type Success {
-    success: Boolean
-    msg: String
-  }
-
   extend type Query {
     getUser(id: String!): User!
     getUsersByList(ids: [String!]): [User!]

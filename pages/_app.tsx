@@ -12,6 +12,7 @@ import { UserProvider } from '../context/UserContext';
 import Layout from '../components/Layout/Layout';
 import AuthWrapper from '../components/Auth/AuthWrapper';
 import GlobalModals from '../modals';
+import { Globals } from '../models/Global';
 
 type AuthComponent = NextComponentType & {
   auth?: boolean,
@@ -39,7 +40,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         {process.env.NEXT_PUBLIC_VERCEL_ENV === 'development' ||
         process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview' ? (
           <>
-            <title>The Fridge Dev</title>
+            <title>{Globals.NAME_DEV}</title>
             <link rel="manifest" href="/manifest_dogfood.json" />
             <link
               rel="apple-touch-icon"
@@ -71,7 +72,7 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
           </>
         ) : (
           <>
-            <title>The Fridge </title>
+            <title>{Globals.NAME}</title>
             <link rel="manifest" href="/manifest.json" />
             <link
               href="/icons/favicon-16x16.png"

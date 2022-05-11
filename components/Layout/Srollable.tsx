@@ -1,6 +1,7 @@
 import React, { ReactChild } from 'react';
 import { EIcons } from '../Icons';
 import Banner from './Banner';
+import Footer from './Footer';
 
 interface IProps {
   children: ReactChild;
@@ -27,10 +28,13 @@ function Scrollable({ children, isMobile, className = '' }: IProps) {
     >
       {isMobile && <Banner {...bannerData} />}
       <div
-        className={`${isMobile ? 'min-h-[calc(100vh-60px)]' : 'min-h-screen'}`}
+        className={`${
+          isMobile ? 'min-h-[calc(100vh-160px)]' : 'min-h-[calc(100vh-60px)]'
+        }`}
       >
         {children}
       </div>
+      <Footer />
       {!isMobile && <Banner {...bannerData} />}
     </div>
   );

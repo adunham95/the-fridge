@@ -4,6 +4,7 @@ import { typeDef as OrgDef } from '../scheme/Org';
 import { typeDef as UserDef } from '../scheme/User';
 import { typeDef as PostDef } from '../scheme/Post';
 import { typeDef as ImageDef } from '../scheme/Image';
+import { typeDef as UtilityDef } from '../scheme/Utility';
 
 const typeDefs = gql`
   type Query {
@@ -32,15 +33,24 @@ const typeDefs = gql`
     accountColor: String
   }
 
-  type updateResponse {
+  type Success {
     success: Boolean
+    msg: String
   }
 
   type Query {
-    update: updateResponse
+    update: Success
     getPosts: [Post]
     getPost(id: String!): Post!
   }
 `;
 
-export default [typeDefs, GroupDef, OrgDef, UserDef, PostDef, ImageDef];
+export default [
+  typeDefs,
+  GroupDef,
+  OrgDef,
+  UserDef,
+  PostDef,
+  ImageDef,
+  UtilityDef,
+];
