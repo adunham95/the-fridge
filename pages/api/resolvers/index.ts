@@ -11,6 +11,7 @@ import { resolvers as GroupResolvers } from '../scheme/Group';
 import { resolvers as OrgResolvers } from '../scheme/Org';
 import { resolvers as UserResolvers } from '../scheme/User';
 import { resolvers as PostResolvers } from '../scheme/Post';
+import { resolvers as UtilityResolvers } from '../scheme/Utility';
 
 const defaultResolvers = {
   Query: {
@@ -97,4 +98,5 @@ export default merge(
   OrgResolvers,
   UserResolvers,
   PostResolvers,
+  UtilityResolvers,
 );
