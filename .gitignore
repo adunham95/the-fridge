@@ -45,3 +45,5 @@ workbox*.js*
 
 *.zip
 features
+# Sentry
+.sentryclirc
