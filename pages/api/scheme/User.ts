@@ -1,4 +1,3 @@
-import { Success } from './../../../components/Toast/Toast.stories';
 import { EGraphQLErrorCode, GraphQLError } from './../utils/graphqlError';
 import { gql } from 'apollo-server-micro';
 import dbConnect from '../utils/dbConnect';
@@ -246,6 +245,14 @@ export const resolvers = {
     },
     updateUser: async (_: any, args: any, context: any) => {
       try {
+        // checkIfLoggedIn(context);
+        // if (context.user.id !== args.input.id) {
+        //   throw new GraphQLError(
+        //     'Cannot update other users',
+        //     EGraphQLErrorCode.BAD_USER,
+        //   );
+        // }
+
         await dbConnect();
         console.log(args);
         const update: any = {};
