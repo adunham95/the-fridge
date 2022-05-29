@@ -70,6 +70,7 @@ const Wall = () => {
   };
 
   const newPost = (post: IPost) => {
+    console.log({ post });
     dispatch({
       type: POST_ACTION.ADD_POST,
       payload: {
@@ -91,6 +92,8 @@ const Wall = () => {
       behavior: 'smooth',
     });
   }
+
+  console.log({ posts: state.posts });
 
   return (
     <div className=" max-w-md mx-auto py-5">
