@@ -27,12 +27,18 @@ function Dateformat({ date }: IProps) {
     // "Math.abs" accounts for both "past" & "future" scenarios
     for (const u in units) {
       if (Math.abs(elapsed) > units[u] || u == 'second') {
-        const distance = Math.round(elapsed / units[u]);
-        if (distance < -1 && u === 'month') {
+        const distance = Math.round(elapsed / units[u]) || undefined;
+        console.log({distance})
+        if(typeof distance === 'undefined'){
+          return ""
+        }
+        else if (distance < -1 && u === 'month') {
           return formatDate(date, true, false);
-        } else {
+        } 
+        
+         else {
             //eslint-disable-next-line
-            const unit: Intl.RelativeTimeFormatUnit = u as Intl.RelativeTimeFormatUnit; 
+            const unit: Intl.RelativeTimeFormatUnit = u as Intl.RelativeTimeFormatUnit;
             return rtf.format(distance, unit);
         }
       }

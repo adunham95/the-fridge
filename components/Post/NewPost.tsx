@@ -150,6 +150,7 @@ export const NewPost = ({ onCreate }: IProps) => {
 
     // console.log(newPostData);
     const data = await createPost({ variables: newPostData });
+    console.log(data);
     if (data?.error) {
       addToast(
         'Post Failed to save',
@@ -159,7 +160,7 @@ export const NewPost = ({ onCreate }: IProps) => {
       setPostSubmitting(false);
     }
     if (data?.data) {
-      onCreate(data.data.createPost);
+      onCreate({ ...data.data.createPost, dateTime: new Date() });
       setNewPostText('');
       setImages([]);
       addToast(
@@ -168,6 +169,7 @@ export const NewPost = ({ onCreate }: IProps) => {
         EIcons.BELL,
       );
       setPostSubmitting(false);
+      setExpanded(false);
     }
   }
 
@@ -194,6 +196,7 @@ export const NewPost = ({ onCreate }: IProps) => {
         <input
           className="w-full ring-0 px-1 mr-1"
           placeholder="Write Post"
+          value={newPostText}
           onChange={(e) => setNewPostText(e.target.value)}
           onFocus={() => setExpanded(true)}
         />
