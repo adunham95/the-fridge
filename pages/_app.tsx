@@ -13,6 +13,7 @@ import Layout from '../components/Layout/Layout';
 import AuthWrapper from '../components/Auth/AuthWrapper';
 import GlobalModals from '../modals';
 import { Globals } from '../models/Global';
+import { ErrorBoundary } from '@sentry/nextjs';
 
 type AuthComponent = NextComponentType & {
   auth?: boolean,
@@ -103,30 +104,34 @@ export default function MyApp({ Component, pageProps }: MyAppProps) {
         <meta name="msapplication-TileColor" content="#5b4b81" />
         <meta name="theme-color" content="#5b4b81" />
       </Head>
-      <SessionProvider session={pageProps.session} refetchInterval={86400}>
-        <UserProvider>
-          <ToastProvider>
-            <ModalProvider>
-              <PostProvider>
-                <ClientContext.Provider value={graphQLClient}>
-                  <Layout>
-                    <>
-                      {Component.auth ? (
-                        <AuthWrapper permissions={Component.permissions || []}>
+      <ErrorBoundary>
+        <SessionProvider session={pageProps.session} refetchInterval={86400}>
+          <UserProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <PostProvider>
+                  <ClientContext.Provider value={graphQLClient}>
+                    <Layout>
+                      <>
+                        {Component.auth ? (
+                          <AuthWrapper
+                            permissions={Component.permissions || []}
+                          >
+                            <Component {...pageProps} />
+                          </AuthWrapper>
+                        ) : (
                           <Component {...pageProps} />
-                        </AuthWrapper>
-                      ) : (
-                        <Component {...pageProps} />
-                      )}
-                      <GlobalModals />
-                    </>
-                  </Layout>
-                </ClientContext.Provider>
-              </PostProvider>
-            </ModalProvider>
-          </ToastProvider>
-        </UserProvider>
-      </SessionProvider>
+                        )}
+                        <GlobalModals />
+                      </>
+                    </Layout>
+                  </ClientContext.Provider>
+                </PostProvider>
+              </ModalProvider>
+            </ToastProvider>
+          </UserProvider>
+        </SessionProvider>
+      </ErrorBoundary>
     </>
   );
 }
