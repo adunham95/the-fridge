@@ -12,16 +12,18 @@ export function ImageCarousel({ images }: Props) {
   const [visibleSlides, setVisibleSlides] = useState(images.length);
   const [activeThumb, setActiveThumb] = useState(0);
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeImg, setActiveImg] = useState(images[0].url);
+  const [activeImg, setActiveImg] = useState(images[0]?.url || '');
   const { width } = useWindowSize();
 
   useEffect(() => {
-    setActiveImg(images[activeThumb].url);
-    slideElm.current?.scroll({
-      top: 0,
-      left: slideWidth * activeThumb,
-      behavior: 'smooth',
-    });
+    if (images[activeThumb]) {
+      setActiveImg(images[activeThumb].url);
+      slideElm.current?.scroll({
+        top: 0,
+        left: slideWidth * activeThumb,
+        behavior: 'smooth',
+      });
+    }
   }, [activeThumb]);
 
   useEffect(() => {
