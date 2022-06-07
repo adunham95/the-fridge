@@ -227,6 +227,7 @@ export const resolvers = {
           validEmail: false,
         };
         await dbConnect();
+        //TODO add emails already exits check
         const newUser = new UserModel(newUserData);
         const newUserFromDB = await newUser.save();
         const emailData = await sendEmail.sentMyTemplateEmail(
