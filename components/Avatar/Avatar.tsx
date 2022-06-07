@@ -22,7 +22,9 @@ export const Avatar = ({
   rounded = false,
   mouseToggle = () => {},
 }: IProps) => {
-  const { colorPalette } = usePallette(color);
+  const { colorPalette } = usePallette(
+    color !== '' ? color : theme.BASE_COLOR['brand-blue'],
+  );
 
   return (
     <span

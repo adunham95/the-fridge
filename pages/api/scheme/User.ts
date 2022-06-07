@@ -222,7 +222,7 @@ export const resolvers = {
           username: args.input.username,
           email: args.input.email,
           name: args.input.name,
-          accountColor: args.input?.accountColor,
+          accountColor: args.input?.accountColor || '#97A2FF',
           orgs: args.input?.orgs,
           validEmail: false,
         };
